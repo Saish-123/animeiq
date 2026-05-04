@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AnimeIQ Watch Order Generator — Get the perfect watch order for any anime franchise instantly.">
+  <title>AnimeIQ — Watch Order Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+ 
+  <style>
+    /* ══════════════════════════════════════════
+       ROOT & RESET
+    ══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    :root {
+      --cyan: #00ffff;
+      --purple: #7c3aed;
+      --dark: #020617;
+      --dark2: #0f172a;
+      --glass: rgba(255,255,255,0.04);
+      --glass-border: rgba(0,255,255,0.12);
+    }
+ 
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, var(--dark), var(--dark2));
+      color: white;
+      overflow-x: hidden;
+      cursor: none;
+      min-height: 100vh;
+    }
+ 
+    body::before {
+      content: "";
+      position: fixed; width: 200%; height: 200%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0,255,255,0.06) 0%, transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(124,58,237,0.06) 0%, transparent 45%);
+      animation: moveBg 20s infinite linear alternate;
+      z-index: -1;
+    }
+ 
+    @keyframes moveBg {
+      0%   { transform: translate(0,0) scale(1); }
+      100% { transform: translate(-8%,-6%) scale(1.05); }
+    }
+ 
+    body::after {
+      content: "";
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.025) 2px, rgba(0,0,0,0.025) 4px);
+      pointer-events: none; z-index: 9990;
+    }
+ 
+    /* ══════════════════════════════════════════
+       CUSTOM CURSOR
+    ══════════════════════════════════════════ */
+    #cursor {
+      position: fixed; width: 12px; height: 12px;
+      background: var(--cyan); border-radius: 50%;
+      pointer-events: none; z-index: 999999;
+      transform: translate(-50%,-50%);
+      box-shadow: 0 0 16px var(--cyan), 0 0 36px rgba(0,255,255,0.3);
+      mix-blend-mode: screen; transition: width 0.2s, height 0.2s;
+    }
+    #cursorRing {
+      position: fixed; width: 36px; height: 36px;
+      border: 1.5px solid rgba(0,255,255,0.5); border-radius: 50%;
+      pointer-events: none; z-index: 999998;
+      transform: translate(-50%,-50%);
+      transition: width 0.25s, height 0.25s, border-color 0.25s;
+    }
+ 
+    #particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+ 
+    /* ══════════════════════════════════════════
+       HEADER — matches main site exactly
+    ══════════════════════════════════════════ */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 50px;
+      background: rgba(2,6,23,0.75);
+      box-shadow: 0 0 30px rgba(0,255,255,0.15), 0 1px 0 rgba(0,255,255,0.1);
+      backdrop-filter: blur(20px);
+      position: sticky; top: 0; z-index: 500;
+      transition: padding 0.3s;
+    }
+    header.scrolled { padding: 10px 50px; }
+ 
+    header h1 {
+      font-family: "Orbitron", sans-serif;
+      color: var(--cyan);
+      text-shadow: 0 0 20px rgba(0,255,255,0.7), 0 0 40px rgba(0,255,255,0.3);
+      font-size: 24px; letter-spacing: 2px; margin: 0; cursor: none;
+      text-decoration: none;
+    }
+    header a { text-decoration: none; }
+ 
+    .header-right { display: flex; align-items: center; gap: 18px; }
+ 
+    .menu-btn {
+      width: 30px; height: 22px; display: flex;
+      flex-direction: column; justify-content: space-between;
+      cursor: none; z-index: 1001;
+    }
+    .menu-btn span {
+      height: 3px; width: 100%; background: var(--cyan);
+      border-radius: 10px; transition: 0.4s;
+      box-shadow: 0 0 10px var(--cyan);
+    }
+    .menu-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .menu-btn.active span:nth-child(2) { opacity: 0; }
+    .menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+ 
+    body.menu-open > *:not(header):not(#menu) { filter: blur(8px); pointer-events: none; user-select: none; }
+ 
+    .full-menu {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(2,6,23,0.6); backdrop-filter: blur(20px);
+      display: flex; justify-content: center; align-items: center;
+      flex-direction: column; opacity: 0; pointer-events: none;
+      transition: 0.4s ease; z-index: 9999; padding: 40px 20px; text-align: center;
+    }
+    .full-menu.active { opacity: 1; pointer-events: all; }
+    .full-menu a {
+      font-size: 30px; margin: 15px 0; text-decoration: none; color: white;
+      opacity: 0; transform: translateY(30px); transition: 0.4s; position: relative;
+    }
+    .full-menu.active a { opacity: 1; transform: translateY(0); }
+    .full-menu a::after { content: ""; position: absolute; width: 0%; height: 3px; bottom: -5px; left: 0; background: var(--cyan); transition: 0.3s; }
+    .full-menu a:hover::after { width: 100%; }
+    .full-menu a:hover { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); transform: scale(1.1); }
+ 
+    /* ══════════════════════════════════════════
+       PAGE HERO
+    ══════════════════════════════════════════ */
+    .page-hero {
+      text-align: center; padding: 72px 24px 50px;
+      position: relative; overflow: hidden;
+      animation: fadeUp 0.8s ease both;
+    }
+    .page-hero::before {
+      content: "";
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 700px; height: 350px;
+      background: radial-gradient(ellipse, rgba(0,255,255,0.07), transparent 70%);
+      pointer-events: none;
+    }
+    .page-hero-eyebrow {
+      display: inline-block;
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--cyan); opacity: 0.7;
+      background: rgba(0,255,255,0.06); border: 1px solid rgba(0,255,255,0.2);
+      padding: 5px 18px; border-radius: 30px; margin-bottom: 20px;
+    }
+    .page-hero h2 {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(28px, 5vw, 56px);
+      font-weight: 900; line-height: 1.1;
+      background: linear-gradient(135deg, #fff 20%, var(--cyan) 55%, #a78bfa 85%);
+      -webkit-background-clip: text; color: transparent; background-clip: text;
+      letter-spacing: -1px; margin-bottom: 14px;
+    }
+    .page-hero p { font-size: 16px; opacity: 0.55; max-width: 500px; margin: 0 auto; line-height: 1.7; font-weight: 300; }
+ 
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+ 
+    /* ══════════════════════════════════════════
+       SEARCH AREA
+    ══════════════════════════════════════════ */
+    .search-container {
+      max-width: 760px; margin: 0 auto 50px;
+      padding: 0 24px;
+      animation: fadeUp 0.9s ease 0.1s both;
+    }
+ 
+    .search-wrap {
+      position: relative;
+      display: flex; gap: 12px; align-items: center;
+    }
+ 
+    .search-field-wrap {
+      flex: 1; position: relative;
+    }
+ 
+    #searchInput {
+      width: 100%; padding: 16px 24px 16px 52px;
+      border-radius: 60px; border: 1px solid rgba(0,255,255,0.2);
+      background: rgba(255,255,255,0.05); backdrop-filter: blur(16px);
+      outline: none; transition: 0.3s;
+      font-family: "Poppins", sans-serif; color: white; font-size: 15px;
+    }
+    #searchInput::placeholder { color: rgba(255,255,255,0.35); }
+    #searchInput:focus {
+      box-shadow: 0 0 0 2px rgba(0,255,255,0.3), 0 0 30px rgba(0,255,255,0.12);
+      border-color: rgba(0,255,255,0.5);
+      background: rgba(255,255,255,0.08);
+    }
+ 
+    .search-icon-inner {
+      position: absolute; left: 19px; top: 50%; transform: translateY(-50%);
+      font-size: 18px; pointer-events: none; transition: 0.3s;
+      color: rgba(0,255,255,0.5);
+    }
+    .search-field-wrap:focus-within .search-icon-inner { color: var(--cyan); }
+ 
+    .gen-btn {
+      padding: 16px 30px; border-radius: 60px; border: none;
+      background: linear-gradient(45deg, var(--cyan), var(--purple));
+      color: var(--dark); font-family: "Poppins", sans-serif;
+      font-size: 14px; font-weight: 700; cursor: none;
+      transition: 0.3s; white-space: nowrap;
+      box-shadow: 0 0 20px rgba(0,255,255,0.25);
+      position: relative; overflow: hidden;
+    }
+    .gen-btn::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(45deg, #ffffff30, transparent);
+      transform: translateX(-100%); transition: transform 0.4s;
+    }
+    .gen-btn:hover::before { transform: translateX(100%); }
+    .gen-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,255,255,0.4); }
+    .gen-btn:active { transform: scale(0.97); }
+ 
+    /* Suggestions */
+    .suggestions {
+      position: absolute; top: calc(100% + 10px); left: 0; right: 0;
+      background: rgba(4,12,32,0.98); border: 1px solid rgba(0,255,255,0.2);
+      border-radius: 20px; box-shadow: 0 25px 70px rgba(0,0,0,0.6), 0 0 25px rgba(0,255,255,0.1);
+      max-height: 340px; overflow-y: auto; display: none; z-index: 300;
+      animation: sugFadeIn 0.2s ease; backdrop-filter: blur(20px);
+    }
+    @keyframes sugFadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+ 
+    .sug-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 13px 18px; cursor: none;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: 0.2s;
+    }
+    .sug-item:last-child { border-bottom: none; }
+    .sug-item:hover { background: rgba(0,255,255,0.08); }
+ 
+    .sug-img {
+      width: 36px; height: 52px; object-fit: cover;
+      border-radius: 8px; flex-shrink: 0;
+      border: 1px solid rgba(0,255,255,0.15);
+    }
+    .sug-placeholder {
+      width: 36px; height: 52px; background: rgba(255,255,255,0.06);
+      border-radius: 8px; flex-shrink: 0; display: flex;
+      align-items: center; justify-content: center; font-size: 16px;
+    }
+    .sug-info { flex: 1; min-width: 0; }
+    .sug-title { font-size: 13px; font-weight: 600; color: white; margin-bottom: 3px; }
+    .sug-meta { font-size: 11px; color: rgba(255,255,255,0.4); }
+    .sug-curated-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 1px;
+      background: rgba(0,255,180,0.15); color: #00ffb4;
+      border: 1px solid rgba(0,255,180,0.3);
+      padding: 2px 8px; border-radius: 10px; flex-shrink: 0;
+    }
+    .sug-score {
+      font-size: 11px; font-weight: 700; color: #f59e0b;
+      font-family: "Orbitron", sans-serif; flex-shrink: 0;
+    }
+ 
+    /* Status */
+    .status-bar {
+      text-align: center; font-size: 13px; margin-top: 14px;
+      color: rgba(0,255,255,0.7); min-height: 22px;
+      transition: 0.3s; letter-spacing: 0.3px;
+    }
+    .status-bar.error { color: rgba(255,100,100,0.9); }
+    .status-bar.success { color: rgba(0,255,180,0.9); }
+ 
+    /* ══════════════════════════════════════════
+       ANIME HERO CARD (selected anime)
+    ══════════════════════════════════════════ */
+    .anime-hero-card {
+      max-width: 900px; margin: 0 auto 36px;
+      padding: 0 24px; display: none;
+      animation: fadeUp 0.4s ease;
+    }
+    .anime-hero-inner {
+      display: flex; align-items: center; gap: 24px;
+      background: linear-gradient(135deg, rgba(0,255,255,0.05), rgba(124,58,237,0.05));
+      border: 1px solid rgba(0,255,255,0.2); border-radius: 22px;
+      padding: 22px 26px; position: relative; overflow: hidden;
+    }
+    .anime-hero-inner::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+    }
+    .anime-hero-img {
+      width: 80px; height: 112px; object-fit: cover;
+      border-radius: 14px; flex-shrink: 0;
+      box-shadow: 0 0 30px rgba(0,255,255,0.3);
+      border: 1px solid rgba(0,255,255,0.2);
+    }
+    .anime-hero-info { flex: 1; min-width: 0; }
+    .anime-hero-title {
+      font-family: "Orbitron", sans-serif; font-size: 18px; font-weight: 700;
+      background: linear-gradient(90deg, white, var(--cyan));
+      -webkit-background-clip: text; color: transparent; background-clip: text;
+      margin-bottom: 6px; line-height: 1.3;
+    }
+    .anime-hero-meta { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+    .anime-hero-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .ahero-badge {
+      padding: 3px 11px; border-radius: 20px; font-size: 10px; font-weight: 600;
+      background: rgba(0,255,255,0.1); color: var(--cyan);
+      border: 1px solid rgba(0,255,255,0.2);
+    }
+    .ahero-badge.curated {
+      background: rgba(0,255,180,0.12); color: #00ffb4;
+      border-color: rgba(0,255,180,0.3);
+    }
+    .ahero-score {
+      font-family: "Orbitron", sans-serif; font-size: 22px; font-weight: 900;
+      color: #f59e0b; flex-shrink: 0; text-align: center;
+    }
+    .ahero-score small { display: block; font-size: 10px; color: rgba(255,255,255,0.4); font-family: "Poppins", sans-serif; font-weight: 400; margin-top: 2px; }
+ 
+    /* ══════════════════════════════════════════
+       WATCH ORDER SECTION
+    ══════════════════════════════════════════ */
+    .watch-order-section {
+      max-width: 900px; margin: 0 auto;
+      padding: 0 24px 80px; display: none;
+      animation: fadeUp 0.5s ease;
+    }
+ 
+    /* Stats grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px; margin-bottom: 28px;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; padding: 16px 14px; text-align: center;
+      transition: 0.3s; position: relative; overflow: hidden;
+    }
+    .stat-card::before {
+      content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      transform: scaleX(0); transition: transform 0.3s;
+    }
+    .stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,255,255,0.1); border-color: rgba(0,255,255,0.2); }
+    .stat-card:hover::before { transform: scaleX(1); }
+    .stat-label { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .stat-value { font-size: 22px; font-weight: 700; color: var(--cyan); font-family: "Orbitron", sans-serif; }
+ 
+    /* Curated banner */
+    .curated-banner {
+      display: none; align-items: center; gap: 12px;
+      background: linear-gradient(135deg, rgba(0,255,180,0.07), rgba(0,255,255,0.04));
+      border: 1px solid rgba(0,255,180,0.3); border-radius: 14px;
+      padding: 14px 18px; margin-bottom: 20px;
+      font-size: 13px; color: rgba(0,255,180,0.9);
+    }
+    .curated-banner.show { display: flex; }
+    .curated-icon { font-size: 20px; flex-shrink: 0; }
+ 
+    /* Tips */
+    .tips-box {
+      background: rgba(0,255,255,0.04); border: 1px solid rgba(0,255,255,0.12);
+      border-radius: 14px; padding: 14px 18px; margin-bottom: 22px;
+      font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.8;
+    }
+    .tips-box strong { color: var(--cyan); }
+    .tips-box a { color: var(--cyan); }
+ 
+    /* Filter row */
+    .filter-row {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
+    }
+    .filter-btn {
+      padding: 7px 16px; border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.55);
+      font-size: 12px; font-family: "Poppins", sans-serif; cursor: none;
+      transition: 0.2s; white-space: nowrap;
+    }
+    .filter-btn:hover { border-color: rgba(0,255,255,0.3); color: var(--cyan); }
+    .filter-btn.active {
+      background: linear-gradient(45deg, rgba(0,255,255,0.15), rgba(124,58,237,0.15));
+      border-color: var(--cyan); color: var(--cyan); font-weight: 600;
+    }
+ 
+    /* Section header */
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+    }
+    .section-title {
+      font-family: "Orbitron", sans-serif; font-size: 15px;
+      background: linear-gradient(90deg, white, var(--cyan));
+      -webkit-background-clip: text; color: transparent; background-clip: text;
+      font-weight: 700;
+    }
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: rgba(255,255,255,0.45); }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+ 
+    /* ══════════════════════════════════════════
+       TIMELINE — god mode
+    ══════════════════════════════════════════ */
+    .timeline { position: relative; padding-left: 0; }
+ 
+    .timeline-track {
+      position: absolute; left: 27px; top: 50px; bottom: 30px; width: 2px;
+      background: linear-gradient(to bottom, var(--cyan), rgba(124,58,237,0.6), rgba(0,255,255,0.05));
+      z-index: 0;
+    }
+ 
+    .t-entry {
+      display: flex; gap: 18px; align-items: flex-start;
+      margin-bottom: 18px; position: relative; z-index: 1;
+      animation: entryReveal 0.5s cubic-bezier(.4,0,.2,1) both;
+    }
+ 
+    @keyframes entryReveal {
+      from { opacity: 0; transform: translateX(-16px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+ 
+    .t-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 800; font-family: "Orbitron", sans-serif;
+      flex-shrink: 0; border: 2px solid; position: relative; z-index: 2;
+      transition: 0.3s; cursor: none; line-height: 1;
+    }
+    .t-num:hover { transform: scale(1.12); }
+    .t-num-sub { font-size: 8px; font-weight: 500; opacity: 0.7; margin-top: 2px; font-family: "Poppins", sans-serif; }
+ 
+    .t-tv    .t-num { background: rgba(0,255,255,0.1);    border-color: var(--cyan);  color: var(--cyan);  box-shadow: 0 0 20px rgba(0,255,255,0.2); }
+    .t-movie .t-num { background: rgba(160,100,255,0.1);  border-color: #a064ff;      color: #a064ff;      box-shadow: 0 0 20px rgba(160,100,255,0.2); }
+    .t-ova   .t-num { background: rgba(255,200,0,0.1);    border-color: #ffd700;      color: #ffd700;      box-shadow: 0 0 20px rgba(255,200,0,0.2); }
+    .t-ona   .t-num { background: rgba(0,200,150,0.1);    border-color: #00c896;      color: #00c896;      box-shadow: 0 0 20px rgba(0,200,150,0.2); }
+    .t-special .t-num { background: rgba(255,120,80,0.1); border-color: #ff7850;      color: #ff7850;      box-shadow: 0 0 20px rgba(255,120,80,0.2); }
+ 
+    .t-card {
+      flex: 1; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 18px; padding: 18px 20px;
+      transition: 0.3s; position: relative; overflow: hidden;
+    }
+    .t-card::before {
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      transform: scaleY(0); transition: transform 0.3s;
+      border-radius: 3px 0 0 3px;
+    }
+    .t-tv    .t-card::before { background: var(--cyan); }
+    .t-movie .t-card::before { background: #a064ff; }
+    .t-ova   .t-card::before { background: #ffd700; }
+    .t-ona   .t-card::before { background: #00c896; }
+    .t-special .t-card::before { background: #ff7850; }
+ 
+    .t-entry:hover .t-card {
+      background: rgba(255,255,255,0.055);
+      border-color: rgba(255,255,255,0.12);
+      transform: translateX(5px);
+    }
+    .t-entry:hover .t-card::before { transform: scaleY(1); }
+ 
+    .t-card-top {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px;
+    }
+    .t-card-left { flex: 1; min-width: 0; }
+    .t-title {
+      font-size: 15px; font-weight: 700; color: white; margin-bottom: 3px;
+      transition: 0.2s; line-height: 1.35;
+    }
+    .t-entry:hover .t-title { color: var(--cyan); }
+    .t-en-title { font-size: 11px; color: rgba(255,255,255,0.28); margin-bottom: 6px; }
+    .t-meta { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 8px; line-height: 1.7; }
+ 
+    .t-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .t-pill {
+      padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 600;
+    }
+    .pill-tv      { background: rgba(0,255,255,0.12);   color: var(--cyan);  border: 1px solid rgba(0,255,255,0.2); }
+    .pill-movie   { background: rgba(160,100,255,0.12); color: #a064ff;      border: 1px solid rgba(160,100,255,0.2); }
+    .pill-ova     { background: rgba(255,200,0,0.12);   color: #ffd700;      border: 1px solid rgba(255,200,0,0.2); }
+    .pill-ona     { background: rgba(0,200,150,0.12);   color: #00c896;      border: 1px solid rgba(0,200,150,0.2); }
+    .pill-special { background: rgba(255,120,80,0.12);  color: #ff7850;      border: 1px solid rgba(255,120,80,0.2); }
+    .pill-airing  { background: rgba(255,200,0,0.1);   color: #ffd700;      border: 1px solid rgba(255,200,0,0.2); }
+    .pill-long    { background: rgba(255,80,80,0.1);    color: #ff8080;      border: 1px solid rgba(255,80,80,0.2); }
+    .pill-genre   { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.08); }
+ 
+    .t-thumb {
+      width: 44px; height: 62px; object-fit: cover;
+      border-radius: 10px; flex-shrink: 0; opacity: 0.9;
+      border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
+    }
+    .t-entry:hover .t-thumb { opacity: 1; border-color: rgba(0,255,255,0.3); }
+ 
+    .t-note {
+      margin-top: 10px; font-size: 12px; color: rgba(0,255,255,0.75);
+      background: rgba(0,255,255,0.05); border-left: 3px solid rgba(0,255,255,0.5);
+      border-radius: 0 10px 10px 0; padding: 9px 12px; line-height: 1.65;
+    }
+ 
+    /* Skeleton */
+    .sk-wrap { display: flex; gap: 18px; margin-bottom: 18px; }
+    .sk-circle { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.07); flex-shrink: 0; animation: skPulse 1.5s ease-in-out infinite; }
+    .sk-card { flex: 1; background: rgba(255,255,255,0.04); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 10px; animation: skPulse 1.5s ease-in-out infinite; }
+    .sk-line { height: 13px; border-radius: 6px; background: rgba(255,255,255,0.07); }
+    .sk-w40 { width: 40%; } .sk-w65 { width: 65%; } .sk-w80 { width: 80%; }
+    @keyframes skPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 0.85; } }
+ 
+    /* Empty */
+    .timeline-empty {
+      text-align: center; padding: 60px 20px;
+      color: rgba(255,255,255,0.35); font-size: 14px;
+    }
+ 
+    /* ══════════════════════════════════════════
+       FAQ
+    ══════════════════════════════════════════ */
+    .faq-section { max-width: 900px; margin: 60px auto 20px; padding: 0 24px; text-align: center; }
+    .faq-eyebrow { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--cyan); opacity: 0.6; display: block; margin-bottom: 14px; }
+    .faq-section h2 { font-family: "Orbitron", sans-serif; font-size: clamp(22px, 3.5vw, 36px); font-weight: 700; background: linear-gradient(90deg, white, var(--cyan)); -webkit-background-clip: text; color: transparent; margin-bottom: 36px; background-clip: text;}
+    .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .faq-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); padding: 22px 20px; border-radius: 18px; text-align: left; transition: 0.35s; cursor: default; position: relative; overflow: hidden; }
+    .faq-card::before { content: ""; position: absolute; inset: 0; border-radius: 18px; background: radial-gradient(circle at 20% 20%, rgba(0,255,255,0.06), transparent 60%); opacity: 0; transition: 0.4s; }
+    .faq-card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,255,255,0.08); border-color: rgba(0,255,255,0.25); }
+    .faq-card:hover::before { opacity: 1; }
+    .faq-card h4 { color: var(--cyan); font-size: 14px; margin-bottom: 10px; }
+    .faq-card p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+ 
+    /* ══════════════════════════════════════════
+       FOOTER — matches main site
+    ══════════════════════════════════════════ */
+    .footer { margin-top: 80px; padding: 40px 24px 20px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(0,255,255,0.08); }
+    .footer-container { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 30px; }
+    .footer-brand h2 { font-family: "Orbitron", sans-serif; color: var(--cyan); margin-bottom: 10px; font-size: 20px; }
+    .footer-brand p { font-size: 14px; opacity: 0.6; }
+    .footer-links h4 { margin-bottom: 10px; color: var(--cyan); font-size: 13px; letter-spacing: 1px; }
+    .footer-links a { display: block; text-decoration: none; color: rgba(255,255,255,0.6); margin-bottom: 7px; transition: 0.2s; font-size: 13px; cursor: none; }
+    .footer-links a:hover { color: var(--cyan); padding-left: 4px; }
+    .footer-bottom { text-align: center; margin-top: 30px; font-size: 12px; opacity: 0.5; }
+    .footer-note { font-size: 11px; margin-top: 8px; }
+    .footer a { color: var(--cyan); }
+ 
+    /* TOAST */
+    #toast { position: fixed; bottom: 30px; right: 30px; background: rgba(4,12,32,0.97); border: 1px solid rgba(0,255,255,0.3); color: white; padding: 14px 24px; border-radius: 16px; font-size: 14px; box-shadow: 0 0 30px rgba(0,255,255,0.15); z-index: 99999; opacity: 0; transform: translateY(16px); transition: 0.35s cubic-bezier(.4,0,.2,1); pointer-events: none; backdrop-filter: blur(20px); max-width: 320px; }
+    #toast.show { opacity: 1; transform: translateY(0); }
+ 
+    /* COOKIE */
+    #cookieBox { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: rgba(4,12,32,0.97); padding: 18px 24px; border-radius: 18px; box-shadow: 0 0 40px rgba(0,255,255,0.2); border: 1px solid rgba(0,255,255,0.2); display: none; z-index: 888; max-width: 92%; text-align: center; backdrop-filter: blur(20px); }
+ 
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.3); border-radius: 6px; }
+ 
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      header { padding: 14px 20px; }
+      .search-wrap { flex-direction: column; }
+      .gen-btn { width: 100%; }
+      .anime-hero-inner { flex-wrap: wrap; }
+      .timeline-track { left: 27px; }
+      .section-header { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .t-thumb { display: none; }
+    }
+  </style>
+</head>
+<body>
+ 
+<!-- Cursor -->
+<div id="cursor"></div>
+<div id="cursorRing"></div>
+<canvas id="particles"></canvas>
+ 
+<!-- Full screen menu -->
+<div id="menu" class="full-menu" onclick="outsideClick(event)">
+  <a><div onclick="toggleMenu()" style="cursor:none;font-size:20px;">✖</div></a>
+  <a href="homepageblog.html">Home</a>
+  <a href="explore.html">Explore</a>
+  <a href="binge.html">Binge Calculator</a>
+  <a href="watchorder.html">Watch Order</a>
+  <a href="contactus.html">Contact</a>
+  <a href="about.html">About</a>
+</div>
+ 
+<!-- ══ HEADER ══ -->
+<header id="mainHeader">
+  <a href="homepageblog.html"><h1>🧠 AnimeIQ</h1></a>
+  <div class="header-right">
+    <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+ 
+<!-- ══ HERO ══ -->
+<div class="page-hero">
+  <span class="page-hero-eyebrow">📺 Franchise Intelligence</span>
+  <h2>Watch Order<br>Generator</h2>
+  <p>Search any anime franchise — get the perfect, curated watch order with episode counts, scores and smart tips.</p>
+</div>
+ 
+<!-- ══ SEARCH ══ -->
+<div class="search-container">
+  <div class="search-wrap">
+    <div class="search-field-wrap">
+      <span class="search-icon-inner">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search franchise... e.g. Naruto, Fate, Dragon Ball..." autocomplete="off">
+      <div class="suggestions" id="suggestions"></div>
+    </div>
+    <button class="gen-btn" onclick="doSearch()">Generate Order</button>
+  </div>
+  <div class="status-bar" id="statusMsg"></div>
+</div>
+ 
+<!-- ══ ANIME HERO CARD ══ -->
+<div class="anime-hero-card" id="animeHeroCard">
+  <div class="anime-hero-inner">
+    <img id="animeHeroImg" src="" alt="" class="anime-hero-img" onerror="this.style.display='none'">
+    <div class="anime-hero-info">
+      <div class="anime-hero-title" id="animeHeroTitle"></div>
+      <div class="anime-hero-meta" id="animeHeroMeta"></div>
+      <div class="anime-hero-tags" id="animeHeroTags"></div>
+    </div>
+    <div class="ahero-score" id="animeHeroScore"></div>
+  </div>
+</div>
+ 
+<!-- ══ WATCH ORDER SECTION ══ -->
+<div class="watch-order-section" id="watchOrderSection">
+ 
+  <!-- Curated banner -->
+  <div class="curated-banner" id="curatedBanner">
+    <span class="curated-icon">✅</span>
+    <span id="curatedMsg">Hand-curated watch order loaded.</span>
+  </div>
+ 
+  <!-- Tips -->
+  <div class="tips-box" id="tipsBox"></div>
+ 
+  <!-- Stats -->
+  <div class="stats-grid" id="statsGrid"></div>
+ 
+  <!-- Filters -->
+  <div class="filter-row" id="filterRow"></div>
+ 
+  <!-- Section header -->
+  <div class="section-header">
+    <div class="section-title" id="sectionTitle">Watch Order</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--cyan)"></div>TV</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#a064ff"></div>Movie</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ffd700"></div>OVA</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#00c896"></div>ONA</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ff7850"></div>Special</div>
+    </div>
+  </div>
+ 
+  <!-- Timeline -->
+  <div class="timeline" id="timeline">
+    <div class="timeline-track" id="timelineTrack"></div>
+  </div>
+ 
+</div>
+ 
+<!-- ══ FAQ ══ -->
+<div class="faq-section">
+  <span class="faq-eyebrow">Common Questions</span>
+  <h2>How It Works</h2>
+  <div class="faq-grid">
+    <div class="faq-card"><h4>🎌 How is the order determined?</h4><p>Popular franchises use a hand-curated, community-verified sequence. All others use deep recursive relation crawling sorted chronologically by air date.</p></div>
+    <div class="faq-card"><h4>⚡ Where does the data come from?</h4><p>All data is fetched live from MyAnimeList via the Jikan API — the most comprehensive anime database available, with millions of entries.</p></div>
+    <div class="faq-card"><h4>🎯 What about filler arcs?</h4><p>Long-running shows are flagged automatically. Use <a href="https://www.animefillerlist.com" target="_blank">animefillerlist.com</a> alongside to skip filler in shows like Naruto or Bleach.</p></div>
+    <div class="faq-card"><h4>🚀 Can I filter the results?</h4><p>Yes — use the filter buttons above the timeline to show only TV series, Movies, OVAs, or "Essential Only" mode (TV + Movies only).</p></div>
+  </div>
+</div>
+ 
+<!-- ══ FOOTER — matches main site ══ -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <h2>🧠 AnimeIQ</h2>
+      <p>Discover anime, explore details, and plan your perfect watch order.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="homepageblog.html">Home</a>
+      <a href="explore.html">Explore Anime</a>
+      <a href="binge.html">Binge Calculator</a>
+      <a href="watchorder.html">Watch Order</a>
+    </div>
+    <div class="footer-links">
+      <h4>Legal</h4>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="termsandcondition.html">Terms &amp; Conditions</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 AnimeIQ. All rights reserved.</p>
+    <p class="footer-note">Data provided by <a href="https://jikan.moe" target="_blank">Jikan API</a> (MyAnimeList). AnimeIQ is not affiliated with MyAnimeList.</p>
+  </div>
+</footer>
+ 
+<div id="toast"></div>
+ 
+<!-- Cookie banner -->
+<div id="cookieBox">
+  <p style="font-size:13px;opacity:0.8;margin:0 0 14px;line-height:1.6;">🍪 We use cookies to improve your experience. By using AnimeIQ, you agree to our <a href="privacy.html" style="color:var(--cyan);">Privacy Policy</a>.</p>
+  <button onclick="acceptCookies()" style="padding:9px 22px;border:none;border-radius:12px;background:linear-gradient(45deg,var(--cyan),var(--purple));color:#020617;cursor:none;font-family:'Poppins',sans-serif;font-weight:700;">Accept & Continue</button>
+</div>
+ 
+<script>
+/* ══════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════ */
+const JIKAN = "https://api.jikan.moe/v4";
+// If you have a local proxy server, use it instead:
+// const API_BASE = "http://localhost:3000";
+ 
+let selectedAnime = null;
+let allEntries    = [];
+let debounceTimer = null;
+ 
+/* ══════════════════════════════════════════
+   CURATED FRANCHISE DATABASE
+   Comprehensive hand-verified watch orders
+══════════════════════════════════════════ */
+const CURATED = {
+ 
+  "dragon ball": [
+    { id: 223,   note: "Start here — Goku's childhood and the original Dragon Ball adventure." },
+    { id: 813,   note: "Dragon Ball Z — the iconic sequel. Saiyans → Namek → Cell → Buu arcs." },
+    { id: 6033,  note: "DBZ Kai — HD remaster with no filler. Can replace DBZ if you prefer a tighter experience." },
+    { id: 20507, note: "DBZ Kai: Final Chapters — Buu arc in Kai format." },
+    { id: 2275,  note: "Movie: Dead Zone — non-canon side story." },
+    { id: 2276,  note: "Movie: World's Strongest — non-canon." },
+    { id: 2277,  note: "Movie: Tree of Might — non-canon." },
+    { id: 2279,  note: "Movie: Cooler's Revenge — non-canon, popular." },
+    { id: 2282,  note: "Movie: Broly – The Legendary Super Saiyan — most popular non-canon film." },
+    { id: 14875, note: "Battle of Gods — first semi-canon movie. Watch after Buu arc." },
+    { id: 20697, note: "Resurrection 'F' — canon sequel to Battle of Gods." },
+    { id: 30694, note: "Dragon Ball Super — main canon sequel series." },
+    { id: 35507, note: "DBS: Broly — fully canon movie. Watch after Super series." },
+    { id: 47569, note: "DBS: Super Hero — latest canon film as of 2024." },
+    { id: 9,     note: "Dragon Ball GT — non-canon alt-continuation. Optional, watch after Super." },
+  ],
+ 
+  "naruto": [
+    { id: 20,    note: "Start here — Naruto Part 1. Gennin exams through the original story." },
+    { id: 4129,  note: "Movie 1: Ninja Clash in the Land of Snow — watch after Chunin Exams." },
+    { id: 4130,  note: "Movie 2: Legend of the Stone of Gelel — non-canon." },
+    { id: 4131,  note: "Movie 3: Guardians of the Crescent Moon — non-canon." },
+    { id: 1735,  note: "Naruto Shippuden — Part 2, the main sequel with a 2.5-year timeskip." },
+    { id: 4437,  note: "Shippuden Movie 1 — watch after Kazekage Rescue arc." },
+    { id: 8246,  note: "Shippuden Movie 2: Bonds." },
+    { id: 10589, note: "Shippuden Movie 3: The Will of Fire." },
+    { id: 11701, note: "Shippuden Movie 4: The Lost Tower." },
+    { id: 11973, note: "Shippuden Movie 5: Blood Prison." },
+    { id: 13667, note: "Shippuden Movie 6: Road to Ninja." },
+    { id: 16870, note: "The Last: Naruto the Movie — CANON. Set after the 4th Ninja War." },
+    { id: 19609, note: "Boruto: Naruto the Movie — watch before the Boruto TV series." },
+    { id: 34566, note: "Boruto: Naruto Next Generations — Naruto's son's story." },
+  ],
+ 
+  "one piece": [
+    { id: 21,    note: "One Piece — the main series. Everything starts and continues here. Use filler list for long runs." },
+    { id: 1687,  note: "Movie 1 — non-canon side film." },
+    { id: 1692,  note: "Movie 6: Baron Omatsuri — fan favourite non-canon film." },
+    { id: 5765,  note: "Movie 10: Strong World — first canon-adjacent film. Watch after Thriller Bark." },
+    { id: 14527, note: "Movie 12: Film Z — watch after Punk Hazard arc." },
+    { id: 28171, note: "Movie 13: Film Gold — watch after Dressrosa arc." },
+    { id: 38000, note: "Movie 14: Stampede — watch after Whole Cake Island." },
+    { id: 49596, note: "Movie 15: Film Red — watch after Wano arc. Uta's story is canon-adjacent." },
+  ],
+ 
+  "attack on titan": [
+    { id: 16498, note: "Season 1 — start here. Humanity vs Titans. Breathtaking opener." },
+    { id: 18679, note: "OVA: No Regrets — Levi's origin. Highly recommended after Season 1." },
+    { id: 25777, note: "Season 2 — the Wall titans mystery deepens. Only 12 episodes but dense." },
+    { id: 35760, note: "Season 3 Part 1 — political intrigue and revelations." },
+    { id: 38524, note: "Season 3 Part 2 — the basement revealed. Arguably the peak of AoT." },
+    { id: 40028, note: "The Final Season Part 1 — the world outside the walls, new perspective." },
+    { id: 48583, note: "The Final Season Part 2 — the war escalates." },
+    { id: 51535, note: "The Final Season Part 3 — beginning of the end." },
+    { id: 54595, note: "The Final Season: Final Chapters — the true conclusion of the series." },
+  ],
+ 
+  "fullmetal alchemist": [
+    { id: 5114,  note: "FMA: Brotherhood — the definitive manga-faithful adaptation. Start here." },
+    { id: 9135,  note: "FMA Brotherhood OVAs — bonus shorts and side stories. Watch after." },
+    { id: 9737,  note: "FMA: The Sacred Star of Milos — Brotherhood side film." },
+    { id: 121,   note: "FMA 2003 — great but diverges from manga after ep 10. A separate experience." },
+    { id: 6,     note: "Conqueror of Shamballa — sequel to 2003 anime ONLY, not Brotherhood." },
+  ],
+ 
+  "demon slayer": [
+    { id: 38000, note: "Season 1 — Tanjiro's journey begins. Start here." },
+    { id: 43352, note: "Mugen Train Movie — directly continues Season 1. Watch before Season 2." },
+    { id: 44081, note: "Season 2: Entertainment District Arc — also available as TV episodes." },
+    { id: 47778, note: "Season 3: Swordsmith Village Arc." },
+    { id: 54595, note: "Season 4: Hashira Training Arc." },
+  ],
+  "kimetsu no yaiba": [
+    { id: 38000, note: "Season 1 — Tanjiro's journey begins." },
+    { id: 43352, note: "Mugen Train Movie — watch before Season 2." },
+    { id: 44081, note: "Season 2: Entertainment District Arc." },
+    { id: 47778, note: "Season 3: Swordsmith Village Arc." },
+    { id: 54595, note: "Season 4: Hashira Training Arc." },
+  ],
+ 
+  "sword art online": [
+    { id: 11757, note: "SAO Season 1 — Aincrad + Fairy Dance arcs." },
+    { id: 20594, note: "SAO Season 2 — Gun Gale Online + Mother's Rosario." },
+    { id: 24731, note: "SAO Movie: Ordinal Scale — watch between Season 2 and Alicization." },
+    { id: 36475, note: "SAO: Alicization (Season 3 Part 1)." },
+    { id: 40591, note: "SAO: Alicization – War of Underworld." },
+    { id: 47917, note: "SAO Progressive: Aria of a Starless Night — Aincrad retelling." },
+    { id: 50417, note: "SAO Progressive: Scherzo of Deep Night." },
+  ],
+ 
+  "my hero academia": [
+    { id: 31964, note: "Season 1 — Izuku enters UA. The origin story." },
+    { id: 33486, note: "Season 2 — Sports Festival and Hero Killer arcs." },
+    { id: 38408, note: "Movie 1: Two Heroes — watch after Season 2." },
+    { id: 36456, note: "Season 3 — All For One confrontation." },
+    { id: 41587, note: "Season 4 — Overhaul arc." },
+    { id: 40456, note: "Movie 2: Heroes Rising — watch after Season 4." },
+    { id: 45576, note: "Season 5 — Joint Training + Meta Liberation Army." },
+    { id: 50348, note: "Movie 3: World Heroes' Mission — watch after Season 5." },
+    { id: 52991, note: "Season 6 — Paranormal Liberation War. Peak MHA." },
+    { id: 57334, note: "Season 7 — Star and Stripe + Final War arc." },
+  ],
+  "boku no hero academia": [
+    { id: 31964, note: "Season 1 — Izuku's origin." },
+    { id: 33486, note: "Season 2 — Sports Festival." },
+    { id: 36456, note: "Season 3." },
+    { id: 41587, note: "Season 4 — Overhaul arc." },
+    { id: 45576, note: "Season 5." },
+    { id: 52991, note: "Season 6 — peak MHA." },
+    { id: 57334, note: "Season 7." },
+  ],
+ 
+  "bleach": [
+    { id: 269,   note: "Bleach original (eps 1–366) — use animefillerlist.com for the filler skip list." },
+    { id: 5,     note: "Movie 1: Memories of Nobody — after Soul Society arc." },
+    { id: 41467, note: "Bleach: Thousand-Year Blood War — manga-faithful final arc. Stunning production." },
+  ],
+ 
+  "fairy tail": [
+    { id: 6702,  note: "Fairy Tail (2009) — start here." },
+    { id: 9971,  note: "Fairy Tail Part 2." },
+    { id: 10148, note: "Movie 1: Priestess of the Phoenix — after Edolas arc." },
+    { id: 16301, note: "Fairy Tail (2014) — continuation." },
+    { id: 22731, note: "Movie 2: Dragon Cry — after Avatar arc." },
+    { id: 33249, note: "Fairy Tail Final Season — Alvarez Empire arc." },
+    { id: 43631, note: "Fairy Tail: 100 Years Quest — direct sequel (ongoing)." },
+  ],
+ 
+  "fate": [
+    { id: 22297, note: "Fate/stay night: Unlimited Blade Works (TV) — best entry point." },
+    { id: 10087, note: "Fate/Zero — prequel. Watch AFTER UBW for maximum impact." },
+    { id: 28701, note: "Heaven's Feel I: presage flower — Sakura route." },
+    { id: 33049, note: "Heaven's Feel II: lost butterfly." },
+    { id: 38400, note: "Heaven's Feel III: spring song — the FSN finale." },
+    { id: 37348, note: "Fate/Grand Order: Absolute Demonic Front Babylonia." },
+  ],
+ 
+  "hunter x hunter": [
+    { id: 11061, note: "Hunter x Hunter (2011) — the definitive version. Start here." },
+    { id: 14119, note: "Movie 1: Phantom Rouge — after Yorknew arc." },
+    { id: 14149, note: "Movie 2: The Last Mission — after Yorknew arc." },
+  ],
+ 
+  "jojo": [
+    { id: 14719, note: "Part 1 & 2: Phantom Blood + Battle Tendency — start here." },
+    { id: 20899, note: "Part 3: Stardust Crusaders (first half)." },
+    { id: 26247, note: "Part 3: Stardust Crusaders – Egypt Arc." },
+    { id: 31933, note: "Part 4: Diamond is Unbreakable." },
+    { id: 37991, note: "Part 5: Golden Wind." },
+    { id: 41456, note: "Part 6: Stone Ocean." },
+  ],
+  "jojo's bizarre adventure": [
+    { id: 14719, note: "Part 1 & 2: Phantom Blood + Battle Tendency." },
+    { id: 20899, note: "Part 3: Stardust Crusaders." },
+    { id: 26247, note: "Part 3: Egypt Arc." },
+    { id: 31933, note: "Part 4: Diamond is Unbreakable." },
+    { id: 37991, note: "Part 5: Golden Wind." },
+    { id: 41456, note: "Part 6: Stone Ocean." },
+  ],
+ 
+  "code geass": [
+    { id: 1575,  note: "Season 1 — Lelouch of the Rebellion. Start here." },
+    { id: 2904,  note: "Season 2: R2 — the conclusion of Lelouch's story." },
+    { id: 11253, note: "Akito the Exiled (OVA series) — side story set between seasons." },
+    { id: 35849, note: "Lelouch of the Re;surrection — alternate continuity film sequel." },
+  ],
+ 
+  "death note": [
+    { id: 1535,  note: "Death Note — watch the complete series. One of anime's best." },
+    { id: 2994,  note: "Rewrite 1: Visions of a God — recap special, optional." },
+    { id: 3655,  note: "Rewrite 2: L's Successors — recap special, optional." },
+  ],
+ 
+  "re:zero": [
+    { id: 31240, note: "Season 1 — Subaru's loop begins. Emotional masterpiece." },
+    { id: 35142, note: "OVA: Memory Snow — fun date episode, watch after Season 1." },
+    { id: 38261, note: "OVA: The Frozen Bond — Emilia & Puck backstory." },
+    { id: 39587, note: "Season 2 Part 1 — Sanctuary arc." },
+    { id: 42438, note: "Season 2 Part 2." },
+    { id: 54856, note: "Season 3 — continues the story." },
+  ],
+  "rezero": [
+    { id: 31240, note: "Season 1." },
+    { id: 35142, note: "OVA: Memory Snow." },
+    { id: 39587, note: "Season 2 Part 1." },
+    { id: 42438, note: "Season 2 Part 2." },
+    { id: 54856, note: "Season 3." },
+  ],
+ 
+  "overlord": [
+    { id: 29803, note: "Season 1 — Ainz in the New World." },
+    { id: 32979, note: "Season 2." },
+    { id: 35073, note: "Season 3." },
+    { id: 48895, note: "Season 4." },
+    { id: 55644, note: "Movie: The Sacred Kingdom." },
+  ],
+ 
+  "evangelion": [
+    { id: 30,    note: "Neon Genesis Evangelion (1995) — the original. Watch episodes 1–24." },
+    { id: 32,    note: "End of Evangelion — the true ending (replaces eps 25-26 of original)." },
+    { id: 626,   note: "Rebuild 1.11: You Are (Not) Alone — alternate retelling." },
+    { id: 2759,  note: "Rebuild 2.22: You Can (Not) Advance — diverges significantly." },
+    { id: 9581,  note: "Rebuild 3.33: You Can (Not) Redo — major time skip." },
+    { id: 41468, note: "Rebuild 3.0+1.01: Thrice Upon a Time — the final Rebuild film." },
+  ],
+  "neon genesis evangelion": [
+    { id: 30,    note: "NGE original series (eps 1–24) — start here." },
+    { id: 32,    note: "End of Evangelion — the true ending to the original." },
+    { id: 626,   note: "Rebuild 1.11." },
+    { id: 2759,  note: "Rebuild 2.22." },
+    { id: 9581,  note: "Rebuild 3.33." },
+    { id: 41468, note: "Rebuild 3.0+1.01 — the finale." },
+  ],
+ 
+  "steins gate": [
+    { id: 9253,  note: "Steins;Gate — watch the complete series first. Top tier sci-fi." },
+    { id: 10995, note: "OVA: Oukoubakku no Pandora — epilogue, watch right after." },
+    { id: 20431, note: "Movie: Load Region of Déjà Vu — Kurisu's perspective film." },
+    { id: 35247, note: "Steins;Gate 0 — alternate timeline diverging from episode 23." },
+  ],
+  "steins;gate": [
+    { id: 9253,  note: "Steins;Gate — start here." },
+    { id: 10995, note: "OVA: Pandora epilogue." },
+    { id: 20431, note: "Movie: Load Region of Déjà Vu." },
+    { id: 35247, note: "Steins;Gate 0 — watch after the original." },
+  ],
+ 
+  "black clover": [
+    { id: 34572, note: "Black Clover TV series (170 episodes) — start here." },
+    { id: 51179, note: "Movie: Sword of the Wizard King — watch after the TV series." },
+  ],
+ 
+  "tokyo ghoul": [
+    { id: 22319, note: "Tokyo Ghoul Season 1 — Kaneki's transformation begins." },
+    { id: 27899, note: "Root A (Season 2) — anime-original divergence from manga." },
+    { id: 38422, note: "Tokyo Ghoul:re Season 1 — new protagonist, 3-year timeskip." },
+    { id: 40494, note: "Tokyo Ghoul:re Season 2 — the final arc." },
+  ],
+ 
+  "sailor moon": [
+    { id: 530,   note: "Sailor Moon Season 1 — the original magical girl legend." },
+    { id: 531,   note: "Sailor Moon R (Season 2)." },
+    { id: 532,   note: "Sailor Moon S (Season 3) — fan favourite." },
+    { id: 533,   note: "Sailor Moon SuperS (Season 4)." },
+    { id: 534,   note: "Sailor Moon Stars (Season 5)." },
+    { id: 20785, note: "Sailor Moon Crystal — modern reboot, can be watched independently." },
+  ],
+ 
+  "spy x family": [
+    { id: 50265, note: "Season 1 Part 1 — start here. Wholesome spy family fun." },
+    { id: 52034, note: "Season 1 Part 2." },
+    { id: 56321, note: "Season 2." },
+    { id: 58567, note: "Movie: Code White — watch after Season 2." },
+  ],
+ 
+  "chainsaw man": [
+    { id: 44511, note: "Chainsaw Man Season 1 — start here. Unhinged action masterpiece." },
+  ],
+ 
+  "jujutsu kaisen": [
+    { id: 40748, note: "Season 1 — Yuji's story begins. Start here." },
+    { id: 44081, note: "JJK 0: The Movie — prequel film, watch between S1 and S2." },
+    { id: 51009, note: "Season 2 — the peak of the series. Hidden Inventory + Shibuya." },
+    { id: 55701, note: "Season 3 — Culling Game arc." },
+  ],
+ 
+  "vinland saga": [
+    { id: 37521, note: "Season 1 — Thorfinn's revenge quest. Viking epic." },
+    { id: 49387, note: "Season 2 — the farm arc. Deeper and more philosophical." },
+  ],
+ 
+  "black butler": [
+    { id: 4898,  note: "Season 1 — Sebastian and Ciel's contract story." },
+    { id: 6019,  note: "Season 2 — alternate continuation." },
+    { id: 17977, note: "Book of Circus — most manga-faithful arc. Watch after S1." },
+    { id: 23939, note: "Book of Murder — two-part OVA." },
+    { id: 30592, note: "Book of the Atlantic — movie continuing after Book of Circus." },
+  ],
+ 
+  "gintama": [
+    { id: 918,   note: "Gintama — the original series. Start here (watch from ep 1)." },
+    { id: 6033,  note: "Gintama' (2011) — direct continuation." },
+    { id: 15417, note: "Gintama': Enchousen." },
+    { id: 22135, note: "Gintama° (2015)." },
+    { id: 28977, note: "Gintama (2017)." },
+    { id: 35507, note: "Gintama.: Shirogane no Tamashii-hen." },
+    { id: 36391, note: "Gintama.: Shirogane no Tamashii-hen 2 — the finale." },
+  ],
+ 
+  "danmachi": [
+    { id: 28121, note: "Is It Wrong to Try to Pick Up Girls in a Dungeon? Season 1." },
+    { id: 34902, note: "Arrow of the Orion Movie — watch after Season 1." },
+    { id: 37347, note: "Season 2." },
+    { id: 40839, note: "Sword Oratoria OVA." },
+    { id: 44236, note: "Season 3." },
+    { id: 49784, note: "Season 4." },
+    { id: 55701, note: "Season 5." },
+  ],
+ 
+  "sword art online progressive": [
+    { id: 47917, note: "SAO Progressive: Aria of a Starless Night." },
+    { id: 50417, note: "SAO Progressive: Scherzo of Deep Night." },
+  ],
+ 
+  "made in abyss": [
+    { id: 34599, note: "Season 1 — descent into the Abyss. Deceptively dark." },
+    { id: 36862, note: "Movie 1 & 2 — recap films, optional." },
+    { id: 41084, note: "Movie 3: Dawn of the Deep Soul — canonical, watch after S1." },
+    { id: 48549, note: "Season 2: The Golden City of the Scorching Sun." },
+  ],
+ 
+  "the rising of the shield hero": [
+    { id: 35790, note: "Season 1 — Naofumi's isekai journey." },
+    { id: 45701, note: "Season 2." },
+    { id: 49596, note: "Season 3." },
+  ],
+ 
+  "mushoku tensei": [
+    { id: 39535, note: "Season 1 Part 1 — the most detailed isekai world-building. Start here." },
+    { id: 45576, note: "Season 1 Part 2." },
+    { id: 52701, note: "Season 2 Part 1." },
+    { id: 55644, note: "Season 2 Part 2." },
+  ],
+ 
+  "ao no exorcist": [
+    { id: 9919,  note: "Blue Exorcist Season 1 — Rin's story begins. Start here." },
+    { id: 10318, note: "Movie — watch after Season 1." },
+    { id: 30654, note: "Season 2: Kyoto Saga — manga-faithful continuation." },
+    { id: 55701, note: "Season 3: Shimane Illuminati Saga." },
+  ],
+  "blue exorcist": [
+    { id: 9919,  note: "Season 1 — start here." },
+    { id: 30654, note: "Season 2: Kyoto Saga." },
+    { id: 55701, note: "Season 3." },
+  ],
+};
+ 
+/* ── Build reverse id→franchise lookup ── */
+const ID_TO_FRANCHISE = {};
+Object.entries(CURATED).forEach(([key, list]) => {
+  list.forEach(e => { if (!ID_TO_FRANCHISE[e.id]) ID_TO_FRANCHISE[e.id] = key; });
+});
+ 
+/* ── Normalize title ── */
+function normTitle(t) {
+  return (t || "").toLowerCase()
+    .replace(/[^a-z0-9 ]/g, " ")
+    .replace(/\s+/g, " ").trim();
+}
+ 
+/* ── Detect franchise from anime object ── */
+function detectFranchise(anime) {
+  if (ID_TO_FRANCHISE[anime.mal_id]) return ID_TO_FRANCHISE[anime.mal_id];
+ 
+  const titles = [
+    normTitle(anime.title),
+    normTitle(anime.title_english || ""),
+    normTitle(anime.title_japanese || ""),
+    normTitle((anime.title_synonyms || []).join(" ")),
+  ];
+  const combined = titles.join(" ");
+  const keys = Object.keys(CURATED).sort((a, b) => b.length - a.length); // longest first
+ 
+  for (const key of keys) {
+    if (titles.some(t => t === key || t.startsWith(key) || t.includes(key))) return key;
+  }
+  // keyword fallback
+  for (const key of keys) {
+    const words = key.split(" ");
+    if (words.every(w => combined.includes(w))) return key;
+  }
+  return null;
+}
+ 
+/* ══════════════════════════════════════════
+   DOM ELEMENTS
+══════════════════════════════════════════ */
+const searchInput     = document.getElementById("searchInput");
+const sugBox          = document.getElementById("suggestions");
+const statusEl        = document.getElementById("statusMsg");
+const animeHeroCard   = document.getElementById("animeHeroCard");
+const watchSection    = document.getElementById("watchOrderSection");
+const timelineEl      = document.getElementById("timeline");
+const trackEl         = document.getElementById("timelineTrack");
+ 
+/* ══════════════════════════════════════════
+   SEARCH
+══════════════════════════════════════════ */
+searchInput.addEventListener("input", () => {
+  clearTimeout(debounceTimer);
+  const q = searchInput.value.trim();
+  if (!q) { sugBox.style.display = "none"; return; }
+  debounceTimer = setTimeout(() => fetchSuggestions(q), 320);
+});
+searchInput.addEventListener("keydown", e => { if (e.key === "Enter") doSearch(); });
+document.addEventListener("click", e => { if (!e.target.closest(".search-field-wrap")) sugBox.style.display = "none"; });
+ 
+async function fetchSuggestions(q) {
+  try {
+    const res  = await fetch(`${JIKAN}/anime?q=${encodeURIComponent(q)}&limit=10&sfw=true&order_by=members&sort=desc`);
+    const data = await res.json();
+    const list = (data.data || []).sort((a, b) => {
+      const aM = a.title.toLowerCase().startsWith(q.toLowerCase()) ? 1 : 0;
+      const bM = b.title.toLowerCase().startsWith(q.toLowerCase()) ? 1 : 0;
+      return bM - aM;
+    });
+    renderSuggestions(list.slice(0, 8));
+  } catch { setStatus("Could not reach database.", "error"); }
+}
+ 
+async function doSearch() {
+  const q = searchInput.value.trim(); if (!q) return;
+  sugBox.style.display = "none";
+  setStatus("Searching...");
+  try {
+    const res  = await fetch(`${JIKAN}/anime?q=${encodeURIComponent(q)}&limit=8&sfw=true&order_by=members&sort=desc`);
+    const data = await res.json();
+    const list = data.data || [];
+    if (!list.length) { setStatus("No results found.", "error"); return; }
+    renderSuggestions(list.slice(0, 8));
+    sugBox.style.display = "block";
+    setStatus("Select an anime from the list below.");
+  } catch { setStatus("Search failed — try again.", "error"); }
+}
+ 
+function renderSuggestions(list) {
+  if (!list.length) { sugBox.style.display = "none"; return; }
+  sugBox.innerHTML = "";
+  list.forEach(a => {
+    const div = document.createElement("div");
+    div.className = "sug-item";
+    const img   = a.images?.jpg?.small_image_url;
+    const fKey  = detectFranchise(a);
+    const score = a.score ? `★ ${a.score}` : "";
+    const eps   = a.episodes ? `${a.episodes} eps` : "? eps";
+    div.innerHTML = `
+      ${img ? `<img class="sug-img" src="${esc(img)}" alt="">` : `<div class="sug-placeholder">🎌</div>`}
+      <div class="sug-info">
+        <div class="sug-title">${esc(a.title)}</div>
+        <div class="sug-meta">${[a.type, eps, a.year||""].filter(Boolean).join(" · ")}</div>
+      </div>
+      ${fKey ? `<span class="sug-curated-tag">CURATED</span>` : ""}
+      ${score ? `<span class="sug-score">${score}</span>` : ""}`;
+    div.onclick = () => selectAndLoad(a);
+    sugBox.appendChild(div);
+  });
+  sugBox.style.display = "block";
+}
+ 
+/* ══════════════════════════════════════════
+   SELECT + LOAD
+══════════════════════════════════════════ */
+async function selectAndLoad(a) {
+  sugBox.style.display = "none";
+  searchInput.value    = a.title;
+  setStatus("Loading franchise data...");
+  watchSection.style.display    = "none";
+  animeHeroCard.style.display   = "none";
+ 
+  try {
+    showSkeleton();
+    await sleep(80);
+ 
+    const res  = await fetch(`${JIKAN}/anime/${a.mal_id}/full`);
+    const data = await res.json();
+    const anime = data.data || a;
+    selectedAnime = anime;
+    renderAnimeHero(anime);
+ 
+    const fKey = detectFranchise(anime);
+    if (fKey && CURATED[fKey]) {
+      await loadCuratedOrder(fKey);
+    } else {
+      await loadDynamicOrder(anime);
+    }
+  } catch (err) {
+    console.error(err);
+    hideSkeleton();
+    setStatus("Failed to load franchise data. Please try again.", "error");
+  }
+}
+ 
+function renderAnimeHero(anime) {
+  document.getElementById("animeHeroImg").src   = anime.images?.jpg?.image_url || "";
+  document.getElementById("animeHeroTitle").textContent = anime.title;
+  document.getElementById("animeHeroMeta").textContent  = [
+    anime.type, anime.status, anime.year ? `${cap(anime.season||"")} ${anime.year}` : "",
+    anime.episodes ? `${anime.episodes} episodes` : ""
+  ].filter(Boolean).join("  ·  ");
+ 
+  const tagsEl = document.getElementById("animeHeroTags");
+  const fKey   = detectFranchise(anime);
+  tagsEl.innerHTML = [
+    fKey ? `<span class="ahero-badge curated">✅ Curated Order</span>` : `<span class="ahero-badge">🔍 Auto-generated</span>`,
+    ...(anime.genres||[]).slice(0,4).map(g => `<span class="ahero-badge">${esc(g.name)}</span>`),
+    anime.studios?.[0] ? `<span class="ahero-badge">${esc(anime.studios[0].name)}</span>` : ""
+  ].filter(Boolean).join("");
+ 
+  const scoreEl = document.getElementById("animeHeroScore");
+  scoreEl.innerHTML = anime.score
+    ? `⭐ ${anime.score}<small>MAL Score</small>`
+    : `<small style="font-size:13px;opacity:0.4">N/A</small>`;
+ 
+  animeHeroCard.style.display = "block";
+}
+ 
+/* ══════════════════════════════════════════
+   CURATED LOADER — fetches each id in sequence
+══════════════════════════════════════════ */
+async function loadCuratedOrder(key) {
+  const rawEntries = CURATED[key];
+  const seen = new Set(); const entries = [];
+  rawEntries.forEach(e => { if (!seen.has(e.id)) { seen.add(e.id); entries.push(e); } });
+ 
+  setStatus(`Loading ${entries.length} entries in curated order...`);
+ 
+  const fetched = [];
+  for (let i = 0; i < entries.length; i++) {
+    try {
+      await sleep(260);
+      const res  = await fetch(`${JIKAN}/anime/${entries[i].id}`);
+      const data = await res.json();
+      if (data.data) {
+        data.data._curatedNote = entries[i].note;
+        fetched.push(data.data);
+      }
+      setStatus(`Fetching entry ${i + 1} / ${entries.length}...`);
+    } catch { /* silently skip failed entries */ }
+  }
+ 
+  allEntries = fetched;
+  hideSkeleton();
+ 
+  const banner = document.getElementById("curatedBanner");
+  banner.classList.add("show");
+  document.getElementById("curatedMsg").textContent =
+    `Hand-curated order — community-verified sequence with ${fetched.length} entries.`;
+ 
+  renderWatchOrder(fetched, true);
+}
+ 
+/* ══════════════════════════════════════════
+   DYNAMIC LOADER — deep BFS relation crawl
+  Uses your backend if available, falls back to Jikan
+══════════════════════════════════════════ */
+async function loadDynamicOrder(rootAnime) {
+  setStatus("Deep-scanning franchise relations...");
+  document.getElementById("curatedBanner").classList.remove("show");
+ 
+  const visited   = new Set([rootAnime.mal_id]);
+  const collected = new Map([[rootAnime.mal_id, rootAnime]]);
+  let   frontier  = [rootAnime.mal_id];
+ 
+  const VALID_RELS = new Set(["Prequel","Sequel","Side story","Summary","Alternative version","Spin-off","Parent story","Full story","Alternative setting","Other"]);
+  const MAX_TOTAL  = 35;
+  const MAX_PASSES = 4;
+ 
+  for (let pass = 0; pass < MAX_PASSES && frontier.length && collected.size < MAX_TOTAL; pass++) {
+    const next = [];
+    for (const id of frontier) {
+      if (collected.size >= MAX_TOTAL) break;
+      try {
+        await sleep(280);
+        const res  = await fetch(`${JIKAN}/anime/${id}/full`);
+        const data = await res.json();
+        if (!data.data) continue;
+        collected.set(id, data.data);
+        setStatus(`Scanning — ${collected.size} entries found...`);
+ 
+        for (const rel of (data.data.relations || [])) {
+          if (!VALID_RELS.has(rel.relation)) continue;
+          for (const entry of (rel.entry || [])) {
+            if (entry.type !== "anime" || visited.has(entry.mal_id) || collected.size >= MAX_TOTAL) continue;
+            visited.add(entry.mal_id);
+            next.push(entry.mal_id);
+            await sleep(260);
+            try {
+              const r2 = await fetch(`${JIKAN}/anime/${entry.mal_id}`);
+              const d2 = await r2.json();
+              if (d2.data) collected.set(entry.mal_id, d2.data);
+            } catch {}
+          }
+        }
+      } catch {}
+    }
+    frontier = next;
+  }
+ 
+  const TYPE_W = { TV:0, Movie:1, OVA:2, ONA:3, Special:4, Music:99 };
+  const sorted = [...collected.values()].sort((a, b) => {
+    const aT = a.aired?.from ? new Date(a.aired.from).getTime() : Infinity;
+    const bT = b.aired?.from ? new Date(b.aired.from).getTime() : Infinity;
+    if (aT !== bT) return aT - bT;
+    return (TYPE_W[a.type] ?? 10) - (TYPE_W[b.type] ?? 10);
+  });
+ 
+  allEntries = sorted;
+  hideSkeleton();
+  renderWatchOrder(sorted, false);
+}
+ 
+/* ══════════════════════════════════════════
+   RENDER WATCH ORDER
+══════════════════════════════════════════ */
+function renderWatchOrder(list, isCurated) {
+  renderStats(list);
+  renderFilters(list, isCurated);
+  renderTimeline(list);
+  renderTips(list, isCurated);
+  watchSection.style.display = "block";
+  document.getElementById("sectionTitle").textContent = `Watch Order — "${selectedAnime.title}"`;
+  setStatus("", "success");
+  watchSection.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+ 
+function renderStats(list) {
+  const tvC  = list.filter(a => a.type === "TV").length;
+  const movC = list.filter(a => a.type === "Movie").length;
+  const othC = list.filter(a => !["TV","Movie"].includes(a.type)).length;
+  let eps = 0, mins = 0;
+  list.forEach(a => {
+    const e = a.episodes || 0;
+    const d = parseDuration(a.duration) || 24;
+    eps += e; mins += e * d;
+  });
+  const hrs    = mins > 0 ? (mins / 60).toFixed(1) : "?";
+  const scored = list.filter(a => a.score);
+  const avg    = scored.length ? (scored.reduce((s, a) => s + a.score, 0) / scored.length).toFixed(2) : "N/A";
+ 
+  document.getElementById("statsGrid").innerHTML = `
+    <div class="stat-card"><div class="stat-label">Total Entries</div><div class="stat-value">${list.length}</div></div>
+    <div class="stat-card"><div class="stat-label">TV Series</div><div class="stat-value">${tvC}</div></div>
+    <div class="stat-card"><div class="stat-label">Movies</div><div class="stat-value">${movC}</div></div>
+    <div class="stat-card"><div class="stat-label">OVA / Special</div><div class="stat-value">${othC}</div></div>
+    <div class="stat-card"><div class="stat-label">Total Episodes</div><div class="stat-value">${eps || "?"}</div></div>
+    <div class="stat-card"><div class="stat-label">Watch Time</div><div class="stat-value" style="font-size:16px">${hrs}h</div></div>
+    <div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value">${avg}</div></div>`;
+}
+ 
+function renderFilters(list, isCurated) {
+  const types = [...new Set(list.map(a => a.type).filter(Boolean))];
+  const row   = document.getElementById("filterRow");
+  row.innerHTML = "";
+ 
+  const mkBtn = (label, fn, active) => {
+    const b = document.createElement("button");
+    b.className   = "filter-btn" + (active ? " active" : "");
+    b.textContent = label;
+    b.onclick     = () => {
+      row.querySelectorAll(".filter-btn").forEach(x => x.classList.remove("active"));
+      b.classList.add("active");
+      renderTimeline(fn());
+    };
+    return b;
+  };
+ 
+  row.appendChild(mkBtn(`All (${list.length})`, () => list, true));
+  types.forEach(t => row.appendChild(mkBtn(`${t} (${list.filter(a => a.type === t).length})`, () => list.filter(a => a.type === t), false)));
+  row.appendChild(mkBtn("Essential Only", () => list.filter(a => a.type === "TV" || a.type === "Movie"), false));
+}
+ 
+function renderTips(list, isCurated) {
+  const longRun = list.some(a => (a.episodes || 0) > 100);
+  const tvC     = list.filter(a => a.type === "TV").length;
+  let t = `<strong>💡 Watch Guide:</strong> `;
+  if (isCurated) t += `This is a <strong>hand-curated, community-verified order</strong>. `;
+  else           t += `Order generated by deep recursive relation scanning, sorted chronologically. `;
+  if (tvC > 1)   t += `Franchise has <strong>${tvC} TV series</strong>. `;
+  if (longRun)   t += `Long-running show detected — use <a href="https://www.animefillerlist.com" target="_blank">animefillerlist.com</a> to skip filler arcs. `;
+  t += `Use <strong>Essential Only</strong> to focus on TV + Movies only.`;
+  document.getElementById("tipsBox").innerHTML = t;
+}
+ 
+function renderTimeline(list) {
+  // Remove all children except the track
+  Array.from(timelineEl.children).forEach(c => { if (c !== trackEl) c.remove(); });
+ 
+  if (!list.length) {
+    const empty = document.createElement("div");
+    empty.className = "timeline-empty";
+    empty.textContent = "No entries match this filter.";
+    timelineEl.appendChild(empty); return;
+  }
+ 
+  list.forEach((anime, idx) => {
+    const typeKey = (anime.type || "TV").toLowerCase().replace(/[^a-z]/g, "");
+    const year    = anime.aired?.from ? new Date(anime.aired.from).getFullYear() : (anime.year || "?");
+    const eps     = anime.episodes   ? `${anime.episodes} eps` : "";
+    const dur     = parseDuration(anime.duration);
+    const durStr  = dur ? `${dur} min/ep` : "";
+    const score   = anime.score      ? `★ ${anime.score}` : "";
+    const meta    = [year, eps, durStr, score].filter(Boolean).join("  ·  ");
+    const note    = anime._curatedNote || autoNote(anime, idx, list);
+    const img     = anime.images?.jpg?.small_image_url || "";
+ 
+    const entry = document.createElement("div");
+    entry.className = `t-entry t-${typeKey}`;
+    entry.style.animationDelay = `${Math.min(idx * 0.045, 1.2)}s`;
+ 
+    entry.innerHTML = `
+      <div class="t-num" title="${anime.type || 'TV'}">
+        ${idx + 1}
+        <span class="t-num-sub">${anime.type || 'TV'}</span>
+      </div>
+      <div class="t-card">
+        <div class="t-card-top">
+          <div class="t-card-left">
+            <div class="t-title">${esc(anime.title)}</div>
+            ${anime.title_english && anime.title_english !== anime.title
+              ? `<div class="t-en-title">${esc(anime.title_english)}</div>` : ""}
+            <div class="t-meta">${meta}</div>
+            <div class="t-tags">
+              ${getTypePill(anime.type)}
+              ${anime.status === "Currently Airing" ? `<span class="t-pill pill-airing">📡 Airing</span>` : ""}
+              ${(anime.episodes || 0) > 100 ? `<span class="t-pill pill-long">⚠️ Long-running</span>` : ""}
+              ${(anime.genres || []).slice(0, 3).map(g => `<span class="t-pill pill-genre">${esc(g.name)}</span>`).join("")}
+            </div>
+          </div>
+          ${img ? `<img src="${esc(img)}" class="t-thumb" alt="" onerror="this.style.display='none'">` : ""}
+        </div>
+        ${note ? `<div class="t-note">💡 ${esc(note)}</div>` : ""}
+      </div>`;
+ 
+    timelineEl.appendChild(entry);
+  });
+}
+ 
+/* ── Auto notes for dynamic order ── */
+function autoNote(anime, idx, list) {
+  if (idx === 0 && anime.type === "TV") return "Start here — the beginning of the franchise.";
+  if (anime.type === "Movie")   return "Watch after completing the preceding series arc for full context.";
+  if (anime.type === "OVA")     return "Optional but recommended — side stories and extra content.";
+  if (anime.type === "ONA")     return "Online release — watch alongside or after the main series.";
+  if (anime.type === "Special") return "Bonus episode — great for fans wanting more.";
+  if ((anime.episodes || 0) > 100) return "Long-running series — use animefillerlist.com to skip filler arcs.";
+  return null;
+}
+ 
+/* ══════════════════════════════════════════
+   SKELETON + HELPERS
+══════════════════════════════════════════ */
+function showSkeleton() {
+  watchSection.style.display = "block";
+  Array.from(timelineEl.children).forEach(c => { if (c !== trackEl) c.remove(); });
+  for (let i = 0; i < 5; i++) {
+    const sk = document.createElement("div");
+    sk.className = "sk-wrap";
+    sk.style.animationDelay = `${i * 0.08}s`;
+    sk.innerHTML = `<div class="sk-circle"></div>
+      <div class="sk-card">
+        <div class="sk-line sk-w65"></div>
+        <div class="sk-line sk-w40"></div>
+        <div class="sk-line sk-w80"></div>
+      </div>`;
+    timelineEl.appendChild(sk);
+  }
+  document.getElementById("statsGrid").innerHTML  = "";
+  document.getElementById("filterRow").innerHTML  = "";
+  document.getElementById("tipsBox").innerHTML    = "";
+  document.getElementById("curatedBanner").classList.remove("show");
+  document.getElementById("sectionTitle").textContent = "Loading franchise data...";
+}
+function hideSkeleton() { document.querySelectorAll(".sk-wrap").forEach(e => e.remove()); }
+ 
+function getTypePill(type) {
+  const m = { TV: "pill-tv", Movie: "pill-movie", OVA: "pill-ova", ONA: "pill-ona", Special: "pill-special" };
+  return `<span class="t-pill ${m[type] || "pill-tv"}">${type || "TV"}</span>`;
+}
+function parseDuration(s) {
+  if (!s) return null;
+  const m = s.match(/(\d+)\s*min/i); if (m) return +m[1];
+  const h = s.match(/(\d+)\s*hr/i);  if (h) return +h[1] * 60;
+  return null;
+}
+function setStatus(msg, type = "") {
+  statusEl.textContent = msg;
+  statusEl.className   = "status-bar" + (type ? ` ${type}` : "");
+}
+function cap(s) { return s ? s[0].toUpperCase() + s.slice(1) : ""; }
+function esc(s) {
+  if (!s) return "";
+  const d = document.createElement("div"); d.textContent = s; return d.innerHTML;
+}
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("show"), 2800);
+}
+ 
+/* Cookie */
+function acceptCookies() { localStorage.setItem("cookiesAccepted","true"); document.getElementById("cookieBox").style.display = "none"; }
+if (!localStorage.getItem("cookiesAccepted")) document.getElementById("cookieBox").style.display = "block";
+ 
+/* ══════════════════════════════════════════
+   MENU
+══════════════════════════════════════════ */
+function toggleMenu() {
+  document.getElementById("menu").classList.toggle("active");
+  document.getElementById("menuBtn").classList.toggle("active");
+  document.body.classList.toggle("menu-open");
+}
+function outsideClick(e) {
+  if (e.target.id === "menu") {
+    document.getElementById("menu").classList.remove("active");
+    document.getElementById("menuBtn").classList.remove("active");
+    document.body.classList.remove("menu-open");
+  }
+}
+document.querySelectorAll(".full-menu a").forEach(l => l.addEventListener("click", () => {
+  document.getElementById("menu").classList.remove("active");
+  document.getElementById("menuBtn").classList.remove("active");
+  document.body.classList.remove("menu-open");
+}));
+ 
+/* ESC closes menu */
+document.addEventListener("keydown", e => { if (e.key === "Escape") { document.getElementById("menu").classList.remove("active"); document.getElementById("menuBtn").classList.remove("active"); document.body.classList.remove("menu-open"); } });
+</script>
+ 
+<!-- GOD MODE INTERACTIVITY -->
+<script>
+  /* ── Card stagger animation keyframe ── */
+  const _style = document.createElement("style");
+  _style.textContent = `@keyframes entryRevealKF { from { opacity:0; transform:translateX(-16px); } to { opacity:1; transform:translateX(0); } }`;
+  document.head.appendChild(_style);
+ 
+  /* ── Custom cursor ── */
+  const cursor = document.getElementById("cursor");
+  const ring   = document.getElementById("cursorRing");
+  let mx=0, my=0, rx=0, ry=0;
+  document.addEventListener("mousemove", e => { mx=e.clientX; my=e.clientY; });
+  (function animCursor() {
+    cursor.style.left = mx+"px"; cursor.style.top = my+"px";
+    rx += (mx-rx)*0.14; ry += (my-ry)*0.14;
+    ring.style.left = rx+"px"; ring.style.top = ry+"px";
+    requestAnimationFrame(animCursor);
+  })();
+ 
+  function addCursorHover(sel) {
+    document.querySelectorAll(sel).forEach(el => {
+      el.addEventListener("mouseenter", () => { cursor.style.width="8px"; cursor.style.height="8px"; ring.style.width="50px"; ring.style.height="50px"; ring.style.borderColor="rgba(0,255,255,0.8)"; });
+      el.addEventListener("mouseleave", () => { cursor.style.width="12px"; cursor.style.height="12px"; ring.style.width="36px"; ring.style.height="36px"; ring.style.borderColor="rgba(0,255,255,0.5)"; });
+    });
+  }
+  addCursorHover("button, a, .sug-item, .filter-btn, .stat-card, .faq-card, .t-entry");
+ 
+  /* Observe new timeline entries */
+  new MutationObserver(() => addCursorHover(".t-entry, .filter-btn")).observe(document.getElementById("timeline"), {childList:true});
+  new MutationObserver(() => addCursorHover(".filter-btn")).observe(document.getElementById("filterRow"), {childList:true});
+ 
+  /* ── Particles ── */
+  const canvas = document.getElementById("particles");
+  const ctx    = canvas.getContext("2d");
+  let W, H;
+  function resizeCanvas() { W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+  resizeCanvas(); window.addEventListener("resize", resizeCanvas);
+  const pts = Array.from({length:50}, () => ({
+    x: Math.random()*1920, y: Math.random()*1080,
+    r: Math.random()*1.4+0.2, vx: (Math.random()-.5)*.25, vy: (Math.random()-.5)*.25,
+    alpha: Math.random()*.3+.06
+  }));
+  (function drawPts() {
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p => {
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,255,255,${p.alpha})`; ctx.fill();
+    });
+    requestAnimationFrame(drawPts);
+  })();
+ 
+  /* ── Header shrink on scroll ── */
+  const hdr = document.getElementById("mainHeader");
+  window.addEventListener("scroll", () => hdr.classList.toggle("scrolled", window.scrollY > 60), {passive:true});
+ 
+  /* ── Disable cursor on touch devices ── */
+  if ("ontouchstart" in window) {
+    cursor.style.display = "none";
+    ring.style.display   = "none";
+    document.body.style.cursor = "auto";
+  }
+</script>
+ 
+</body>
+</html>
+ 

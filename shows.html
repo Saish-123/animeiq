@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+<!-- ═══════════════════════════════════════════
+     SEO META — AdSense / Ezoic optimised
+═══════════════════════════════════════════ -->
+<meta name="description" content="Browse every anime A to Z — thousands of titles with scores, filler guides, episode counts, and studio info. The ultimate anime discovery list, powered by MyAnimeList data.">
+<meta name="keywords" content="anime list a to z, all anime, complete anime list, anime directory, anime by alphabet, anime index, anime episodes list, anime filler guide, AnimeIQ, best anime list 2025, watch anime online guide">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AnimeIQ">
+<meta property="og:title" content="Anime A–Z List — Browse Every Anime | AnimeIQ">
+<meta property="og:description" content="The most complete anime directory online. Browse alphabetically, search instantly, and explore filler guides for any anime series.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Anime A–Z List | AnimeIQ">
+<meta name="twitter:description" content="Browse thousands of anime titles from A to Z. Filler guides, scores, episode counts — all in one place.">
+<link rel="canonical" href="https://animeiq.com/shows.html">
+ 
+<title>Anime A–Z Complete List — Browse Every Anime Series | AnimeIQ</title>
+ 
+<!-- Preconnect for performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.jikan.moe">
+ 
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Anime A–Z Complete List",
+  "description": "Browse the complete list of anime series from A to Z. Includes scores, episode counts, filler guides and more.",
+  "url": "https://animeiq.com/shows.html",
+  "provider": { "@type": "Organization", "name": "AnimeIQ", "url": "https://animeiq.com" }
+}
+</script>
+ 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+ 
+<style>
+/* ══════════════════════════════════════════
+   ROOT & RESET
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+:root {
+  --cyan: #00ffff;
+  --purple: #7c3aed;
+  --dark: #020617;
+  --dark2: #0f172a;
+  --glass: rgba(255,255,255,0.04);
+  --card-bg: rgba(4,14,36,0.97);
+}
+ 
+html { scroll-behavior: smooth; }
+ 
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, var(--dark), var(--dark2));
+  color: white;
+  overflow-x: hidden;
+  cursor: none;
+}
+ 
+body::before {
+  content: "";
+  position: fixed; width: 200%; height: 200%;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(0,255,255,0.06) 0%, transparent 42%),
+    radial-gradient(circle at 85% 80%, rgba(124,58,237,0.06) 0%, transparent 42%);
+  animation: moveBg 22s linear infinite alternate;
+  z-index: -1;
+  will-change: transform;
+}
+ 
+@keyframes moveBg {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(-7%,-5%) scale(1.04); }
+}
+ 
+body::after {
+  content: "";
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px);
+  pointer-events: none; z-index: 9990;
+}
+ 
+/* ══════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════ */
+#cursor {
+  position: fixed; width: 12px; height: 12px;
+  background: var(--cyan); border-radius: 50%;
+  pointer-events: none; z-index: 999999;
+  transform: translate3d(-100px,-100px,0) translate(-50%,-50%);
+  box-shadow: 0 0 16px var(--cyan), 0 0 36px rgba(0,255,255,0.3);
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+#cursorRing {
+  position: fixed; width: 36px; height: 36px;
+  border: 1.5px solid rgba(0,255,255,0.5); border-radius: 50%;
+  pointer-events: none; z-index: 999998;
+  transform: translate3d(-100px,-100px,0) translate(-50%,-50%);
+  transition: border-color 0.25s;
+  will-change: transform;
+}
+ 
+#particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+ 
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  min-height: 62px;
+  background: rgba(2,6,23,0.8);
+  box-shadow: 0 0 30px rgba(0,255,255,0.15), 0 1px 0 rgba(0,255,255,0.1);
+  backdrop-filter: blur(20px);
+  position: sticky; top: 0; z-index: 600;
+  transition: min-height 0.3s, padding 0.3s;
+}
+ 
+header.scrolled { min-height: 52px; padding: 10px 50px; }
+ 
+header h1 {
+  font-family: "Orbitron", sans-serif;
+  color: var(--cyan);
+  text-shadow: 0 0 20px rgba(0,255,255,0.7), 0 0 40px rgba(0,255,255,0.3);
+  font-size: 24px; letter-spacing: 2px; margin: 0; cursor: none;
+  min-width: 160px;
+}
+header h1 a { color: inherit; text-decoration: none; }
+ 
+/* ══════════════════════════════════════════
+   HAMBURGER MENU
+══════════════════════════════════════════ */
+.menu-btn {
+  width: 30px; height: 22px; display: flex;
+  flex-direction: column; justify-content: space-between;
+  cursor: none; z-index: 1001;
+}
+.menu-btn span {
+  height: 3px; width: 100%; background: var(--cyan);
+  border-radius: 10px; transition: transform 0.4s, opacity 0.4s;
+  box-shadow: 0 0 10px var(--cyan);
+}
+.menu-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.menu-btn.active span:nth-child(2) { opacity: 0; }
+.menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+ 
+body.menu-open > *:not(header):not(#menu) { filter: blur(8px); pointer-events: none; user-select: none; }
+ 
+.full-menu {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(2,6,23,0.6); backdrop-filter: blur(20px);
+  display: flex; justify-content: center; align-items: center;
+  flex-direction: column; opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease; z-index: 9999; padding: 40px 20px; text-align: center;
+}
+.full-menu.active { opacity: 1; pointer-events: all; }
+.full-menu a {
+  font-size: 30px; margin: 15px 0; text-decoration: none; color: white;
+  opacity: 0; transform: translateY(30px); transition: 0.4s; position: relative; cursor: none;
+}
+.full-menu.active a { opacity: 1; transform: translateY(0); }
+.full-menu a::after { content: ""; position: absolute; width: 0%; height: 3px; bottom: -5px; left: 0; background: var(--cyan); transition: 0.3s; }
+.full-menu a:hover::after { width: 100%; }
+.full-menu a:hover { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); transform: scale(1.1); }
+ 
+/* ══════════════════════════════════════════
+   USER DROPDOWN
+══════════════════════════════════════════ */
+.user-profile-wrapper { position: relative; display: flex; align-items: center; gap: 18px; }
+ 
+.user-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--cyan), #7c3aed);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: var(--dark);
+  cursor: none; border: 2px solid rgba(0,255,255,0.5);
+  box-shadow: 0 0 12px rgba(0,255,255,0.4); transition: box-shadow 0.3s, transform 0.3s;
+  user-select: none; flex-shrink: 0;
+}
+.user-avatar:hover { box-shadow: 0 0 22px var(--cyan); transform: scale(1.08); }
+.user-avatar-wrap { position: relative; display: inline-block; }
+.online-dot {
+  position: absolute; bottom: 1px; right: 1px;
+  width: 10px; height: 10px; background: #22c55e;
+  border-radius: 50%; border: 2px solid var(--dark);
+  box-shadow: 0 0 6px #22c55e; display: none;
+}
+ 
+.user-dropdown {
+  position: fixed; top: 70px; right: 20px; width: 270px;
+  max-height: calc(100vh - 90px);
+  background: rgba(6,18,40,0.97); border: 1px solid rgba(0,255,255,0.25);
+  border-radius: 18px; box-shadow: 0 0 35px rgba(0,255,255,0.2);
+  backdrop-filter: blur(20px); opacity: 0; pointer-events: none;
+  transform: translateY(-10px) scale(0.97); transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 10000; overflow: hidden; display: flex; flex-direction: column;
+}
+.user-dropdown.open { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+ 
+.udrop-sticky { flex-shrink: 0; }
+.udrop-scroll { overflow-y: auto; flex: 1; scrollbar-width: thin; scrollbar-color: rgba(0,255,255,0.4) transparent; }
+.udrop-scroll::-webkit-scrollbar { width: 4px; }
+.udrop-scroll::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.35); border-radius: 4px; }
+.udrop-bottom-sticky { flex-shrink: 0; border-top: 1px solid rgba(0,255,255,0.12); background: rgba(6,18,40,0.98); }
+ 
+.udrop-top { padding: 18px 18px 14px; border-bottom: 1px solid rgba(0,255,255,0.12); display: flex; align-items: center; gap: 12px; }
+.udrop-avatar-lg { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: var(--dark); flex-shrink: 0; box-shadow: 0 0 14px rgba(0,255,255,0.4); }
+.udrop-name { font-size: 15px; font-weight: 600; color: white; line-height: 1.3; }
+.udrop-handle { font-size: 12px; color: rgba(0,255,255,0.6); margin-top: 2px; }
+ 
+.udrop-stats { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1px solid rgba(0,255,255,0.12); }
+.udrop-stat { text-align: center; padding: 12px 6px; border-right: 1px solid rgba(0,255,255,0.1); transition: background 0.2s; cursor: none; }
+.udrop-stat:last-child { border-right: none; }
+.udrop-stat:hover { background: rgba(0,255,255,0.1); }
+.udrop-stat-val { font-size: 17px; font-weight: 700; color: var(--cyan); display: inline-block; transition: transform 0.2s; }
+.udrop-stat-label { font-size: 10px; color: rgba(255,255,255,0.45); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+ 
+.udrop-links { padding: 8px 0; }
+.udrop-link { display: flex; align-items: center; gap: 10px; padding: 10px 18px; font-size: 13px; color: rgba(255,255,255,0.8); text-decoration: none; transition: background 0.2s, color 0.2s, padding-left 0.2s; cursor: none; }
+.udrop-link:hover { background: rgba(0,255,255,0.08); color: var(--cyan); padding-left: 22px; }
+.udrop-link-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+ 
+.udrop-vip { margin: 12px; padding: 10px 14px; border-radius: 12px; background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(0,255,255,0.1)); border: 1px solid rgba(124,58,237,0.4); display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: none; transition: border-color 0.2s, box-shadow 0.2s; }
+.udrop-vip:hover { border-color: var(--cyan); box-shadow: 0 0 12px rgba(0,255,255,0.15); }
+.udrop-vip-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+.udrop-vip-text strong { color: var(--cyan); font-size: 13px; }
+.udrop-vip-btn { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; background: linear-gradient(45deg, var(--cyan), #7c3aed); color: var(--dark); white-space: nowrap; flex-shrink: 0; }
+ 
+.udrop-signout { padding: 10px 18px 14px; }
+.udrop-signout-btn { width: 100%; padding: 9px; border-radius: 12px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.08); color: rgba(255,100,100,0.85); font-size: 13px; font-family: "Poppins",sans-serif; cursor: none; transition: background 0.2s, color 0.2s, box-shadow 0.2s; }
+.udrop-signout-btn:hover { background: rgba(255,80,80,0.18); color: #ff6464; box-shadow: 0 0 10px rgba(255,80,80,0.2); }
+ 
+.udrop-guest { padding: 20px 18px; text-align: center; }
+.udrop-guest p { font-size: 13px; opacity: 0.7; margin-bottom: 12px; }
+.udrop-guest-btn { display: inline-block; padding: 9px 22px; border-radius: 20px; background: linear-gradient(45deg, var(--cyan), #7c3aed); color: var(--dark); font-weight: 700; font-size: 13px; cursor: none; border: none; font-family: "Poppins",sans-serif; transition: box-shadow 0.2s, transform 0.2s; }
+.udrop-guest-btn:hover { box-shadow: 0 0 15px var(--cyan); transform: scale(1.05); }
+ 
+/* ══════════════════════════════════════════
+   PAGE HERO
+══════════════════════════════════════════ */
+.page-hero {
+  text-align: center; padding: 70px 24px 50px;
+  position: relative; overflow: hidden; min-height: 280px;
+  animation: heroFadeUp 0.8s ease both;
+}
+ 
+.page-hero::before {
+  content: "";
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 700px; height: 300px;
+  background: radial-gradient(ellipse, rgba(0,255,255,0.06), transparent 70%);
+  pointer-events: none;
+}
+ 
+.page-hero::after {
+  content: "";
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 560px; height: 260px; border-radius: 50%;
+  border: 1px solid rgba(0,255,255,0.05);
+  animation: ringPulse 4s ease-in-out infinite; pointer-events: none;
+}
+ 
+@keyframes ringPulse {
+  0%,100% { opacity: 0.4; transform: translate(-50%,-50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%,-50%) scale(1.04); }
+}
+ 
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--cyan); opacity: 0.7;
+  background: rgba(0,255,255,0.06); border: 1px solid rgba(0,255,255,0.2);
+  padding: 5px 20px; border-radius: 30px; margin-bottom: 20px;
+  position: relative; z-index: 1;
+}
+ 
+.page-hero h1 {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(30px, 6vw, 66px); font-weight: 900; line-height: 1.08;
+  background: linear-gradient(135deg, #fff 20%, var(--cyan) 55%, #a78bfa 85%);
+  -webkit-background-clip: text; color: transparent; background-clip: text;
+  letter-spacing: -1px; margin-bottom: 14px;
+  position: relative; z-index: 1; min-height: 1.08em;
+}
+ 
+.page-hero-sub {
+  font-size: 16px; opacity: 0.55; max-width: 500px; margin: 0 auto;
+  line-height: 1.75; font-weight: 300; position: relative; z-index: 1;
+}
+ 
+.count-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 24px; padding: 8px 22px; border-radius: 30px;
+  background: rgba(0,255,255,0.06); border: 1px solid rgba(0,255,255,0.18);
+  font-size: 13px; color: rgba(255,255,255,0.6);
+  position: relative; z-index: 1;
+}
+.count-badge strong { color: var(--cyan); font-family: "Orbitron", sans-serif; font-size: 16px; }
+ 
+/* Loading progress bar inside badge */
+.load-progress {
+  display: none; align-items: center; gap: 10px;
+  margin-top: 12px; padding: 6px 18px; border-radius: 20px;
+  background: rgba(0,255,255,0.04); border: 1px solid rgba(0,255,255,0.1);
+  font-size: 11px; color: rgba(255,255,255,0.4);
+  position: relative; z-index: 1;
+}
+.load-progress.visible { display: inline-flex; }
+.progress-bar-wrap { width: 120px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--purple)); border-radius: 3px; transition: width 0.4s ease; }
+.progress-text { white-space: nowrap; }
+ 
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,255,0.2), rgba(124,58,237,0.15), transparent);
+  margin: 0 40px;
+}
+ 
+/* ══════════════════════════════════════════
+   CONTROLS BAR
+══════════════════════════════════════════ */
+.controls-bar {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; padding: 28px 24px 20px; flex-wrap: wrap;
+}
+ 
+.search-wrap { position: relative; width: 320px; transition: transform 0.3s; }
+.search-wrap:focus-within { transform: translateY(-2px); }
+ 
+.search-wrap input {
+  width: 100%; padding: 13px 20px 13px 46px;
+  border-radius: 50px; border: 1px solid rgba(0,255,255,0.15);
+  background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+  color: white; font-family: "Poppins",sans-serif; font-size: 14px;
+  outline: none; transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+}
+.search-wrap input:focus {
+  border-color: rgba(0,255,255,0.4);
+  box-shadow: 0 0 0 2px rgba(0,255,255,0.12), 0 0 20px rgba(0,255,255,0.07);
+  background: rgba(255,255,255,0.07);
+}
+.search-wrap input::placeholder { color: rgba(255,255,255,0.35); }
+ 
+.search-icon {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: rgba(0,255,255,0.5); font-size: 16px; pointer-events: none; transition: color 0.3s;
+}
+.search-wrap:focus-within .search-icon { color: var(--cyan); }
+ 
+/* Shortcut hint */
+.search-hint {
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  font-size: 10px; color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+  padding: 2px 7px; border-radius: 6px; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.search-wrap input:focus ~ .search-hint { opacity: 0; }
+ 
+.results-count {
+  font-size: 12px; color: rgba(255,255,255,0.4);
+  font-family: "Orbitron", sans-serif; letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.results-count span { color: var(--cyan); font-weight: 700; }
+ 
+/* Sort + filter pills */
+.filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill {
+  padding: 7px 16px; border-radius: 30px; font-size: 12px; font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.55); cursor: none; transition: all 0.25s;
+}
+.pill:hover { border-color: rgba(0,255,255,0.35); color: var(--cyan); background: rgba(0,255,255,0.06); }
+.pill.active { background: linear-gradient(45deg, var(--cyan), var(--purple)); border-color: transparent; color: var(--dark); font-weight: 700; }
+ 
+/* ══════════════════════════════════════════
+   A–Z NAV BAR
+══════════════════════════════════════════ */
+.az-nav {
+  position: sticky;
+  top: 62px;
+  z-index: 400;
+  background: rgba(2,6,23,0.92);
+  backdrop-filter: blur(20px);
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 6px; padding: 12px 20px;
+  border-bottom: 1px solid rgba(0,255,255,0.1);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+}
+ 
+.az-nav span {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  font-size: 13px; font-weight: 600;
+  cursor: none; transition: background 0.25s, border-color 0.25s, color 0.25s, transform 0.25s, box-shadow 0.25s;
+  color: rgba(255,255,255,0.6);
+  font-family: "Orbitron", sans-serif;
+  position: relative;
+}
+ 
+/* Count bubble on each letter */
+.az-nav span .letter-count {
+  position: absolute; top: -6px; right: -6px;
+  background: rgba(0,255,255,0.9); color: var(--dark);
+  font-size: 8px; font-weight: 700; border-radius: 10px;
+  padding: 1px 4px; min-width: 16px; text-align: center;
+  font-family: "Poppins", sans-serif; display: none;
+}
+.az-nav span.has-count .letter-count { display: block; }
+ 
+.az-nav span:hover {
+  background: rgba(0,255,255,0.12);
+  border-color: rgba(0,255,255,0.35);
+  color: var(--cyan); transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,255,255,0.15);
+}
+ 
+.az-nav span.active {
+  background: linear-gradient(135deg, rgba(0,255,255,0.2), rgba(124,58,237,0.2));
+  border-color: rgba(0,255,255,0.6);
+  color: var(--cyan);
+  transform: scale(1.15) translateY(-2px);
+  box-shadow:
+    0 0 12px rgba(0,255,255,0.5),
+    0 0 30px rgba(0,255,255,0.25),
+    0 0 60px rgba(0,255,255,0.1);
+  font-weight: 900;
+}
+ 
+.az-nav span.empty-letter {
+  opacity: 0.2;
+  pointer-events: none;
+}
+ 
+/* ══════════════════════════════════════════
+   MAIN LIST CONTAINER
+══════════════════════════════════════════ */
+#listContainer {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 20px 24px 60px;
+}
+ 
+/* ══════════════════════════════════════════
+   SECTION HEADERS
+══════════════════════════════════════════ */
+.section {
+  margin-bottom: 48px;
+  animation: sectionIn 0.5s ease both;
+}
+ 
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+.section-header {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 16px;
+}
+ 
+.section-letter {
+  font-family: "Orbitron", sans-serif;
+  font-size: 32px; font-weight: 900;
+  color: var(--cyan); text-shadow: 0 0 20px rgba(0,255,255,0.4);
+  line-height: 1; flex-shrink: 0;
+}
+ 
+.section-divider-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(0,255,255,0.3), transparent);
+}
+ 
+.section-count {
+  font-size: 11px; color: rgba(0,255,255,0.5);
+  font-family: "Orbitron", sans-serif;
+  padding: 3px 10px; border-radius: 20px;
+  background: rgba(0,255,255,0.06);
+  border: 1px solid rgba(0,255,255,0.15);
+  flex-shrink: 0;
+}
+ 
+/* ══════════════════════════════════════════
+   ANIME ITEMS GRID
+══════════════════════════════════════════ */
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+ 
+.item {
+  padding: 14px 16px;
+  font-size: 13px; font-weight: 500;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  cursor: none;
+  position: relative; overflow: hidden;
+  line-height: 1.4; color: rgba(255,255,255,0.85);
+  display: flex; flex-direction: column; gap: 4px;
+  contain: layout style;
+}
+ 
+.item::before {
+  content: "";
+  position: absolute; inset: 0; border-radius: 14px;
+  background: radial-gradient(circle at 30% 30%, rgba(0,255,255,0.07), transparent 60%);
+  opacity: 0; transition: opacity 0.3s;
+}
+ 
+.item::after {
+  content: "";
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  transform: scaleX(0); transition: transform 0.35s;
+}
+ 
+.item:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0,255,255,0.1), 0 0 0 1px rgba(0,255,255,0.2);
+  border-color: rgba(0,255,255,0.3);
+  color: white;
+}
+.item:hover::before { opacity: 1; }
+.item:hover::after  { transform: scaleX(1); }
+.item:active { transform: scale(0.96); }
+ 
+.item-title {
+  font-weight: 600; font-size: 13px; line-height: 1.35;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-clamp: 2;
+  overflow: hidden;
+  position: relative; z-index: 1;
+}
+ 
+.item-meta {
+  font-size: 10px; color: rgba(0,255,255,0.55);
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+ 
+.item-arrow {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 12px; color: rgba(0,255,255,0.3);
+  transition: opacity 0.3s, transform 0.3s; opacity: 0;
+}
+.item:hover .item-arrow { opacity: 1; transform: translateY(-50%) translateX(2px); }
+ 
+.no-anime {
+  grid-column: 1 / -1;
+  padding: 16px; font-size: 13px; opacity: 0.3;
+  font-style: italic;
+}
+ 
+/* "Load more" button per section (for large letter groups) */
+.load-more-btn {
+  grid-column: 1 / -1;
+  margin-top: 8px; padding: 10px 24px;
+  border-radius: 50px; border: 1px solid rgba(0,255,255,0.2);
+  background: rgba(0,255,255,0.05); color: rgba(0,255,255,0.7);
+  font-family: "Poppins", sans-serif; font-size: 12px; font-weight: 600;
+  cursor: none; transition: all 0.25s; display: block; width: fit-content; margin-inline: auto;
+}
+.load-more-btn:hover {
+  background: rgba(0,255,255,0.12); border-color: rgba(0,255,255,0.4);
+  color: var(--cyan); transform: translateY(-2px);
+}
+ 
+/* ══════════════════════════════════════════
+   LOADER
+══════════════════════════════════════════ */
+.loader {
+  text-align: center; padding: 80px 20px;
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+ 
+.loader-ring {
+  width: 60px; height: 60px; border-radius: 50%;
+  border: 2px solid rgba(0,255,255,0.1);
+  border-top-color: var(--cyan);
+  animation: spin 0.9s linear infinite;
+  box-shadow: 0 0 20px rgba(0,255,255,0.2);
+  will-change: transform;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+ 
+.loader-text {
+  font-size: 13px; color: rgba(255,255,255,0.4);
+  letter-spacing: 2px; text-transform: uppercase;
+  animation: loaderPulse 1.5s ease-in-out infinite;
+}
+@keyframes loaderPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+ 
+/* Empty search state */
+.empty-state {
+  text-align: center; padding: 80px 20px;
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+}
+.empty-icon { font-size: 56px; filter: grayscale(0.3); }
+.empty-title { font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.5); }
+.empty-sub { font-size: 13px; color: rgba(255,255,255,0.3); }
+ 
+/* ══════════════════════════════════════════
+   BACK TO TOP
+══════════════════════════════════════════ */
+#backToTop {
+  position: fixed; bottom: 32px; left: 32px;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(0,255,255,0.12); border: 1px solid rgba(0,255,255,0.3);
+  color: var(--cyan); font-size: 18px; cursor: none;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.3s, transform 0.3s, background 0.3s, box-shadow 0.3s; z-index: 888;
+  opacity: 0; transform: translateY(16px);
+  backdrop-filter: blur(10px);
+}
+#backToTop.visible { opacity: 1; transform: translateY(0); }
+#backToTop:hover { background: rgba(0,255,255,0.2); box-shadow: 0 0 20px rgba(0,255,255,0.3); transform: scale(1.1); }
+ 
+/* ══════════════════════════════════════════
+   FAQ SECTION
+══════════════════════════════════════════ */
+.faq-section {
+  max-width: 1060px; margin: 60px auto 0;
+  padding: 60px 24px 0; text-align: center;
+}
+ 
+.faq-eyebrow {
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--cyan); opacity: 0.6; display: block; margin-bottom: 12px;
+}
+ 
+.faq-section h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(22px, 3.5vw, 38px); font-weight: 700;
+  background: linear-gradient(90deg, white, var(--cyan));
+  -webkit-background-clip: text; color: transparent; margin-bottom: 36px; background-clip: text;
+}
+ 
+.faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 14px; }
+ 
+.faq-card {
+  background: var(--glass); border: 1px solid rgba(255,255,255,0.07);
+  padding: 22px 20px; border-radius: 16px; text-align: left;
+  transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s; cursor: default;
+  position: relative; overflow: hidden;
+}
+.faq-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,255,255,0.07); border-color: rgba(0,255,255,0.22); }
+.faq-card h4 { color: var(--cyan); margin-bottom: 8px; font-size: 14px; }
+.faq-card p { font-size: 13px; opacity: 0.65; line-height: 1.7; }
+ 
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+.footer { margin-top: 80px; padding: 40px 24px 20px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(0,255,255,0.08); }
+.footer-container { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 30px; }
+.footer-brand h2 { font-family: "Orbitron",sans-serif; color: var(--cyan); margin-bottom: 10px; font-size: 20px; }
+.footer-brand p { font-size: 14px; opacity: 0.6; }
+.footer-links h4 { margin-bottom: 10px; color: var(--cyan); font-size: 13px; }
+.footer-links a { display: block; text-decoration: none; color: rgba(255,255,255,0.6); margin-bottom: 7px; transition: color 0.2s, padding-left 0.2s; font-size: 13px; cursor: none; }
+.footer-links a:hover { color: var(--cyan); padding-left: 4px; }
+.footer-bottom { text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.04); font-size: 12px; opacity: 0.5; }
+.footer-note { font-size: 11px; margin-top: 6px; }
+.footer a { color: var(--cyan); text-decoration: none; }
+ 
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+#toast {
+  position: fixed; bottom: 30px; right: 30px;
+  background: rgba(4,12,32,0.97); border: 1px solid rgba(0,255,255,0.3);
+  color: white; padding: 14px 24px; border-radius: 16px; font-size: 14px;
+  box-shadow: 0 0 30px rgba(0,255,255,0.15); z-index: 99999;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.35s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
+  pointer-events: none; backdrop-filter: blur(20px); max-width: 300px;
+}
+#toast.show { opacity: 1; transform: translateY(0); }
+ 
+/* ══════════════════════════════════════════
+   COOKIE BANNER
+══════════════════════════════════════════ */
+#cookieBox {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: rgba(4,12,32,0.97); padding: 18px 24px; border-radius: 18px;
+  box-shadow: 0 0 40px rgba(0,255,255,0.2); border: 1px solid rgba(0,255,255,0.2);
+  display: none; z-index: 889; max-width: 92%; text-align: center;
+  backdrop-filter: blur(20px);
+}
+ 
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.3); border-radius: 6px; }
+ 
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  header { padding: 14px 20px; }
+  header.scrolled { padding: 10px 20px; }
+  .az-nav { top: 56px; gap: 4px; padding: 10px 12px; }
+  .az-nav span { width: 28px; height: 28px; font-size: 11px; border-radius: 8px; }
+  .list { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+  #listContainer { padding: 16px 16px 60px; }
+  .page-hero { padding: 50px 16px 40px; }
+  .search-wrap { width: 100%; max-width: 360px; }
+}
+ 
+@media (max-width: 480px) {
+  .list { grid-template-columns: repeat(2,1fr); }
+  .az-nav span { width: 24px; height: 24px; font-size: 10px; }
+}
+</style>
+</head>
+ 
+<body>
+ 
+<div id="cursor"></div>
+<div id="cursorRing"></div>
+<canvas id="particles"></canvas>
+ 
+<!-- FULLSCREEN MENU -->
+<div id="menu" class="full-menu" onclick="outsideClick(event)">
+  <a><div onclick="toggleMenu()" style="cursor:none;font-size:24px;margin-bottom:10px;">✖</div></a>
+  <a href="homepageblog.html">Home</a>
+  <a href="explore.html">Explore</a>
+  <a href="shows.html">A–Z List</a>
+  <a href="binge.html">Binge Calculator</a>
+  <a href="contactus.html">Contact</a>
+  <a href="about.html">About</a>
+</div>
+ 
+<!-- HEADER -->
+<header id="mainHeader">
+  <h1><a href="homepageblog.html">🧠 AnimeIQ</a></h1>
+ 
+  <div class="user-profile-wrapper">
+    <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+ 
+    <div class="user-avatar-wrap">
+      <div class="user-avatar" id="userAvatar" onclick="toggleDropdown(event)">?</div>
+      <div class="online-dot" id="onlineDot"></div>
+    </div>
+ 
+    <div class="user-dropdown" id="userDropdown">
+      <!-- LOGGED IN -->
+      <div id="dropLoggedIn" style="display:none;display:contents;">
+        <div class="udrop-sticky">
+          <div class="udrop-top">
+            <div class="udrop-avatar-lg" id="dropAvatarLg">?</div>
+            <div>
+              <div class="udrop-name" id="dropName">Anime Fan</div>
+              <div class="udrop-handle" id="dropHandle">@user · AnimeIQ</div>
+            </div>
+          </div>
+          <div class="udrop-stats">
+            <div class="udrop-stat">
+              <div class="udrop-stat-val" id="statWatchlist">0</div>
+              <div class="udrop-stat-label">Watchlist 📋</div>
+            </div>
+            <div class="udrop-stat">
+              <div class="udrop-stat-val" id="statFavorites">0</div>
+              <div class="udrop-stat-label">Favourites ⭐</div>
+            </div>
+            <div class="udrop-stat">
+              <div class="udrop-stat-val" id="statSearches">0</div>
+              <div class="udrop-stat-label">Searches 🔍</div>
+            </div>
+          </div>
+        </div>
+        <div class="udrop-scroll">
+          <div class="udrop-links">
+            <a class="udrop-link" href="homepageblog.html"><span class="udrop-link-icon">🏠</span> Home</a>
+            <a class="udrop-link" href="explore.html"><span class="udrop-link-icon">🔍</span> Explore Anime</a>
+            <a class="udrop-link" href="shows.html"><span class="udrop-link-icon">📋</span> A–Z Anime List</a>
+            <a class="udrop-link" href="binge.html"><span class="udrop-link-icon">⚡</span> Binge Calculator</a>
+            <a class="udrop-link" href="about.html"><span class="udrop-link-icon">ℹ️</span> About AnimeIQ</a>
+            <a class="udrop-link" href="contactus.html"><span class="udrop-link-icon">✉️</span> Contact</a>
+            <a class="udrop-link" href="privacy.html"><span class="udrop-link-icon">🔒</span> Privacy Policy</a>
+          </div>
+          <div class="udrop-vip" onclick="alert('AnimeIQ Pro coming soon! 🚀')">
+            <div class="udrop-vip-text"><strong>AnimeIQ Pro</strong><br>Ad-free • Watchlist sync • More</div>
+            <div class="udrop-vip-btn">Coming Soon</div>
+          </div>
+        </div>
+        <div class="udrop-bottom-sticky">
+          <div class="udrop-signout">
+            <button class="udrop-signout-btn" onclick="handleSignOut()">Sign Out</button>
+          </div>
+        </div>
+      </div>
+      <!-- GUEST -->
+      <div id="dropGuest">
+        <div class="udrop-guest">
+          <p>Sign in to save your watchlist &amp; favourites across devices.</p>
+          <button class="udrop-guest-btn" onclick="window.location.href='homepageblog.html'">Sign In / Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+ 
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <span class="hero-eyebrow">🎌 Complete Anime Directory</span>
+  <h1>Anime A–Z<br>Complete List</h1>
+  <p class="page-hero-sub">Browse every anime alphabetically. Click any title to see the full episode guide, filler map, score, and more.</p>
+  <div class="count-badge">
+    <span>📊</span>
+    <span>Showing <strong id="totalCountBadge">—</strong> anime titles</span>
+  </div>
+  <div class="load-progress" id="loadProgress">
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <span class="progress-text" id="progressText">Loading…</span>
+  </div>
+</section>
+ 
+<div class="divider"></div>
+ 
+<!-- CONTROLS BAR -->
+<div class="controls-bar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input id="filterInput" placeholder="Filter anime titles…" autocomplete="off">
+    <span class="search-hint">Press /</span>
+  </div>
+  <div class="filter-pills">
+    <button class="pill active" id="sortAll"   onclick="setSortFilter('all')">All</button>
+    <button class="pill"        id="sortScore" onclick="setSortFilter('score')">★ Top Rated</button>
+    <button class="pill"        id="sortPop"   onclick="setSortFilter('pop')">🔥 Popular</button>
+  </div>
+  <div class="results-count" id="resultsCount" style="display:none;">
+    Showing <span id="filteredCount">0</span> of <span id="totalCount2">0</span>
+  </div>
+</div>
+ 
+<!-- A–Z NAV -->
+<nav class="az-nav" id="azNav" aria-label="Anime A-Z navigation"></nav>
+ 
+<!-- ANIME LIST -->
+<div id="listContainer">
+  <div class="loader">
+    <div class="loader-ring"></div>
+    <div class="loader-text">Loading complete anime library…</div>
+  </div>
+</div>
+ 
+<!-- FAQ -->
+<div class="faq-section" id="faq">
+  <span class="faq-eyebrow">Common Questions</span>
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq-grid">
+    <div class="faq-card">
+      <h4>📋 What is the A–Z anime list?</h4>
+      <p>It's a complete alphabetical directory of anime series in AnimeIQ, powered by live MyAnimeList data via the Jikan API.</p>
+    </div>
+    <div class="faq-card">
+      <h4>🔍 How do I find a specific anime?</h4>
+      <p>Use the search bar (or press <kbd style="background:rgba(0,255,255,0.1);border:1px solid rgba(0,255,255,0.3);padding:1px 5px;border-radius:4px;font-size:11px;">/</kbd>) to instantly filter titles, or click any letter to jump there.</p>
+    </div>
+    <div class="faq-card">
+      <h4>📺 What happens when I click an anime?</h4>
+      <p>You'll see the full detail page: synopsis, score, studio, genres, and a complete episode guide with filler detection.</p>
+    </div>
+    <div class="faq-card">
+      <h4>⚡ Can I skip filler episodes?</h4>
+      <p>Yes! Each detail page shows episodes colour-coded as Canon, Filler, or Mixed. Filter with one click to watch only what matters.</p>
+    </div>
+    <div class="faq-card">
+      <h4>🚀 Is AnimeIQ free to use?</h4>
+      <p>Yes — 100% free, always. No subscription, no paywall. AnimeIQ is built for anime fans by anime fans.</p>
+    </div>
+    <div class="faq-card">
+      <h4>⏱️ How long will it take me to watch?</h4>
+      <p>Use our Binge Calculator to find out exactly how many hours any anime will take based on your daily watch limit.</p>
+    </div>
+  </div>
+</div>
+ 
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <h2>🧠 AnimeIQ</h2>
+      <p>Discover anime, explore details, and skip fillers effortlessly.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="homepageblog.html">Home</a>
+      <a href="explore.html">Explore Anime</a>
+      <a href="shows.html">A–Z List</a>
+      <a href="binge.html">Binge Calculator</a>
+      <a href="about.html">About</a>
+      <a href="contactus.html">Contact</a>
+    </div>
+    <div class="footer-links">
+      <h4>Legal</h4>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="termsandcondition.html">Terms &amp; Conditions</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 AnimeIQ. All rights reserved. Built with ❤️ for anime fans.</p>
+    <p class="footer-note">Data provided by <a href="https://jikan.moe" target="_blank">Jikan API</a> (MyAnimeList). AnimeIQ is not affiliated with MyAnimeList.</p>
+  </div>
+</footer>
+ 
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+<div id="toast"></div>
+<div id="cookieBox">
+  <p style="font-size:13px;opacity:0.8;margin:0 0 14px;line-height:1.6;">🍪 We use cookies to improve your experience. By using AnimeIQ, you agree to our <a href="privacy.html" style="color:var(--cyan);">Privacy Policy</a>.</p>
+  <button onclick="acceptCookies()" style="padding:9px 22px;border:none;border-radius:12px;background:linear-gradient(45deg,var(--cyan),var(--purple));color:#020617;cursor:none;font-family:'Poppins',sans-serif;font-weight:700;">Accept &amp; Continue</button>
+</div>
+ 
+<!-- FIREBASE AUTH -->
+<script type="module">
+  import { initializeApp }          from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+ 
+  const firebaseConfig = {
+    apiKey:            "AIzaSyDq4YCBixnCnIeGKzEegq_63leL_oOsWtw",
+    authDomain:        "animeiq-24614.firebaseapp.com",
+    projectId:         "animeiq-24614",
+    storageBucket:     "animeiq-24614.appspot.com",
+    messagingSenderId: "690143889231",
+    appId:             "1:690143889231:web:4d7429ab545674b864a73a",
+    measurementId:     "G-2732CDYMZ6"
+  };
+ 
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+ 
+  function getInitials(user) {
+    if (user.displayName) return user.displayName.split(" ").map(w => w[0].toUpperCase()).join("").slice(0,2);
+    return user.email.slice(0,2).toUpperCase();
+  }
+ 
+  function refreshCounts(uid) {
+    const wl  = JSON.parse(localStorage.getItem(`aiq_${uid}_watchlist`)  || "[]");
+    const fav = JSON.parse(localStorage.getItem(`aiq_${uid}_favourites`) || "[]");
+    const sr  = parseInt(localStorage.getItem(`aiq_${uid}_searches`)     || "0");
+    document.getElementById("statWatchlist").textContent = wl.length;
+    document.getElementById("statFavorites").textContent = fav.length;
+    document.getElementById("statSearches").textContent  = sr;
+  }
+ 
+  window._currentUID = null;
+ 
+  onAuthStateChanged(auth, (user) => {
+    const li = document.getElementById("dropLoggedIn");
+    const g  = document.getElementById("dropGuest");
+ 
+    if (user) {
+      window._currentUID = user.uid;
+      const ini  = getInitials(user);
+      const name = user.displayName || user.email.split("@")[0];
+      const hndl = user.email.split("@")[0].toLowerCase();
+      document.getElementById("userAvatar").textContent   = ini;
+      document.getElementById("onlineDot").style.display  = "block";
+      document.getElementById("dropAvatarLg").textContent = ini;
+      document.getElementById("dropName").textContent     = name;
+      document.getElementById("dropHandle").textContent   = `@${hndl} · AnimeIQ`;
+      li.style.display = "contents"; g.style.display = "none";
+      refreshCounts(user.uid);
+    } else {
+      window._currentUID = null;
+      document.getElementById("userAvatar").textContent  = "?";
+      document.getElementById("onlineDot").style.display = "none";
+      li.style.display = "none"; g.style.display = "block";
+    }
+  });
+ 
+  window._firebaseSignOut = async () => {
+    await signOut(auth);
+    window.location.href = "homepageblog.html";
+  };
+</script>
+ 
+<!-- MAIN APP LOGIC -->
+<script>
+/* ══════════════════════════════════════════════════════════════
+   DATA STRATEGY — GOD MODE
+   
+   ROOT CAUSE of missing anime: the original code hits
+   http://localhost:3000/all which:
+   1. Only works in local dev — dead in production
+   2. May impose its own result limit
+   3. Returns a single huge JSON blob that can freeze the browser
+   
+   FIX STRATEGY:
+   ① Try to load from local index.json (your scraped file) first
+     — this works if you host it alongside the HTML
+   ② Fall back to Jikan API with full multi-page pagination
+     — fetches ALL top anime across many pages
+   ③ Progressive rendering — show first batch instantly,
+     then add remaining pages in background without blocking UI
+   ④ Virtual "show more" per letter — never dumps 5000 DOM nodes at once
+   ⑤ Debounced search works purely on in-memory data — instant
+══════════════════════════════════════════════════════════════ */
+ 
+const JIKAN = "https://api.jikan.moe/v4";
+const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#".split("");
+ 
+/* How many items to show per letter section before "Show More" */
+const ITEMS_PER_SECTION_INITIAL = 50;
+ 
+/* ── State ── */
+let allAnime      = [];   // full dataset (grows as pages load)
+let displayedAnime= [];   // currently displayed (may be filtered/sorted)
+let grouped       = {};   // { A: [...], B: [...], ... }
+let isFiltered    = false;
+let currentSort   = "all";
+let scrollObserver= null;
+let sectionExpanded = {}; // letterKey → true if user clicked "show all"
+ 
+/* ── Rate limiter for Jikan ── */
+let _lastJikan = 0;
+async function jikanFetch(url) {
+  const gap = Date.now() - _lastJikan;
+  if (gap < 420) await new Promise(r => setTimeout(r, 420 - gap));
+  _lastJikan = Date.now();
+  const res = await fetch(url, { signal: AbortSignal.timeout(12000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+ 
+/* ══════════════════════════════════════════════════════════════
+   LOAD DATA
+══════════════════════════════════════════════════════════════ */
+ 
+/* 1. Try loading from local index.json (your scraped file) */
+async function tryLoadFromIndex() {
+  try {
+    const res = await fetch("index.json", { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return null;
+    const data = await res.json();
+    /* index.json may be array directly OR { data: [...] } */
+    const arr = Array.isArray(data) ? data : (data.data || null);
+    if (arr && arr.length > 0) {
+      console.log(`✅ Loaded ${arr.length} anime from index.json`);
+      return arr;
+    }
+  } catch (e) {
+    console.log("index.json not found or failed, falling back to Jikan API");
+  }
+  return null;
+}
+ 
+/* 2. Fetch from Jikan API — multi-page, progressive */
+async function fetchFromJikan() {
+  /* We fetch from multiple endpoints to maximise coverage:
+     - top by popularity (25/page, up to ~50 pages = 1250 entries)
+     - top by score (separate ranking, different entries)
+     We merge and deduplicate by mal_id */
+ 
+  const progress   = document.getElementById("loadProgress");
+  const progressFill = document.getElementById("progressFill");
+  const progressText = document.getElementById("progressText");
+  progress.classList.add("visible");
+ 
+  const seen   = new Set();
+  const result = [];
+ 
+  /* Fetch pages from a given endpoint URL base */
+  async function fetchPages(baseUrl, label, targetPages) {
+    for (let page = 1; page <= targetPages; page++) {
+      try {
+        progressText.textContent = `${label} — page ${page}/${targetPages}`;
+        const pct = ((page - 1) / targetPages) * 50;
+        progressFill.style.width = pct + "%";
+ 
+        const data = await jikanFetch(`${baseUrl}&page=${page}`);
+        if (!data?.data?.length) break;
+ 
+        for (const a of data.data) {
+          if (!seen.has(a.mal_id) && a.title) {
+            seen.add(a.mal_id);
+            result.push(formatEntry(a));
+          }
+        }
+ 
+        /* Progressive: render what we have so far after each page */
+        if (result.length > 0) {
+          renderProgressively(result);
+        }
+ 
+        if (!data.pagination?.has_next_page) break;
+ 
+        /* Rate limit gap */
+        await new Promise(r => setTimeout(r, 450));
+ 
+      } catch (err) {
+        console.warn(`Page ${page} failed:`, err.message);
+        await new Promise(r => setTimeout(r, 2000));
+      }
+    }
+  }
+ 
+  /* Popularity ranking — the biggest list */
+  await fetchPages(`${JIKAN}/top/anime?filter=bypopularity&limit=25`, "Top by Popularity", 40);
+ 
+  /* Score ranking — catches critically acclaimed series */
+  progressFill.style.width = "50%";
+  await fetchPages(`${JIKAN}/top/anime?filter=byrating&limit=25`, "Top by Score", 20);
+ 
+  /* Currently airing */
+  progressFill.style.width = "80%";
+  await fetchPages(`${JIKAN}/top/anime?filter=airing&limit=25`, "Airing Now", 6);
+ 
+  progressFill.style.width = "100%";
+  progressText.textContent = `✅ ${result.length} anime loaded`;
+  setTimeout(() => progress.classList.remove("visible"), 2000);
+ 
+  return result;
+}
+ 
+function formatEntry(a) {
+  return {
+    mal_id:  a.mal_id,
+    title:   a.title || "",
+    title_english: a.title_english || null,
+    score:   a.score   ?? null,
+    members: a.members ?? 0,
+    type:    a.type    || "",
+    status:  a.status  || "",
+    episodes:a.episodes ?? 0,
+    year:    a.year    ?? null,
+    genres:  a.genres?.map(g => g.name) || [],
+    image:   a.images?.jpg?.large_image_url || a.images?.jpg?.image_url || "",
+  };
+}
+ 
+/* ══════════════════════════════════════════════════════════════
+   SORT / FILTER
+══════════════════════════════════════════════════════════════ */
+function setSortFilter(mode) {
+  currentSort = mode;
+  ["sortAll","sortScore","sortPop"].forEach(id => {
+    document.getElementById(id)?.classList.remove("active");
+  });
+  document.getElementById(
+    mode === "score" ? "sortScore" : mode === "pop" ? "sortPop" : "sortAll"
+  )?.classList.add("active");
+  applyAndRender(allAnime);
+}
+ 
+function applyAndRender(source) {
+  const q = document.getElementById("filterInput").value.trim().toLowerCase();
+  let list = q
+    ? source.filter(a => {
+        const t = (a.title + " " + (a.title_english || "")).toLowerCase();
+        return t.includes(q);
+      })
+    : [...source];
+ 
+  if (currentSort === "score") {
+    list.sort((a,b) => (b.score||0) - (a.score||0));
+  } else if (currentSort === "pop") {
+    list.sort((a,b) => (b.members||0) - (a.members||0));
+  }
+  /* "all" = alphabetical (natural order from A-Z grouping) */
+ 
+  isFiltered = !!q;
+  displayedAnime = list;
+ 
+  const countEl = document.getElementById("resultsCount");
+  if (q) {
+    document.getElementById("filteredCount").textContent = list.length.toLocaleString();
+    document.getElementById("totalCount2").textContent   = source.length.toLocaleString();
+    countEl.style.display = "block";
+  } else {
+    countEl.style.display = "none";
+  }
+ 
+  render(list);
+}
+ 
+/* ══════════════════════════════════════════════════════════════
+   GROUP BY LETTER
+══════════════════════════════════════════════════════════════ */
+function groupByLetter(list) {
+  const g = {};
+  LETTERS.forEach(l => g[l] = []);
+  list.forEach(anime => {
+    const first = (anime.title || "")[0]?.toUpperCase() || "#";
+    const letter = /[A-Z]/.test(first) ? first : "#";
+    g[letter].push(anime);
+  });
+  return g;
+}
+ 
+/* ══════════════════════════════════════════════════════════════
+   PROGRESSIVE RENDER — called after each page loads
+   Updates counts + adds new items without full redraw
+══════════════════════════════════════════════════════════════ */
+function renderProgressively(list) {
+  allAnime = list;
+  document.getElementById("totalCountBadge").textContent = list.length.toLocaleString();
+  /* Only re-render if no filter active (don't interrupt user's search) */
+  if (!isFiltered) {
+    applyAndRender(list);
+  }
+}
+ 
+/* ══════════════════════════════════════════════════════════════
+   RENDER — MAIN DISPLAY FUNCTION
+   
+   KEY PERFORMANCE FIX:
+   Instead of dumping ALL items into the DOM at once (which
+   freezes the browser with 5000+ nodes), we:
+   1. Show the first ITEMS_PER_SECTION_INITIAL per letter
+   2. Add a "Show all N titles →" button for large sections
+   3. This keeps DOM node count manageable (~1500 max initially)
+   4. User can expand any section on demand
+══════════════════════════════════════════════════════════════ */
+function render(list) {
+  const container = document.getElementById("listContainer");
+ 
+  if (!list.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-title">No anime found</div>
+        <div class="empty-sub">Try a different search term</div>
+      </div>`;
+    updateNavStates({});
+    return;
+  }
+ 
+  grouped = groupByLetter(list);
+  updateNavStates(grouped);
+ 
+  /* Build HTML in one pass — minimises reflows */
+  const fragments = [];
+ 
+  LETTERS.forEach((letter, idx) => {
+    const items = grouped[letter] || [];
+ 
+    /* Show initial batch or full set if user already expanded */
+    const showAll = sectionExpanded[letter];
+    const visible = showAll ? items : items.slice(0, ITEMS_PER_SECTION_INITIAL);
+    const remaining = items.length - visible.length;
+ 
+    fragments.push(`
+      <div class="section" id="sec-${letter}" style="animation-delay:${idx * 0.012}s;">
+        <div class="section-header">
+          <div class="section-letter">${letter}</div>
+          <div class="section-divider-line"></div>
+          <div class="section-count">${items.length} title${items.length !== 1 ? "s" : ""}</div>
+        </div>
+        <div class="list" id="list-${letter}">
+          ${visible.length
+            ? visible.map(a => itemHTML(a)).join("")
+            : `<p class="no-anime">No anime for this letter</p>`
+          }
+          ${remaining > 0
+            ? `<button class="load-more-btn" onclick="expandSection('${letter}')">
+                Show all ${items.length} titles →
+               </button>`
+            : ""
+          }
+        </div>
+      </div>`);
+  });
+ 
+  /* Single innerHTML set = one reflow */
+  container.innerHTML = fragments.join("");
+ 
+  setupScrollSpy();
+}
+ 
+function itemHTML(a) {
+  const score = a.score ? `⭐ ${a.score}` : "";
+  const eps   = a.episodes ? `${a.episodes} eps` : "";
+  const type  = a.type ? a.type : "";
+  const parts = [score, eps, type].filter(Boolean);
+  const meta  = parts.join(" · ");
+  return `<div class="item" onclick="goToAnime(${a.mal_id})" title="${escHtml(a.title)}">
+    <div class="item-title">${escHtml(a.title)}</div>
+    ${meta ? `<div class="item-meta">${meta}</div>` : ""}
+    <span class="item-arrow">→</span>
+  </div>`;
+}
+ 
+/* Expand a single section in-place — no full re-render */
+function expandSection(letter) {
+  sectionExpanded[letter] = true;
+  const listEl = document.getElementById(`list-${letter}`);
+  if (!listEl) return;
+  const items = grouped[letter] || [];
+  /* Remove load-more button and append remaining items */
+  const btn = listEl.querySelector(".load-more-btn");
+  if (btn) btn.remove();
+  const alreadyShown = listEl.querySelectorAll(".item").length;
+  const remaining = items.slice(alreadyShown);
+  if (remaining.length) {
+    listEl.insertAdjacentHTML("beforeend", remaining.map(itemHTML).join(""));
+    addCursorHoverToNew(listEl);
+  }
+}
+ 
+/* ══════════════════════════════════════════════════════════════
+   A-Z NAV
+══════════════════════════════════════════════════════════════ */
+const nav = document.getElementById("azNav");
+LETTERS.forEach(letter => {
+  const span = document.createElement("span");
+  span.id = `nav-${letter}`;
+  span.setAttribute("aria-label", `Jump to anime starting with ${letter}`);
+  span.onclick = () => scrollToSection(letter);
+  span.innerHTML = `${letter}<span class="letter-count" id="lc-${letter}"></span>`;
+  nav.appendChild(span);
+});
+ 
+function updateNavStates(g) {
+  LETTERS.forEach(letter => {
+    const navEl = document.getElementById(`nav-${letter}`);
+    const lc    = document.getElementById(`lc-${letter}`);
+    if (!navEl) return;
+    const count = g[letter]?.length || 0;
+    if (!count) {
+      navEl.classList.add("empty-letter");
+      navEl.classList.remove("has-count");
+    } else {
+      navEl.classList.remove("empty-letter");
+      if (lc) {
+        lc.textContent = count > 999 ? "999+" : count;
+        navEl.classList.add("has-count");
+      }
+    }
+  });
+}
+ 
+function scrollToSection(letter) {
+  const el = document.getElementById(`sec-${letter}`);
+  if (!el) return;
+  const offset = el.getBoundingClientRect().top + window.scrollY - 130;
+  window.scrollTo({ top: offset, behavior: "smooth" });
+}
+ 
+/* Intersection observer for scroll spy */
+function setupScrollSpy() {
+  if (scrollObserver) scrollObserver.disconnect();
+  scrollObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        document.querySelectorAll(".az-nav span").forEach(el => el.classList.remove("active"));
+        const id     = entry.target.id.replace("sec-", "");
+        const navEl  = document.getElementById(`nav-${id}`);
+        if (navEl) navEl.classList.add("active");
+      }
+    });
+  }, { rootMargin: "-30% 0px -30% 0px" });
+ 
+  document.querySelectorAll(".section").forEach(sec => scrollObserver.observe(sec));
+}
+ 
+/* ══════════════════════════════════════════════════════════════
+   SEARCH / FILTER
+══════════════════════════════════════════════════════════════ */
+let filterDebounce;
+document.getElementById("filterInput").addEventListener("input", e => {
+  clearTimeout(filterDebounce);
+  filterDebounce = setTimeout(() => {
+    sectionExpanded = {}; /* Reset expanded state on new search */
+    applyAndRender(allAnime);
+  }, 180);
+});
+ 
+/* ══════════════════════════════════════════════════════════════
+   NAVIGATE TO ANIME DETAIL
+══════════════════════════════════════════════════════════════ */
+function goToAnime(id) {
+  window.location.href = `explore.html?id=${id}&open=true`;
+}
+ 
+/* ══════════════════════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════════════════════ */
+function escHtml(str) {
+  const d = document.createElement("div");
+  d.textContent = str;
+  return d.innerHTML;
+}
+ 
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("show"), 2800);
+}
+ 
+function acceptCookies() {
+  localStorage.setItem("cookiesAccepted","true");
+  document.getElementById("cookieBox").style.display = "none";
+}
+if (!localStorage.getItem("cookiesAccepted")) {
+  document.getElementById("cookieBox").style.display = "block";
+}
+ 
+/* ══════════════════════════════════════════════════════════════
+   MENU / DROPDOWN
+══════════════════════════════════════════════════════════════ */
+function toggleMenu() {
+  document.getElementById("menu").classList.toggle("active");
+  document.getElementById("menuBtn").classList.toggle("active");
+  document.body.classList.toggle("menu-open");
+}
+function outsideClick(e) {
+  if (e.target.id === "menu") {
+    document.getElementById("menu").classList.remove("active");
+    document.getElementById("menuBtn").classList.remove("active");
+    document.body.classList.remove("menu-open");
+  }
+}
+document.querySelectorAll(".full-menu a").forEach(l => l.addEventListener("click", () => {
+  document.getElementById("menu").classList.remove("active");
+  document.getElementById("menuBtn").classList.remove("active");
+  document.body.classList.remove("menu-open");
+}));
+ 
+function toggleDropdown(e) {
+  e.stopPropagation();
+  document.getElementById("userDropdown").classList.toggle("open");
+}
+document.addEventListener("click", e => {
+  const d = document.getElementById("userDropdown");
+  const a = document.getElementById("userAvatar");
+  if (!d.contains(e.target) && e.target !== a) d.classList.remove("open");
+});
+ 
+async function handleSignOut() {
+  if (confirm("Sign out of AnimeIQ?")) {
+    document.getElementById("userDropdown").classList.remove("open");
+    showToast("👋 Signing out…");
+    await window._firebaseSignOut();
+  }
+}
+ 
+/* ══════════════════════════════════════════════════════════════
+   INIT — try index.json first, then Jikan API
+══════════════════════════════════════════════════════════════ */
+async function init() {
+  try {
+    /* Strategy 1: Load from scraped index.json */
+    const localData = await tryLoadFromIndex();
+    if (localData && localData.length > 0) {
+      allAnime = localData.map(a => ({
+        mal_id:   a.mal_id,
+        title:    a.title     || "",
+        title_english: a.title_english || null,
+        score:    a.score     ?? null,
+        members:  a.members   ?? 0,
+        type:     a.type      || "",
+        status:   a.status    || "",
+        episodes: a.episodes  ?? 0,
+        year:     a.year      ?? null,
+        genres:   a.genres    || [],
+        image:    a.image     || "",
+      }));
+      document.getElementById("totalCountBadge").textContent = allAnime.length.toLocaleString();
+      applyAndRender(allAnime);
+      return; /* Done — no need to hit Jikan */
+    }
+  } catch (e) {
+    console.warn("Local index.json load failed:", e);
+  }
+ 
+  /* Strategy 2: Fetch progressively from Jikan API */
+  try {
+    const data = await fetchFromJikan();
+    allAnime = data;
+    document.getElementById("totalCountBadge").textContent = allAnime.length.toLocaleString();
+    applyAndRender(allAnime);
+  } catch (err) {
+    document.getElementById("listContainer").innerHTML = `
+      <p style="text-align:center;padding:60px;opacity:0.5;">
+        ⚠️ Failed to load anime list. 
+        <br><br>
+        If you have <code>index.json</code> from the scraper, 
+        place it in the same folder as this HTML file.
+        <br><br>
+        <button onclick="init()" style="padding:10px 24px;border-radius:30px;border:1px solid rgba(0,255,255,0.3);background:rgba(0,255,255,0.08);color:var(--cyan);cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;margin-top:12px;">
+          🔄 Retry
+        </button>
+      </p>`;
+  }
+}
+ 
+init();
+</script>
+ 
+<!-- GOD MODE INTERACTIVITY -->
+<script>
+  /* ── Custom cursor — compositor-only transforms ── */
+  const cursor     = document.getElementById("cursor");
+  const cursorRing = document.getElementById("cursorRing");
+  let mx = 0, my = 0, rx = 0, ry = 0;
+ 
+  document.addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+ 
+  (function animateCursor() {
+    cursor.style.transform     = `translate3d(${mx}px,${my}px,0) translate(-50%,-50%)`;
+    rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+    cursorRing.style.transform = `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%)`;
+    requestAnimationFrame(animateCursor);
+  })();
+ 
+  function addCursorHover(selector) {
+    document.querySelectorAll(selector).forEach(el => {
+      el.addEventListener("mouseenter", () => {
+        cursor.style.opacity = "0.6";
+        cursorRing.style.transform = `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%) scale(1.4)`;
+        cursorRing.style.borderColor = "rgba(0,255,255,0.8)";
+      }, { passive: true });
+      el.addEventListener("mouseleave", () => {
+        cursor.style.opacity = "1";
+        cursorRing.style.borderColor = "rgba(0,255,255,0.5)";
+      }, { passive: true });
+    });
+  }
+ 
+  addCursorHover("button, a, .az-nav span, .faq-card, .udrop-link, .udrop-guest-btn, .udrop-signout-btn, #backToTop, .pill");
+ 
+  /* Observe new .item elements added after load */
+  function addCursorHoverToNew(container) {
+    container.querySelectorAll(".item:not([data-cursor])").forEach(el => {
+      el.setAttribute("data-cursor", "1");
+      el.addEventListener("mouseenter", () => {
+        cursor.style.opacity = "0.6";
+        cursorRing.style.borderColor = "rgba(0,255,255,0.8)";
+      }, { passive: true });
+      el.addEventListener("mouseleave", () => {
+        cursor.style.opacity = "1";
+        cursorRing.style.borderColor = "rgba(0,255,255,0.5)";
+      }, { passive: true });
+    });
+  }
+ 
+  /* MutationObserver to catch dynamically added items */
+  const itemObserver = new MutationObserver(mutations => {
+    for (const m of mutations) {
+      if (m.addedNodes.length) {
+        addCursorHoverToNew(document.getElementById("listContainer"));
+        break;
+      }
+    }
+  });
+  itemObserver.observe(document.getElementById("listContainer"), { childList: true, subtree: true });
+ 
+  /* ── Particles — desktop only ── */
+  if (!('ontouchstart' in window) && window.innerWidth > 768) {
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    let W, H;
+    function resizeCanvas() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas, { passive: true });
+ 
+    const pts = Array.from({length: 40}, () => ({
+      x: Math.random()*1920, y: Math.random()*1080,
+      r: Math.random()*1.3 + 0.2, vx: (Math.random()-0.5)*0.2, vy: (Math.random()-0.5)*0.2,
+      alpha: Math.random()*0.22 + 0.05
+    }));
+ 
+    let _raf;
+    (function drawParticles() {
+      ctx.clearRect(0,0,W,H);
+      pts.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x<0) p.x=W; if (p.x>W) p.x=0;
+        if (p.y<0) p.y=H; if (p.y>H) p.y=0;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = `rgba(0,255,255,${p.alpha})`; ctx.fill();
+      });
+      _raf = requestAnimationFrame(drawParticles);
+    })();
+ 
+    /* Pause particles when tab is hidden — saves battery */
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) cancelAnimationFrame(_raf);
+      else (function drawParticles() {
+        ctx.clearRect(0,0,W,H);
+        pts.forEach(p => { p.x+=p.vx; p.y+=p.vy; if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0; ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,255,255,${p.alpha})`;ctx.fill(); });
+        _raf = requestAnimationFrame(drawParticles);
+      })();
+    });
+  } else {
+    cursor.style.display = "none";
+    cursorRing.style.display = "none";
+    document.getElementById("particles").style.display = "none";
+    document.body.style.cursor = "auto";
+  }
+ 
+  /* ── Header shrink on scroll (rAF throttled) ── */
+  const mainHeader = document.getElementById("mainHeader");
+  let _scrollPending = false;
+  window.addEventListener("scroll", () => {
+    if (_scrollPending) return;
+    _scrollPending = true;
+    requestAnimationFrame(() => {
+      mainHeader.classList.toggle("scrolled", window.scrollY > 60);
+      document.getElementById("backToTop").classList.toggle("visible", window.scrollY > 400);
+      _scrollPending = false;
+    });
+  }, { passive: true });
+ 
+  /* ── Scroll reveal for FAQ cards ── */
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = "1";
+        e.target.style.transform = "translateY(0)";
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+ 
+  document.querySelectorAll(".faq-card").forEach((el, i) => {
+    el.style.opacity = "0";
+    el.style.transform = "translateY(24px)";
+    el.style.transition = `opacity 0.55s ease ${i * 0.07}s, transform 0.55s ease ${i * 0.07}s`;
+    revealObs.observe(el);
+  });
+ 
+  /* ── Keyboard shortcut: / → focus search ── */
+  document.addEventListener("keydown", e => {
+    const inp = document.getElementById("filterInput");
+    if (e.key === "/" && document.activeElement !== inp) {
+      e.preventDefault();
+      inp.focus();
+    }
+    if (e.key === "Escape" && document.activeElement === inp) {
+      inp.blur();
+    }
+  });
+</script>
+ 
+</body>
+</html>
+ 

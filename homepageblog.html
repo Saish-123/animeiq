@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnimeIQ - Discover Anime Smartly 🧠</title>
+<meta name="description" content="AnimeIQ - Skip fillers, watch smart. Discover the best anime episodes, track your progress, and explore legendary anime worlds.">
+<meta name="keywords" content="anime, filler episodes, anime guide, watch anime, naruto filler, one piece filler">
+ 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+ 
+<style>
+/* ══════════════════════════════════════════
+   ROOT & RESET
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+:root {
+  --cyan: #00ffff;
+  --purple: #7c3aed;
+  --dark: #020617;
+  --dark2: #0f172a;
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(0,255,255,0.15);
+  --glow-cyan: 0 0 20px rgba(0,255,255,0.4);
+  --glow-strong: 0 0 40px rgba(0,255,255,0.6);
+}
+ 
+html { scroll-behavior: smooth; }
+ 
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, var(--dark), var(--dark2));
+  color: white;
+  overflow-x: hidden;
+  cursor: none;
+}
+ 
+/* ── Animated BG mesh ── */
+body::before {
+  content: "";
+  position: fixed;
+  width: 200%; height: 200%;
+  background:
+    radial-gradient(circle at 15% 25%, rgba(0,255,255,0.07) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(124,58,237,0.07) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(0,255,255,0.03) 0%, transparent 60%);
+  animation: moveBg 18s infinite linear alternate;
+  z-index: -1;
+}
+ 
+@keyframes moveBg {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(-8%,-6%) scale(1.05); }
+}
+ 
+/* Scanline overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+ 
+/* ══════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════ */
+#cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999999;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 0 16px var(--cyan), 0 0 36px rgba(0,255,255,0.3);
+  mix-blend-mode: screen;
+  transition: width 0.2s, height 0.2s;
+}
+#cursorRing {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(0,255,255,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999998;
+  transform: translate(-50%,-50%);
+  transition: width 0.25s, height 0.25s, border-color 0.25s;
+}
+#cursorTrail {
+  position: fixed;
+  width: 6px; height: 6px;
+  background: rgba(0,255,255,0.3);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999997;
+  transform: translate(-50%,-50%);
+}
+ 
+/* ══════════════════════════════════════════
+   PARTICLES
+══════════════════════════════════════════ */
+#particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+ 
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 50px;
+  background: rgba(2,6,23,0.75);
+  box-shadow: 0 0 30px rgba(0,255,255,0.15), 0 1px 0 rgba(0,255,255,0.1);
+  backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  transition: padding 0.3s;
+}
+ 
+header.scrolled { padding: 10px 50px; box-shadow: 0 0 50px rgba(0,255,255,0.2), 0 1px 0 rgba(0,255,255,0.15); }
+ 
+header h1 {
+  font-family: "Orbitron", sans-serif;
+  color: var(--cyan);
+  text-shadow: 0 0 20px rgba(0,255,255,0.7), 0 0 40px rgba(0,255,255,0.3);
+  font-size: 26px;
+  letter-spacing: 2px;
+  margin: 0;
+  cursor: none;
+  transition: 0.3s;
+}
+header h1:hover { text-shadow: 0 0 30px rgba(0,255,255,1), 0 0 60px rgba(0,255,255,0.5); }
+ 
+.nav { display: flex; align-items: center; }
+ 
+.container {
+  display: flex;
+  gap: 4px;
+  padding: 8px 16px;
+  border-radius: 50px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0,255,255,0.1);
+  box-shadow: 0 0 20px rgba(0,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
+  align-items: center;
+  flex-wrap: wrap;
+}
+ 
+.btn {
+  position: relative;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.8);
+  cursor: none;
+  border-radius: 30px;
+  transition: 0.3s;
+  text-decoration: none;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+  overflow: hidden;
+}
+ 
+.btn a { color: inherit; text-decoration: none; }
+ 
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  background: linear-gradient(45deg, var(--cyan), var(--purple));
+  opacity: 0;
+  transition: 0.3s;
+}
+ 
+.btn::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 1.5px;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cyan);
+  transition: 0.3s;
+  border-radius: 2px;
+}
+ 
+.btn span, .btn a { position: relative; z-index: 1; }
+ 
+.btn:hover { color: white; transform: translateY(-1px); }
+.btn:hover::before { opacity: 1; }
+.btn:hover::after { width: 70%; }
+.btn:active { transform: scale(0.96); }
+ 
+#authArea { cursor: none; user-select: none; }
+ 
+#authArea .user-info {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px;
+}
+ 
+#authArea .logout-link {
+  color: #ff6b6b; cursor: none; font-size: 12px; transition: 0.2s;
+}
+#authArea .logout-link:hover { color: red; }
+ 
+/* ══════════════════════════════════════════
+   HERO SLIDER — god mode
+══════════════════════════════════════════ */
+.slider {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+  background: var(--dark);
+}
+ 
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s cubic-bezier(.4,0,.2,1);
+}
+ 
+.slide img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  transform: scale(1.08);
+  transition: transform 6s ease;
+  filter: brightness(0.55) saturate(1.2);
+}
+ 
+.slide.active img { transform: scale(1); }
+ 
+/* multi-layer slide overlay */
+.slide::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 1;
+  background:
+    linear-gradient(to right, rgba(2,6,23,0.85) 0%, rgba(2,6,23,0.3) 60%, transparent 100%),
+    linear-gradient(to top, rgba(2,6,23,0.9) 0%, transparent 50%);
+}
+ 
+.slide::after {
+  content: "";
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(135deg, rgba(0,255,255,0.04), rgba(124,58,237,0.04));
+}
+ 
+.active { opacity: 1; }
+ 
+.slide-content {
+  position: absolute;
+  bottom: 130px;
+  left: 70px;
+  z-index: 10;
+  max-width: 580px;
+}
+ 
+.slide-eyebrow {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  opacity: 0.8;
+  margin-bottom: 14px;
+  display: block;
+  font-weight: 500;
+}
+ 
+.slide-content h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(32px, 5vw, 62px);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 30%, var(--cyan) 60%, #a78bfa 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+ 
+.slide-content p {
+  font-size: 16px;
+  opacity: 0.75;
+  line-height: 1.7;
+  max-width: 440px;
+  margin-bottom: 30px;
+}
+ 
+.slide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 30px;
+  border-radius: 50px;
+  background: linear-gradient(45deg, var(--cyan), var(--purple));
+  color: #020617;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  cursor: none;
+  font-family: "Poppins", sans-serif;
+  transition: 0.3s;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+}
+.slide-btn:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 0 40px rgba(0,255,255,0.5); }
+ 
+/* slide indicators */
+.slide-dots {
+  position: absolute;
+  bottom: 80px;
+  left: 70px;
+  z-index: 10;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+ 
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.3);
+  transition: 0.4s;
+  cursor: none;
+}
+ 
+.dot.active {
+  width: 28px;
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+}
+ 
+/* progress bar */
+.slide-progress {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  z-index: 10;
+  width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px var(--cyan);
+}
+ 
+/* slide counter */
+.slide-counter {
+  position: absolute;
+  bottom: 76px; right: 70px;
+  z-index: 10;
+  font-family: "Orbitron", sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 2px;
+}
+.slide-counter span { color: var(--cyan); font-size: 22px; font-weight: 900; }
+ 
+/* arrows */
+.arrow {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  z-index: 10;
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(0,255,255,0.2);
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: none;
+  transition: 0.3s;
+  backdrop-filter: blur(10px);
+  color: white;
+  user-select: none;
+}
+.arrow:hover { background: rgba(0,255,255,0.15); border-color: var(--cyan); box-shadow: 0 0 20px rgba(0,255,255,0.3); transform: translateY(-50%) scale(1.1); }
+.left { left: 28px; }
+.right { right: 28px; }
+ 
+/* scroll indicator */
+.scroll-down {
+  position: absolute;
+  bottom: 28px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: bounce 2.5s ease-in-out infinite;
+  cursor: none;
+}
+.scroll-text { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; opacity: 0.5; }
+.mouse {
+  width: 22px; height: 36px;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  position: relative;
+}
+.mouse::before {
+  content: "";
+  width: 3px; height: 7px;
+  background: var(--cyan);
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  top: 7px; border-radius: 2px;
+  animation: scrollAnim 1.8s ease-in-out infinite;
+  box-shadow: 0 0 6px var(--cyan);
+}
+@keyframes scrollAnim {
+  0% { opacity: 0; transform: translate(-50%, 0); }
+  40% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, 14px); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+ 
+/* ══════════════════════════════════════════
+   HERO TEXT SECTION
+══════════════════════════════════════════ */
+.hero {
+  text-align: center;
+  padding: 110px 20px 80px;
+  position: relative;
+  overflow: hidden;
+}
+ 
+.hero-bg-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(0,255,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+ 
+.hero-label {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  background: rgba(0,255,255,0.06);
+  border: 1px solid rgba(0,255,255,0.2);
+  padding: 6px 20px;
+  border-radius: 30px;
+  margin-bottom: 28px;
+  animation: fadeSlideUp 0.8s ease both;
+}
+ 
+.hero h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(38px, 6vw, 78px);
+  font-weight: 900;
+  line-height: 1.08;
+  background: linear-gradient(135deg, #fff 20%, var(--cyan) 50%, #a78bfa 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: fadeSlideUp 0.9s ease 0.1s both;
+  letter-spacing: -1px;
+}
+ 
+.hero-sub {
+  font-size: 18px;
+  opacity: 0.6;
+  max-width: 520px;
+  margin: 20px auto 0;
+  line-height: 1.7;
+  font-weight: 300;
+  animation: fadeSlideUp 1s ease 0.2s both;
+}
+ 
+#browseBtn {
+  margin-top: 44px;
+  padding: 16px 44px;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(45deg, var(--cyan), var(--purple));
+  color: white;
+  cursor: none;
+  letter-spacing: 1px;
+  box-shadow: 0 0 30px rgba(0,255,255,0.35);
+  transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+  animation: fadeSlideUp 1s ease 0.3s both;
+  display: inline-block;
+}
+ 
+#browseBtn::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(45deg, var(--purple), var(--cyan));
+  opacity: 0; transition: 0.3s;
+}
+#browseBtn span { position: relative; z-index: 1; }
+#browseBtn:hover { transform: scale(1.07) translateY(-3px); box-shadow: 0 0 60px rgba(0,255,255,0.55); }
+#browseBtn:hover::before { opacity: 1; }
+ 
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+/* stats mini row */
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  margin-top: 64px;
+  flex-wrap: wrap;
+  animation: fadeSlideUp 1s ease 0.4s both;
+}
+ 
+.hero-stat { text-align: center; }
+.hero-stat-num {
+  font-family: "Orbitron", sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--cyan);
+  text-shadow: 0 0 20px rgba(0,255,255,0.4);
+  display: block;
+}
+.hero-stat-label { font-size: 11px; opacity: 0.45; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+ 
+/* divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,255,0.2), rgba(124,58,237,0.2), transparent);
+  margin: 0 40px;
+}
+ 
+/* ══════════════════════════════════════════
+   SECTIONS
+══════════════════════════════════════════ */
+.section {
+  padding: 90px 40px;
+  text-align: center;
+  position: relative;
+}
+ 
+.section-eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  opacity: 0.65;
+  margin-bottom: 14px;
+  display: block;
+}
+ 
+.section h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(26px, 3.5vw, 44px);
+  font-weight: 700;
+  background: linear-gradient(90deg, white, var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 18px;
+  line-height: 1.2;
+}
+ 
+.section-sub {
+  font-size: 16px;
+  opacity: 0.6;
+  max-width: 580px;
+  margin: 0 auto 12px;
+  line-height: 1.8;
+  font-weight: 300;
+}
+ 
+/* ══════════════════════════════════════════
+   WHAT ARE FILLERS — info cards
+══════════════════════════════════════════ */
+.filler-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 52px;
+  text-align: left;
+}
+ 
+.info-card {
+  background: var(--glass);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 32px 28px;
+  transition: 0.35s cubic-bezier(.4,0,.2,1);
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+}
+ 
+.info-card::before {
+  content: "";
+  position: absolute; inset: 0; border-radius: 20px;
+  background: radial-gradient(circle at 30% 30%, rgba(0,255,255,0.07), transparent 60%);
+  opacity: 0; transition: 0.4s;
+}
+ 
+.info-card:hover { border-color: rgba(0,255,255,0.3); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,255,255,0.08); }
+.info-card:hover::before { opacity: 1; }
+ 
+.info-card-icon { font-size: 40px; margin-bottom: 18px; display: block; transition: 0.3s; filter: drop-shadow(0 0 10px rgba(0,255,255,0.4)); }
+.info-card:hover .info-card-icon { transform: scale(1.15) rotate(-5deg); }
+ 
+.info-card-title { font-size: 17px; font-weight: 700; color: white; margin-bottom: 10px; }
+.info-card-desc { font-size: 13.5px; opacity: 0.62; line-height: 1.75; }
+ 
+.info-card-tag {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(0,255,255,0.08);
+  border: 1px solid rgba(0,255,255,0.2);
+  color: var(--cyan);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+ 
+/* ══════════════════════════════════════════
+   ANIME GRID — god mode cards
+══════════════════════════════════════════ */
+.anime-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
+  padding: 52px 0 0;
+}
+ 
+.anime-card {
+  border-radius: 18px;
+  overflow: hidden;
+  height: 340px;
+  transition: 0.4s cubic-bezier(.4,0,.2,1);
+  position: relative;
+  cursor: none;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+ 
+.anime-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  transition: 0.5s ease;
+  filter: brightness(0.8) saturate(1.1);
+}
+ 
+/* layered gradient overlays */
+.anime-card::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to top, rgba(2,6,23,0.95) 0%, rgba(2,6,23,0.3) 50%, transparent 100%);
+  opacity: 0.7;
+  transition: 0.4s;
+}
+ 
+.anime-card::after {
+  content: "";
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(135deg, rgba(0,255,255,0.05), rgba(124,58,237,0.05));
+  opacity: 0; transition: 0.4s;
+}
+ 
+/* anime meta */
+.anime-meta {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  z-index: 3;
+  padding: 24px 20px 20px;
+  background: linear-gradient(to top, rgba(2,6,23,0.98), transparent);
+  transform: translateY(12px);
+  transition: 0.4s;
+}
+ 
+.anime-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+ 
+.anime-sub-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: 0.35s 0.05s;
+}
+ 
+.anime-badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+ 
+.badge-free {
+  background: rgba(0,255,255,0.12);
+  border: 1px solid rgba(0,255,255,0.3);
+  color: var(--cyan);
+}
+ 
+.badge-popular {
+  background: rgba(245,158,11,0.12);
+  border: 1px solid rgba(245,158,11,0.3);
+  color: #f59e0b;
+}
+ 
+/* top right rank badge */
+.rank-badge {
+  position: absolute;
+  top: 14px; right: 14px;
+  z-index: 4;
+  font-family: "Orbitron", sans-serif;
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--dark);
+  background: linear-gradient(45deg, var(--cyan), #00e5ff);
+  padding: 5px 11px;
+  border-radius: 20px;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: 0.3s;
+}
+ 
+/* glow border on hover */
+.anime-card:hover {
+  border-color: rgba(0,255,255,0.4);
+  box-shadow: 0 0 40px rgba(0,255,255,0.15), 0 20px 60px rgba(0,0,0,0.6);
+  transform: translateY(-8px) scale(1.02);
+}
+.anime-card:hover img { transform: scale(1.08); filter: brightness(0.7) saturate(1.3); }
+.anime-card:hover::before { opacity: 1; }
+.anime-card:hover::after { opacity: 1; }
+.anime-card:hover .anime-meta { transform: translateY(0); }
+.anime-card:hover .anime-sub-meta { opacity: 1; transform: translateY(0); }
+.anime-card:hover .rank-badge { opacity: 1; transform: scale(1); }
+ 
+/* view overlay */
+.anime-view-overlay {
+  position: absolute;
+  inset: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: 0.4s;
+}
+ 
+.view-circle {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: rgba(0,255,255,0.15);
+  border: 1.5px solid rgba(0,255,255,0.5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  transform: scale(0.6);
+  transition: 0.35s;
+  backdrop-filter: blur(10px);
+}
+ 
+.anime-card:hover .anime-view-overlay { opacity: 1; }
+.anime-card:hover .view-circle { transform: scale(1); }
+ 
+/* ══════════════════════════════════════════
+   FEATURES STRIP
+══════════════════════════════════════════ */
+.features-strip {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 60px;
+}
+ 
+.feature-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 50px;
+  background: var(--glass);
+  border: 1px solid rgba(0,255,255,0.12);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  transition: 0.3s;
+  cursor: default;
+}
+ 
+.feature-pill:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 20px rgba(0,255,255,0.1);
+  transform: translateY(-2px);
+}
+ 
+.feature-pill-icon { font-size: 16px; }
+ 
+/* ══════════════════════════════════════════
+   CTA BAND
+══════════════════════════════════════════ */
+.cta-band {
+  margin: 0 40px 80px;
+  border-radius: 28px;
+  padding: 80px 40px;
+  text-align: center;
+  background: linear-gradient(135deg,
+    rgba(0,255,255,0.05) 0%,
+    rgba(124,58,237,0.09) 50%,
+    rgba(0,255,255,0.04) 100%);
+  border: 1px solid rgba(0,255,255,0.15);
+  position: relative;
+  overflow: hidden;
+}
+ 
+.cta-band::before {
+  content: "🧠";
+  position: absolute; font-size: 280px; opacity: 0.03;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  pointer-events: none; user-select: none;
+}
+ 
+.cta-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(0,255,255,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+ 
+.cta-band h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 900;
+  background: linear-gradient(135deg, white, var(--cyan));
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  margin-bottom: 16px;
+  position: relative;
+}
+ 
+.cta-band p {
+  font-size: 17px;
+  opacity: 0.62;
+  max-width: 480px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+  position: relative;
+}
+ 
+.cta-btn-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+ 
+.btn-cta-primary {
+  padding: 15px 38px;
+  border-radius: 50px;
+  background: linear-gradient(45deg, var(--cyan), var(--purple));
+  color: #020617;
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  cursor: none;
+  font-family: "Poppins", sans-serif;
+  transition: 0.3s;
+  letter-spacing: 0.5px;
+}
+.btn-cta-primary:hover { transform: scale(1.06) translateY(-3px); box-shadow: 0 0 50px rgba(0,255,255,0.45); }
+ 
+.btn-cta-outline {
+  padding: 15px 38px;
+  border-radius: 50px;
+  background: transparent;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  border: 1px solid rgba(255,255,255,0.2);
+  cursor: none;
+  font-family: "Poppins", sans-serif;
+  transition: 0.3s;
+}
+.btn-cta-outline:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 20px rgba(0,255,255,0.15); transform: translateY(-2px); }
+ 
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer {
+  padding: 40px 40px 24px;
+  background: rgba(255,255,255,0.02);
+  border-top: 1px solid rgba(0,255,255,0.08);
+}
+ 
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 40px;
+  align-items: center;
+}
+ 
+@media (max-width: 640px) { .footer-inner { grid-template-columns: 1fr; text-align: center; } }
+ 
+.footer-brand { font-family: "Orbitron", sans-serif; color: var(--cyan); font-size: 18px; margin-bottom: 6px; }
+.footer-tagline { font-size: 13px; opacity: 0.5; }
+ 
+.footer-links a {
+  display: block;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 13px;
+  margin-bottom: 6px;
+  transition: 0.2s;
+  cursor: none;
+}
+.footer-links a:hover { color: var(--cyan); }
+ 
+.footer-bottom {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  font-size: 12px;
+  opacity: 0.5;
+}
+ 
+/* ══════════════════════════════════════════
+   POPUP OVERLAYS — god mode
+══════════════════════════════════════════ */
+.popup-overlay {
+  position: fixed; inset: 0;
+  background: rgba(2,6,23,0.88);
+  backdrop-filter: blur(20px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+ 
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+ 
+.login-card {
+  background: rgba(6,14,35,0.97);
+  border-radius: 24px;
+  padding: 36px 32px;
+  width: 360px;
+  max-width: 94vw;
+  position: relative;
+  border: 1px solid rgba(0,255,255,0.2);
+  box-shadow: 0 0 60px rgba(0,255,255,0.15), 0 40px 80px rgba(0,0,0,0.6);
+  animation: popupFade 0.4s cubic-bezier(.4,0,.2,1);
+}
+ 
+@keyframes popupFade {
+  from { opacity: 0; transform: scale(0.88) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+ 
+/* card top glow strip */
+.login-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 20%; right: 20%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+ 
+.close-btn {
+  position: absolute; top: 14px; right: 18px;
+  cursor: none; font-size: 16px; color: rgba(255,255,255,0.5);
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.2s;
+}
+.close-btn:hover { color: white; border-color: rgba(255,80,80,0.4); background: rgba(255,80,80,0.1); }
+ 
+.form { display: flex; flex-direction: column; gap: 14px; }
+ 
+#heading, #signupHeading {
+  text-align: center;
+  font-size: 21px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  background: linear-gradient(45deg, var(--cyan), #a78bfa);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  font-family: "Orbitron", sans-serif;
+}
+ 
+.login-hint {
+  background: rgba(0,255,255,0.06);
+  border: 1px solid rgba(0,255,255,0.2);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+  line-height: 1.6;
+}
+ 
+.field {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: 0.3s;
+}
+.field:focus-within { border-color: rgba(0,255,255,0.35); box-shadow: 0 0 0 3px rgba(0,255,255,0.06); }
+ 
+.input-icon { width: 16px; height: 16px; min-width: 16px; fill: rgba(255,255,255,0.3); }
+ 
+.input-field {
+  background: none; border: none; outline: none;
+  color: white; width: 100%;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+}
+ 
+.btn-group { display: flex; gap: 10px; }
+ 
+.login-btn, .signup-btn {
+  flex: 1; padding: 12px;
+  border-radius: 12px; border: none;
+  font-weight: 700; cursor: none;
+  transition: 0.3s;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  position: relative; overflow: hidden;
+}
+ 
+.login-btn { background: linear-gradient(45deg, var(--cyan), var(--purple)); color: #020617; }
+.signup-btn { background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.4); color: white; }
+ 
+.login-btn:hover { box-shadow: 0 0 25px rgba(0,255,255,0.4); transform: translateY(-2px); }
+.signup-btn:hover { background: linear-gradient(45deg, var(--purple), var(--cyan)); color: #020617; transform: translateY(-2px); }
+ 
+.divider { text-align: center; font-size: 12px; color: rgba(255,255,255,0.3); position: relative; margin: 4px 0; }
+.divider::before, .divider::after {
+  content: "";
+  position: absolute; top: 50%;
+  width: 38%; height: 1px;
+  background: rgba(255,255,255,0.08);
+}
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+ 
+.social-login { display: flex; flex-direction: column; gap: 10px; }
+ 
+.social-btn {
+  position: relative;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 13px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+  cursor: none;
+  overflow: hidden;
+  transition: 0.35s ease;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+}
+ 
+.social-btn::before {
+  content: "";
+  position: absolute; top: 0; left: -100%;
+  width: 200%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.08), transparent);
+  transition: 0.5s;
+}
+.social-btn:hover::before { left: 100%; }
+.social-btn:hover { transform: translateY(-2px); }
+.google-btn:hover { box-shadow: 0 0 20px rgba(66,133,244,0.3); border-color: rgba(66,133,244,0.4); }
+.apple-btn:hover { box-shadow: 0 0 20px rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+.social-icon { width: 18px; height: 18px; }
+ 
+.forgot-box { text-align: right; }
+.forgot-box span { font-size: 12px; color: rgba(255,255,255,0.4); cursor: none; transition: 0.2s; }
+.forgot-box span:hover { color: var(--cyan); }
+ 
+/* ══════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════ */
+.fade {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.show { opacity: 1; transform: translateY(0); }
+ 
+/* ══════════════════════════════════════════
+   COOKIE BOX
+══════════════════════════════════════════ */
+#cookieBox {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(4,12,32,0.97);
+  padding: 18px 24px;
+  border-radius: 18px;
+  box-shadow: 0 0 40px rgba(0,255,255,0.2);
+  border: 1px solid rgba(0,255,255,0.2);
+  display: none; z-index: 888;
+  max-width: 92%;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  animation: slideUpFade 0.5s ease both;
+}
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+ 
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+#toast {
+  position: fixed;
+  bottom: 36px; right: 36px;
+  background: rgba(6,18,40,0.97);
+  border: 1px solid rgba(0,255,255,0.3);
+  color: white;
+  padding: 14px 26px;
+  border-radius: 16px;
+  font-size: 14px;
+  z-index: 9998;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: 0.35s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 30px rgba(0,255,255,0.15);
+  max-width: 320px;
+}
+#toast.show-toast { opacity: 1; transform: translateY(0); }
+ 
+/* SCROLL BAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.3); border-radius: 6px; }
+ 
+/* ══════════════════════════════════════════
+   MOBILE
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  header { padding: 14px 20px; }
+  .slide-content { bottom: 110px; left: 24px; right: 24px; }
+  .slide-counter { display: none; }
+  .slide-dots { left: 24px; }
+  .section { padding: 60px 20px; }
+  .cta-band { margin: 0 16px 60px; padding: 60px 24px; }
+  .hero-stats { gap: 28px; }
+  .anime-grid { grid-template-columns: 1fr 1fr; gap: 14px; padding: 36px 0 0; }
+}
+ 
+@media (max-width: 480px) {
+  .anime-grid { grid-template-columns: 1fr; }
+  .container { gap: 2px; padding: 6px 10px; }
+  .btn { padding: 6px 10px; font-size: 12px; }
+}
+</style>
+</head>
+ 
+<body>
+ 
+<!-- Cursor -->
+<div id="cursor"></div>
+<div id="cursorRing"></div>
+<div id="cursorTrail"></div>
+ 
+<!-- Particles -->
+<canvas id="particles"></canvas>
+ 
+<!-- ══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════ -->
+<header id="mainHeader">
+  <h1>🧠 AnimeIQ</h1>
+  <div class="nav">
+    <div class="container">
+      <div class="btn"><a href="homepageblog.html"><span>Home</span></a></div>
+      <div class="btn" onclick="goToExplore()"><span>Explore</span></div>
+      <div class="btn"><a href="contactus.html"><span>Contact</span></a></div>
+      <div class="btn"><a href="about.html"><span>About</span></a></div>
+      <div class="btn" id="authArea"><span>Login</span></div>
+    </div>
+  </div>
+</header>
+ 
+<!-- ══════════════════════════════════════════
+     HERO SLIDER
+══════════════════════════════════════════ -->
+<div class="slider" id="sliderEl">
+ 
+  <div class="slide active">
+    <img src="https://images6.alphacoders.com/772/thumb-1920-772376.jpg" alt="Anime Universe" loading="eager">
+    <div class="slide-content">
+      <span class="slide-eyebrow">Enter the World</span>
+      <h2>Anime Universe<br>Awaits You</h2>
+      <p>Explore legendary worlds, powerful characters, and epic storylines from the greatest anime ever made.</p>
+      <button class="slide-btn" onclick="goToShows()">⚡ Browse Full Library</button>
+    </div>
+  </div>
+ 
+  <div class="slide">
+    <img src="https://wallpapercave.com/wp/wp5203548.jpg" alt="Skip Fillers" loading="lazy">
+    <div class="slide-content">
+      <span class="slide-eyebrow">Watch Smarter</span>
+      <h2>Skip Fillers<br>Like a Pro</h2>
+      <p>Never sit through a filler arc again. Our episode guide tells you exactly what to watch and what to skip.</p>
+      <button class="slide-btn" onclick="goToShows()">📺 See Filler Guide</button>
+    </div>
+  </div>
+ 
+  <div class="slide">
+    <img src="https://wallpapercave.com/wp/wp6882964.jpg" alt="Track Episodes" loading="lazy">
+    <div class="slide-content">
+      <span class="slide-eyebrow">Stay Organized</span>
+      <h2>Track Episodes<br>Effortlessly</h2>
+      <p>Watchlist, favourites, binge calculator — everything you need to manage your anime journey in one place.</p>
+      <button class="slide-btn" onclick="goToShows()">🎯 Start Tracking</button>
+    </div>
+  </div>
+ 
+  <div class="slide">
+    <img src="https://sgimage.netmarble.com/images/netmarble/sololv/20240105/rxxx1704430473104.jpg" alt="True Anime Fan" loading="lazy">
+    <div class="slide-content">
+      <span class="slide-eyebrow">Level Up</span>
+      <h2>Become a True<br>Anime Fan</h2>
+      <p>Join thousands of anime fans who watch smarter, skip smarter, and discover smarter with AnimeIQ.</p>
+      <button class="slide-btn" onclick="goToExplore()">🚀 Join Now — Free</button>
+    </div>
+  </div>
+ 
+  <div class="arrow left" onclick="prevSlide()">❮</div>
+  <div class="arrow right" onclick="nextSlide()">❯</div>
+ 
+  <div class="slide-dots" id="slideDots"></div>
+  <div class="slide-counter"><span id="slideNum">01</span> / 04</div>
+  <div class="slide-progress" id="slideProgress"></div>
+ 
+  <div class="scroll-down">
+    <div class="mouse"></div>
+    <div class="scroll-text">Scroll</div>
+  </div>
+</div>
+ 
+<!-- ══════════════════════════════════════════
+     HERO TEXT
+══════════════════════════════════════════ -->
+<div class="hero fade">
+  <div class="hero-bg-glow"></div>
+  <span class="hero-label">🎌 The Smartest Anime Platform</span>
+  <h2>Skip Fillers.<br>Watch Smart.</h2>
+  <p class="hero-sub">Discover, explore, and track anime like never before — with filler guides, binge calculators, and personalized watchlists. All free.</p>
+  <button id="browseBtn" onclick="goToShows()">
+    <span>🎌 Browse Anime List</span>
+  </button>
+ 
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-num" data-target="50000">0</span>
+      <span class="hero-stat-label">Anime Listed</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num" data-target="120000">0</span>
+      <span class="hero-stat-label">Episodes Tracked</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num" data-target="10000">0</span>
+      <span class="hero-stat-label">Active Users</span>
+    </div>
+  </div>
+ 
+  <div class="features-strip" style="margin-top:52px;">
+    <div class="feature-pill"><span class="feature-pill-icon">📺</span> Filler Episode Guide</div>
+    <div class="feature-pill"><span class="feature-pill-icon">⚡</span> Binge Calculator</div>
+    <div class="feature-pill"><span class="feature-pill-icon">📋</span> Personal Watchlist</div>
+    <div class="feature-pill"><span class="feature-pill-icon">⭐</span> Favourites List</div>
+    <div class="feature-pill"><span class="feature-pill-icon">🔍</span> Instant Search</div>
+    <div class="feature-pill"><span class="feature-pill-icon">🆓</span> 100% Free</div>
+  </div>
+</div>
+ 
+<div class="section-divider"></div>
+ 
+<!-- ══════════════════════════════════════════
+     WHAT ARE FILLERS SECTION
+══════════════════════════════════════════ -->
+<div class="section fade">
+  <span class="section-eyebrow">Learn More</span>
+  <h2>What Are Filler Episodes?</h2>
+  <p class="section-sub">Filler episodes are anime-only content not based on the original manga. AnimeIQ helps you identify them instantly so you never waste time on them again.</p>
+ 
+  <div class="filler-grid">
+    <div class="info-card">
+      <span class="info-card-icon">📺</span>
+      <div class="info-card-title">What Is Filler?</div>
+      <p class="info-card-desc">Filler episodes are created by studios when the anime catches up to the manga. They're not canon and often add nothing to the main plot — but they waste your time.</p>
+      <span class="info-card-tag">The Problem</span>
+    </div>
+    <div class="info-card">
+      <span class="info-card-icon">🧠</span>
+      <div class="info-card-title">How AnimeIQ Helps</div>
+      <p class="info-card-desc">We map every episode as Canon, Filler, or Mixed. Filter with one click and see only what you need to watch for the full, uninterrupted story.</p>
+      <span class="info-card-tag">The Solution</span>
+    </div>
+    <div class="info-card">
+      <span class="info-card-icon">⏱️</span>
+      <div class="info-card-title">Save Real Hours</div>
+      <p class="info-card-desc">Naruto has 40% filler. One Piece has over 100 filler episodes. With AnimeIQ, reclaim those hours for anime that actually matters to you.</p>
+      <span class="info-card-tag">Real Impact</span>
+    </div>
+  </div>
+</div>
+ 
+<div class="section-divider"></div>
+ 
+<!-- ══════════════════════════════════════════
+     POPULAR ANIME SECTION
+══════════════════════════════════════════ -->
+<div class="section fade">
+  <span class="section-eyebrow">Popular Right Now</span>
+  <h2>Popular Anime</h2>
+  <p class="section-sub" style="opacity:0.5;font-size:14px;margin-top:-4px;">Browse freely · Login to access full filler & episode guides</p>
+ 
+  <div class="anime-grid">
+ 
+    <div class="anime-card" onclick="openAnime('Dragon Ball Z')">
+      <img src="https://i.pinimg.com/736x/0e/e6/53/0ee6535892f2c0a7e7bc6e2c43e60dae.jpg" alt="Dragon Ball Z">
+      <div class="rank-badge">#1</div>
+      <div class="anime-view-overlay">
+        <div class="view-circle">👁️</div>
+      </div>
+      <div class="anime-meta">
+        <div class="anime-title">Dragon Ball Z</div>
+        <div class="anime-sub-meta">
+          <span class="anime-badge badge-free">Free Preview</span>
+          <span class="anime-badge badge-popular">⭐ Legendary</span>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="anime-card" onclick="openAnime('One Piece')">
+      <img src="https://m.media-amazon.com/images/I/91F49ev2SYL.jpg" alt="One Piece">
+      <div class="rank-badge">#2</div>
+      <div class="anime-view-overlay">
+        <div class="view-circle">👁️</div>
+      </div>
+      <div class="anime-meta">
+        <div class="anime-title">One Piece</div>
+        <div class="anime-sub-meta">
+          <span class="anime-badge badge-free">Free Preview</span>
+          <span class="anime-badge badge-popular">🏴‍☠️ Epic</span>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="anime-card" onclick="openAnime('Naruto Shippuden')">
+      <img src="https://wallpapercave.com/wp/wp10404633.jpg" alt="Naruto Shippuden">
+      <div class="rank-badge">#3</div>
+      <div class="anime-view-overlay">
+        <div class="view-circle">👁️</div>
+      </div>
+      <div class="anime-meta">
+        <div class="anime-title">Naruto Shippuden</div>
+        <div class="anime-sub-meta">
+          <span class="anime-badge badge-free">Free Preview</span>
+          <span class="anime-badge badge-popular">🍃 Classic</span>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+ 
+<div class="section-divider"></div>
+ 
+<!-- ══════════════════════════════════════════
+     CTA BAND
+══════════════════════════════════════════ -->
+<div class="cta-band fade">
+  <div class="cta-grid"></div>
+  <h2>Ready to Watch Smarter?</h2>
+  <p>Join thousands of anime fans who've already stopped wasting time on fillers. It's free. It's fast. It's AnimeIQ.</p>
+  <div class="cta-btn-row">
+    <button class="btn-cta-primary" onclick="goToShows()">🎌 Start for Free</button>
+    <button class="btn-cta-outline" onclick="goToExplore()">🔍 Explore Anime</button>
+  </div>
+</div>
+ 
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">🧠 AnimeIQ</div>
+      <div class="footer-tagline">Skip fillers. Watch smart. Discover more.</div>
+    </div>
+    <div class="footer-links">
+      <a href="homepageblog.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contactus.html">Contact</a>
+    </div>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="termsandcondition.html">Terms & Conditions</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 AnimeIQ 🧠 · Data by <a href="https://jikan.moe" target="_blank" style="color:var(--cyan);text-decoration:none;">Jikan API</a> · <a href="privacy.html" style="color:var(--cyan);text-decoration:none;">Privacy Policy</a>
+  </div>
+</footer>
+ 
+<!-- TOAST -->
+<div id="toast"></div>
+ 
+<!-- ══════════════════════════════════════════
+     LOGIN POPUP
+══════════════════════════════════════════ -->
+<div id="loginPopup" class="popup-overlay">
+  <div class="login-card">
+    <span class="close-btn" onclick="closeLogin()">✕</span>
+    <form class="form" onsubmit="return false;">
+      <p id="heading">Welcome Back 👋</p>
+      <div id="loginHint" class="login-hint" style="display:none;"></div>
+ 
+      <div class="field">
+        <svg viewBox="0 0 16 16" class="input-icon"><path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643z"/></svg>
+        <input type="email" id="loginUsername" class="input-field" placeholder="Email address" autocomplete="email"/>
+      </div>
+ 
+      <div class="field">
+        <svg viewBox="0 0 16 16" class="input-icon"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
+        <input type="password" id="loginPassword" class="input-field" placeholder="Password" autocomplete="current-password"/>
+      </div>
+ 
+      <div class="btn-group">
+        <button type="button" class="login-btn" onclick="loginUser()">Login</button>
+        <button type="button" class="signup-btn" onclick="switchToSignup()">Sign Up</button>
+      </div>
+ 
+      <p class="divider">or continue with</p>
+      <div class="social-login">
+        <button type="button" class="social-btn google-btn" onclick="googleLogin()">
+          <svg class="social-icon" viewBox="0 0 48 48">
+            <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/>
+            <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4c-7.3 0-13.5 4.2-17.7 10.7z"/>
+            <path fill="#4CAF50" d="M24 44c5.2 0 10-1.9 13.7-5.1l-6.3-5.2C29.4 35.8 26.9 36 24 36c-5.2 0-9.6-3.5-11.2-8.2l-6.5 5C9.4 39.9 16.1 44 24 44z"/>
+            <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.1 3-3.4 5.5-6.3 7.2l6.3 5.2C36.6 36.5 40 30.9 40 24c0-1.3-.1-2.7-.4-3.5z"/>
+          </svg>
+          <span>Continue with Google</span>
+        </button>
+        <button type="button" class="social-btn apple-btn" onclick="fakeAppleLogin()">
+          <svg class="social-icon" viewBox="0 0 24 24"><path fill="white" d="M16.365 1.43c0 1.14-.47 2.24-1.23 3.07-.83.9-2.14 1.6-3.33 1.5-.14-1.1.42-2.24 1.2-3.04.85-.9 2.26-1.56 3.36-1.53zM20.7 17.7c-.55 1.28-.81 1.85-1.53 3.02-1 1.58-2.42 3.54-4.17 3.56-1.55.02-1.95-1.02-4.07-1.01-2.12.01-2.56 1.03-4.11 1-1.75-.03-3.09-1.8-4.1-3.38-2.83-4.44-3.12-9.67-1.34-12.52 1.26-2 3.25-3.25 5.1-3.25 1.9 0 3.1 1.02 4.66 1.02 1.5 0 2.42-1.03 4.61-1.03 1.65 0 3.39.9 4.65 2.45-4.06 2.23-3.4 8.3.5 10.14z"/></svg>
+          <span>Continue with Apple</span>
+        </button>
+      </div>
+ 
+      <div class="forgot-box">
+        <span onclick="resetPassword()" style="cursor:pointer;">Forgot password?</span>
+      </div>
+    </form>
+  </div>
+</div>
+ 
+<!-- SIGNUP POPUP -->
+<div id="signupPopup" class="popup-overlay">
+  <div class="login-card">
+    <span class="close-btn" onclick="closeSignup()">✕</span>
+    <form class="form" onsubmit="return false;">
+      <p id="signupHeading">Create Account 🚀</p>
+ 
+      <div class="field">
+        <input type="text" id="signupUsername" class="input-field" placeholder="Username" autocomplete="username"/>
+      </div>
+      <div class="field">
+        <input type="email" id="signupEmail" class="input-field" placeholder="Email address" autocomplete="email"/>
+      </div>
+      <div class="field">
+        <input type="password" id="signupPassword" class="input-field" placeholder="Password (min 6 chars)" autocomplete="new-password"/>
+      </div>
+      <div class="field">
+        <input type="password" id="signupConfirm" class="input-field" placeholder="Confirm Password" autocomplete="new-password"/>
+      </div>
+ 
+      <button type="button" class="login-btn" onclick="signupUser()">Create Account</button>
+ 
+      <p style="text-align:center;font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">
+        Already have an account?
+        <span onclick="switchToLogin()" style="color:var(--cyan);cursor:none;">Login here</span>
+      </p>
+    </form>
+  </div>
+</div>
+ 
+<!-- COOKIE BOX -->
+<div id="cookieBox">
+  <p style="font-size:13px;opacity:0.8;margin:0 0 14px;line-height:1.6;">
+    🍪 We use cookies to improve your experience. By using AnimeIQ, you agree to our
+    <a href="privacy.html" style="color:var(--cyan);">Privacy Policy</a>.
+  </p>
+  <button onclick="acceptCookies()" style="
+    padding:9px 22px;border:none;border-radius:12px;
+    background:linear-gradient(45deg,var(--cyan),var(--purple));
+    color:#020617;cursor:none;font-family:'Poppins',sans-serif;font-weight:700;
+    transition:0.3s;
+  " onmouseover="this.style.boxShadow='0 0 20px rgba(0,255,255,0.4)'"
+     onmouseout="this.style.boxShadow='none'">Accept & Continue</button>
+</div>
+ 
+<!-- ══════════════════════════════════════════
+     FIREBASE
+══════════════════════════════════════════ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  sendPasswordResetEmail,
+  GoogleAuthProvider,
+  signInWithPopup
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+ 
+const firebaseConfig = {
+  apiKey: "AIzaSyDq4YCBixnCnIeGKzEegq_63leL_oOsWtw",
+  authDomain: "animeiq-24614.firebaseapp.com",
+  projectId: "animeiq-24614",
+  storageBucket: "animeiq-24614.appspot.com",
+  messagingSenderId: "690143889231",
+  appId: "1:690143889231:web:4d7429ab545674b864a73a",
+  measurementId: "G-2732CDYMZ6"
+};
+ 
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+ 
+/* ── SLIDER ── */
+let slideIndex    = 0;
+let slideTimer    = null;
+let progressVal   = 0;
+let progressTimer = null;
+const SLIDE_DUR   = 5000;
+const slides      = document.querySelectorAll(".slide");
+const dotsEl      = document.getElementById("slideDots");
+const progEl      = document.getElementById("slideProgress");
+const numEl       = document.getElementById("slideNum");
+ 
+// Build dots
+slides.forEach((_, i) => {
+  const d = document.createElement("button");
+  d.className  = "dot" + (i === 0 ? " active" : "");
+  d.setAttribute("role", "tab");
+  d.setAttribute("aria-label", `Go to slide ${i + 1}`);
+  d.setAttribute("aria-selected", i === 0 ? "true" : "false");
+  d.onclick = () => goToSlide(i);
+  dotsEl.appendChild(d);
+});
+ 
+function showSlide(i) {
+  slides.forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".dot").forEach((d, idx) => {
+    d.classList.toggle("active", idx === i);
+    d.setAttribute("aria-selected", idx === i ? "true" : "false");
+  });
+  slides[i].classList.add("active");
+  numEl.textContent = String(i + 1).padStart(2, "0");
+  resetProgress();
+}
+ 
+function goToSlide(i) {
+  slideIndex = i;
+  showSlide(slideIndex);
+  clearInterval(slideTimer);
+  clearInterval(progressTimer);
+  slideTimer = setInterval(nextSlide, SLIDE_DUR);
+}
+ 
+function nextSlide() {
+  slideIndex = (slideIndex + 1) % slides.length;
+  showSlide(slideIndex);
+}
+function prevSlide() {
+  slideIndex = (slideIndex - 1 + slides.length) % slides.length;
+  showSlide(slideIndex);
+  clearInterval(slideTimer);
+  clearInterval(progressTimer);
+  slideTimer = setInterval(nextSlide, SLIDE_DUR);
+}
+ 
+function resetProgress() {
+  progressVal = 0;
+  progEl.style.width = "0%";
+  progEl.setAttribute("aria-valuenow", "0");
+  clearInterval(progressTimer);
+  progressTimer = setInterval(() => {
+    progressVal += 100 / (SLIDE_DUR / 80);
+    const pct = Math.min(progressVal, 100);
+    progEl.style.width = pct + "%";
+    progEl.setAttribute("aria-valuenow", Math.round(pct));
+  }, 80);
+}
+ 
+/* INP FIX: Pause animations when tab is hidden to save CPU/GPU */
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    clearInterval(slideTimer);
+    clearInterval(progressTimer);
+  } else {
+    slideTimer    = setInterval(nextSlide, SLIDE_DUR);
+    resetProgress();
+  }
+});
+ 
+slideTimer = setInterval(nextSlide, SLIDE_DUR);
+resetProgress();
+ 
+/* Touch swipe */
+let touchStartX = 0;
+const sliderEl  = document.getElementById("sliderEl");
+sliderEl.addEventListener("touchstart", e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+sliderEl.addEventListener("touchend", e => {
+  const diff = touchStartX - e.changedTouches[0].screenX;
+  if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
+}, { passive: true });
+ 
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show-toast");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove("show-toast"), 3200);
+}
+ 
+/* ══════════════════════════════════════════
+   POPUP CONTROLS
+══════════════════════════════════════════ */
+let pendingRedirect = null;
+ 
+function openLogin(hintMsg = null) {
+  const popup = document.getElementById("loginPopup");
+  const hint  = document.getElementById("loginHint");
+  popup.style.display = "flex";
+  if (hintMsg) { hint.textContent = hintMsg; hint.style.display = "block"; }
+  else         { hint.style.display = "none"; }
+  setTimeout(() => document.getElementById("loginUsername")?.focus(), 100);
+}
+function closeLogin() {
+  document.getElementById("loginPopup").style.display = "none";
+  pendingRedirect = null;
+}
+function openSignup() {
+  document.getElementById("signupPopup").style.display = "flex";
+  setTimeout(() => document.getElementById("signupUsername")?.focus(), 100);
+}
+function closeSignup() { document.getElementById("signupPopup").style.display = "none"; }
+function switchToSignup() { closeLogin(); openSignup(); }
+function switchToLogin()  { closeSignup(); openLogin(); }
+ 
+/* ══════════════════════════════════════════
+   NAVIGATION — BUTTON FIX
+   
+   goToShows()   → shows.html     (A-Z full list)
+   goToExplore() → explore.html (search/explore)
+   openAnime()   → explore.html?id=X with search
+   
+   These are the ORIGINAL intended destinations
+   from the document 4 source code. Restored.
+══════════════════════════════════════════ */
+function goToShows() {
+  if (!auth.currentUser) {
+    pendingRedirect = "shows.html";
+    openLogin("🎌 Login to access the full anime filler guide & episode list!");
+    return;
+  }
+  window.location.href = "shows.html";
+}
+ 
+function goToExplore() {
+  window.location.href = "explore.html";
+}
+ 
+function openAnime(name) {
+  if (!auth.currentUser) {
+    pendingRedirect = `explore.html?search=${encodeURIComponent(name)}`;
+    openLogin(`🔐 Login to view the complete filler guide for ${name}!`);
+    return;
+  }
+  window.location.href = `explore.html?search=${encodeURIComponent(name)}`;
+}
+ 
+/* ══════════════════════════════════════════
+   AUTH
+══════════════════════════════════════════ */
+function loginUser() {
+  const emailInput = document.getElementById("loginUsername");
+  const passwordInput = document.getElementById("loginPassword");
+  const hint = document.getElementById("loginHint");
+
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+
+  // Reset UI
+  hint.style.display = "none";
+  emailInput.style.borderColor = "";
+  passwordInput.style.borderColor = "";
+
+  if (!email || !password) {
+    showToast("⚠️ Please fill all fields");
+
+    hint.textContent = "⚠️ Fill email and password to continue.";
+    hint.style.display = "block";
+
+    if (!email) emailInput.style.borderColor = "red";
+    if (!password) passwordInput.style.borderColor = "red";
+
+    return;
+  }
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      closeLogin();
+      showToast("✅ Logged in successfully!");
+
+      setTimeout(() => {
+        window.location.href = pendingRedirect || "explore.html";
+      }, 900);
+    })
+    .catch(err => {
+      const msg = friendlyError(err.code);
+
+      // 🔥 Show both toast + persistent message
+      showToast("❌ " + msg);
+
+      hint.textContent = "❌ " + msg;
+      hint.style.display = "block";
+
+      // 🎯 Highlight fields smartly
+      if (err.code === "auth/user-not-found") {
+        emailInput.style.borderColor = "red";
+      } else if (err.code === "auth/wrong-password") {
+        passwordInput.style.borderColor = "red";
+      } else {
+        emailInput.style.borderColor = "red";
+        passwordInput.style.borderColor = "red";
+      }
+    });
+}
+
+["loginUsername", "loginPassword"].forEach(id => {
+  document.getElementById(id).addEventListener("input", () => {
+    const hint = document.getElementById("loginHint");
+    hint.style.display = "none";
+
+    document.getElementById("loginUsername").style.borderColor = "";
+    document.getElementById("loginPassword").style.borderColor = "";
+  });
+});
+ 
+function signupUser() {
+  const email    = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+  const confirm  = document.getElementById("signupConfirm").value;
+  if (!email || !password || !confirm) { showToast("⚠️ Please fill all fields"); return; }
+  if (password.length < 6) { showToast("⚠️ Password must be at least 6 characters"); return; }
+  if (password !== confirm) { showToast("❌ Passwords do not match"); return; }
+ 
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      closeSignup(); showToast("🎉 Account created! Welcome to AnimeIQ!");
+      setTimeout(() => { window.location.href = "explore.html"; }, 900);
+    })
+    .catch(err => showToast("❌ " + friendlyError(err.code)));
+}
+ 
+function googleLogin() {
+  const provider = new GoogleAuthProvider();
+  signInWithPopup(auth, provider)
+    .then(() => {
+      closeLogin(); showToast("✅ Google login successful!");
+      setTimeout(() => { window.location.href = pendingRedirect || "explore.html"; }, 900);
+    })
+    .catch(err => showToast("❌ " + friendlyError(err.code)));
+}
+ 
+function logoutUser() {
+  signOut(auth).then(() => {
+    showToast("👋 Logged out successfully");
+    setTimeout(() => location.reload(), 900);
+  });
+}
+ 
+function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+ 
+let lastResetTime = 0;
+async function resetPassword() {
+  const emailInput = document.getElementById("loginUsername");
+  const hint = document.getElementById("loginHint"); // 👈 add this
+  const email = emailInput.value.trim();
+
+  if (!email) {
+    showToast("⚠️ Please enter your email address first");
+
+    // 👇 GOD MODE UI FEEDBACK
+    hint.textContent = "⚠️ Enter your email above, then click Forgot Password.";
+    hint.style.display = "block";
+
+    emailInput.focus(); // 👈 focus input
+    emailInput.style.borderColor = "red"; // 👈 visual highlight
+
+    return;
+  }
+
+  if (!isValidEmail(email)) {
+    showToast("❌ Please enter a valid email address");
+
+    hint.textContent = "❌ Invalid email format. Try again.";
+    hint.style.display = "block";
+
+    return;
+  }
+
+  const now = Date.now();
+  if (now - lastResetTime < 30000) {
+    showToast("⏳ Please wait before requesting again");
+    return;
+  }
+
+  lastResetTime = now;
+
+  try {
+    emailInput.disabled = true;
+    showToast("⏳ Sending reset link...");
+
+    await sendPasswordResetEmail(auth, email, {
+      url: window.location.origin + "/homepageblog.html",
+      handleCodeInApp: false
+    });
+
+    showToast("📧 Reset link sent! Check your email");
+
+    hint.textContent = "✅ Reset link sent. Check inbox/spam.";
+    hint.style.display = "block";
+
+    emailInput.value = "";
+    emailInput.style.borderColor = ""; // reset
+
+  } catch (err) {
+    showToast("❌ " + friendlyError(err.code));
+  } finally {
+    emailInput.disabled = false;
+  }
+}
+ 
+function fakeAppleLogin() { showToast("🍏 Apple login coming soon! Try Google for now 😄"); }
+ 
+function friendlyError(code) {
+  const map = {
+    "auth/user-not-found":      "No account found with this email.",
+    "auth/wrong-password":      "Incorrect password",
+    "auth/email-already-in-use":"Email already registered",
+    "auth/invalid-email":       "Invalid email address",
+    "auth/too-many-requests":   "Too many attempts. Try again later",
+    "auth/popup-closed-by-user":"Google sign-in was cancelled",
+    "auth/invalid-credential":  "Invalid email or password",
+  };
+  return map[code] || "Something went wrong. Try again.";
+}
+ 
+/* ── AUTH STATE ── */
+onAuthStateChanged(auth, (user) => {
+  const authArea = document.getElementById("authArea");
+  if (user) {
+    const display = user.displayName || (user.email.length > 18 ? user.email.substring(0,15) + "..." : user.email);
+    authArea.innerHTML = "";
+    const info     = document.createElement("div");
+    info.className = "user-info";
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = "👤 " + display;
+    const logoutSpan = document.createElement("span");
+    logoutSpan.className   = "logout-link";
+    logoutSpan.id          = "logoutBtn";
+    logoutSpan.textContent = "Logout";
+    logoutSpan.onclick     = logoutUser;
+    info.appendChild(nameSpan);
+    info.appendChild(logoutSpan);
+    authArea.appendChild(info);
+    authArea.onclick = null;
+  } else {
+    authArea.innerHTML = "";
+    const sp = document.createElement("span");
+    sp.textContent = "Login";
+    authArea.appendChild(sp);
+    authArea.onclick = () => openLogin();
+  }
+});
+ 
+/* ── SCROLL REVEAL — unobserve after show to save memory ── */
+window.addEventListener("load", () => {
+  window.scrollTo(0, 0);
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("show"); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll(".fade").forEach(el => observer.observe(el));
+});
+ 
+/* ── COOKIE ── */
+function acceptCookies() {
+  localStorage.setItem("cookiesAccepted","true");
+  document.getElementById("cookieBox").style.display = "none";
+}
+window.acceptCookies = acceptCookies;
+ 
+if (!localStorage.getItem("cookiesAccepted")) {
+  document.getElementById("cookieBox").style.display = "block";
+}
+ 
+/* ══════════════════════════════════════════
+   EXPOSE GLOBALS
+══════════════════════════════════════════ */
+window.loginUser       = loginUser;
+window.signupUser      = signupUser;
+window.openLogin       = openLogin;
+window.closeLogin      = closeLogin;
+window.openSignup      = openSignup;
+window.closeSignup     = closeSignup;
+window.switchToSignup  = switchToSignup;
+window.switchToLogin   = switchToLogin;
+window.googleLogin     = googleLogin;
+window.resetPassword   = resetPassword;
+window.logoutUser      = logoutUser;
+window.nextSlide       = nextSlide;
+window.prevSlide       = prevSlide;
+window.fakeAppleLogin  = fakeAppleLogin;
+window.goToShows       = goToShows;
+window.goToExplore     = goToExplore;
+window.openAnime       = openAnime;
+</script>
+ 
+<!-- ══════════════════════════════════════════
+     INTERACTIVITY — non-blocking, non-module
+══════════════════════════════════════════ -->
+<script>
+/* ══════════════════════════════════════════
+   CURSOR — GOD MODE FIX
+   
+   PROBLEM: Previous version hid cursor with CSS display:none
+   and only showed it via @media (hover:hover). This made it
+   invisible over plain text and most of the page.
+   
+   FIX:
+   1. cursor is always display:block in CSS
+   2. Move via translate3d() — GPU compositor only, zero layout cost
+      (old left/top caused layout recalc on every mousemove = INP killer)
+   3. Mobile: set display:none via JS on touch detection
+   4. Hover enlargement done via opacity + ring scale — no layout props
+══════════════════════════════════════════ */
+const cursor      = document.getElementById("cursor");
+const cursorRing  = document.getElementById("cursorRing");
+const cursorTrail = document.getElementById("cursorTrail");
+ 
+const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+ 
+if (isTouchDevice) {
+  /* Mobile: hide cursor elements and restore native cursor */
+  cursor.style.display      = "none";
+  cursorRing.style.display  = "none";
+  cursorTrail.style.display = "none";
+  document.body.style.cursor = "auto";
+  /* Also restore cursor on all elements */
+  document.querySelectorAll("*").forEach(el => {
+    if (getComputedStyle(el).cursor === "none") el.style.cursor = "auto";
+  });
+} else {
+  /* Desktop: full custom cursor experience */
+  let mx=0, my=0, rx=0, ry=0, tx=0, ty=0;
+ 
+  /* INP FIX: passive listener — never blocks scroll or other events */
+  document.addEventListener("mousemove", e => {
+    mx = e.clientX; my = e.clientY;
+  }, { passive: true });
+ 
+  /* Single RAF loop for all three cursor elements
+     INP FIX: translate3d = compositor-only, no layout, no paint */
+  (function animCursor() {
+    /* Dot: instant */
+    cursor.style.transform = `translate3d(${mx}px,${my}px,0) translate(-50%,-50%)`;
+ 
+    /* Ring: smooth lag */
+    rx += (mx - rx) * 0.14;
+    ry += (my - ry) * 0.14;
+    cursorRing.style.transform = `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%)`;
+ 
+    /* Trail: slower lag */
+    tx += (mx - tx) * 0.07;
+    ty += (my - ty) * 0.07;
+    cursorTrail.style.transform = `translate3d(${tx}px,${ty}px,0) translate(-50%,-50%)`;
+ 
+    requestAnimationFrame(animCursor);
+  })();
+ 
+  /* Cursor expand on interactive elements
+     INP FIX: only animate opacity (compositor) + ring scale (compositor)
+     Never animate width/height/left/top — those cause layout */
+  function bindHover(selector) {
+    document.querySelectorAll(selector).forEach(el => {
+      el.addEventListener("mouseenter", () => {
+        cursor.style.opacity = "0.6";
+        cursorRing.style.transform = `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%) scale(1.45)`;
+        cursorRing.style.borderColor = "rgba(0,255,255,0.8)";
+      }, { passive: true });
+      el.addEventListener("mouseleave", () => {
+        cursor.style.opacity = "1";
+        cursorRing.style.borderColor = "rgba(0,255,255,0.5)";
+      }, { passive: true });
+    });
+  }
+ 
+  bindHover("button, a, .btn, .anime-card, .arrow, .dot, .social-btn, .close-btn, .forgot-box span, #logoutBtn, .info-card, .feature-pill, [role='button']");
+}
+ 
+/* ══════════════════════════════════════════
+   PARTICLES — desktop only, visibility-aware
+   INP FIX: reduced count (55 vs original 60),
+   paused when tab hidden
+══════════════════════════════════════════ */
+const canvas = document.getElementById("particles");
+const ctx    = canvas.getContext("2d");
+let W, H, rafId;
+ 
+function resizeCanvas() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas, { passive: true });
+ 
+const pts = Array.from({ length: isTouchDevice ? 0 : 55 }, () => ({
+  x: Math.random() * 1920, y: Math.random() * 1080,
+  r: Math.random() * 1.5 + 0.2,
+  vx: (Math.random() - 0.5) * 0.3,
+  vy: (Math.random() - 0.5) * 0.3,
+  alpha: Math.random() * 0.35 + 0.08
+}));
+ 
+function drawParticles() {
+  ctx.clearRect(0, 0, W, H);
+  pts.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,255,255,${p.alpha})`; ctx.fill();
+  });
+  rafId = requestAnimationFrame(drawParticles);
+}
+ 
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) cancelAnimationFrame(rafId);
+  else drawParticles();
+}, { passive: true });
+ 
+if (!isTouchDevice) drawParticles();
+ 
+/* ══════════════════════════════════════════
+   HEADER SHRINK
+   INP FIX: rAF throttle — fires max once per frame
+══════════════════════════════════════════ */
+const mainHeader = document.getElementById("mainHeader");
+let _scrollPending = false;
+window.addEventListener("scroll", () => {
+  if (_scrollPending) return;
+  _scrollPending = true;
+  requestAnimationFrame(() => {
+    mainHeader.classList.toggle("scrolled", window.scrollY > 60);
+    _scrollPending = false;
+  });
+}, { passive: true });
+ 
+/* ══════════════════════════════════════════
+   COUNT-UP ANIMATION
+   CLS FIX: stats start at 0, animate on viewport entry
+   INP FIX: rAF-based easing, not setInterval
+══════════════════════════════════════════ */
+function formatNum(n, target) {
+  return target >= 10000 ? Math.floor(n / 1000) + "K+" : Math.floor(n) + "+";
+}
+ 
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el     = e.target;
+    const target = parseInt(el.dataset.target);
+    const dur    = 2200;
+    let   start  = null;
+ 
+    function step(ts) {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / dur, 1);
+      const eased    = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      el.textContent = formatNum(eased * target, target);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = formatNum(target, target);
+    }
+    requestAnimationFrame(step);
+    counterObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+ 
+document.querySelectorAll(".hero-stat-num[data-target]").forEach(el => counterObs.observe(el));
+ 
+/* ══════════════════════════════════════════
+   MOUSE PARALLAX ON SLIDER
+   INP FIX: RAF-throttled, passive listener
+══════════════════════════════════════════ */
+let parallaxPending = false;
+let lastMX = 0, lastMY = 0;
+ 
+if (!isTouchDevice) {
+  document.addEventListener("mousemove", e => {
+    lastMX = e.clientX; lastMY = e.clientY;
+    if (!parallaxPending) {
+      parallaxPending = true;
+      requestAnimationFrame(() => {
+        const rect = sliderEl.getBoundingClientRect();
+        if (lastMY <= rect.bottom) {
+          const xR = (lastMX / window.innerWidth  - 0.5) * 12;
+          const yR = (lastMY / window.innerHeight - 0.5) * 8;
+          const img = sliderEl.querySelector(".slide.active img");
+          if (img) img.style.transform = `scale(1.04) translate(${xR * 0.4}px, ${yR * 0.4}px)`;
+        }
+        parallaxPending = false;
+      });
+    }
+  }, { passive: true });
+}
+ 
+/* ══════════════════════════════════════════
+   POPUP BACKDROP + KEYBOARD
+══════════════════════════════════════════ */
+document.getElementById("loginPopup").addEventListener("click", e => {
+  if (e.target.id === "loginPopup" && window.closeLogin) window.closeLogin();
+});
+document.getElementById("signupPopup").addEventListener("click", e => {
+  if (e.target.id === "signupPopup" && window.closeSignup) window.closeSignup();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    if (window.closeLogin)  window.closeLogin();
+    if (window.closeSignup) window.closeSignup();
+  }
+});
+ 
+/* Keyboard Enter on anime cards */
+document.querySelectorAll(".anime-card[role='button']").forEach(card => {
+  card.addEventListener("keydown", e => { if (e.key === "Enter") card.click(); });
+});
+</script>
+ 
+</body>
+</html>
+ 

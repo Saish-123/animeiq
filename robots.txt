@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Block crawlers from indexing utility pages
+Disallow: /disclaimer.html
+Disallow: /termsandcondition.html
+
+Sitemap: https://yourdomain.com/sitemap.xml

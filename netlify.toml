@@ -1,0 +1,78 @@
+[build]
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[redirects]]
+  from = "/home"
+  to = "/homepageblog.html"
+  status = 301
+
+[[redirects]]
+  from = "/shows"
+  to = "/shows.html"
+  status = 301
+
+[[redirects]]
+  from = "/explore"
+  to = "/explore.html"
+  status = 301
+
+[[redirects]]
+  from = "/binge"
+  to = "/binge.html"
+  status = 301
+
+[[redirects]]
+  from = "/watchorder"
+  to = "/watchorder.htnl.html"
+  status = 301
+
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/contactus.html"
+  status = 301
+
+[[redirects]]
+  from = "/privacy"
+  to = "/privacy.html"
+  status = 301
+
+[[redirects]]
+  from = "/disclaimer"
+  to = "/disclaimer.html"
+  status = 301
+
+[[redirects]]
+  from = "/terms"
+  to = "/termsandcondition.html"
+  status = 301
+
+[[redirects]]
+  from = "/*"
+  to = "/homepageblog.html"
+  status = 404

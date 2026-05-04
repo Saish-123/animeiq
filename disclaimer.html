@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disclaimer | AnimeIQ</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin:0;
+  font-family:Poppins;
+  background:linear-gradient(135deg,#020617,#0f172a);
+  color:white;
+}
+.container {
+  max-width:900px;
+  margin:auto;
+  padding:30px;
+}
+h1 { color:cyan; }
+h2 { color:cyan; margin-top:20px; }
+p { opacity:0.8; line-height:1.7; }
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>⚠️ Disclaimer</h1>
+
+<h2>1. General Information</h2>
+<p>All information on AnimeIQ is for informational purposes only.</p>
+
+<h2>2. External Links</h2>
+<p>We may link to external websites. We are not responsible for their content.</p>
+
+<h2>3. Anime Data</h2>
+<p>Data is provided via third-party APIs (Jikan / MyAnimeList).</p>
+
+<h2>4. No Professional Advice</h2>
+<p>This site does not provide legal, financial, or professional advice.</p>
+
+<h2>5. Consent</h2>
+<p>By using our website, you agree to this disclaimer.</p>
+
+</div>
+<div id="cookieBox" style="
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,0,0,0.9);
+padding:15px 20px;
+border-radius:15px;
+box-shadow:0 0 20px cyan;
+display:none;
+z-index:999;
+max-width:90%;
+text-align:center;
+">
+
+<p style="font-size:13px; opacity:0.8;">
+🍪 We use cookies to improve your experience. By using AnimeIQ, you agree to our 
+<a href="privacy.html" style="color:cyan;">Privacy Policy</a>.
+</p>
+
+<button onclick="acceptCookies()" style="
+margin-top:10px;
+padding:8px 15px;
+border:none;
+border-radius:10px;
+background:linear-gradient(45deg,cyan,purple);
+color:white;
+cursor:pointer;
+">
+Accept
+</button>
+
+</div>
+
+<script>
+function acceptCookies(){
+  localStorage.setItem("cookiesAccepted","true");
+  document.getElementById("cookieBox").style.display="none";
+}
+
+if(!localStorage.getItem("cookiesAccepted")){
+  document.getElementById("cookieBox").style.display="block";
+}
+</script>
+</body>
+</html>

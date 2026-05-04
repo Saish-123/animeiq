@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms & Conditions | AnimeIQ</title>
+<meta name="description" content="AnimeIQ Terms & Conditions — Read our terms of service, usage policies, and legal information.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://animeiq.com/termsandcondition.html">
+ 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+ 
+<style>
+/* ══════════════════════════════════════════
+   ROOT & RESET
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+:root {
+  --cyan: #00ffff;
+  --purple: #7c3aed;
+  --dark: #020617;
+  --dark2: #0f172a;
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(0,255,255,0.12);
+}
+ 
+html { scroll-behavior: smooth; }
+ 
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, var(--dark), var(--dark2));
+  color: white;
+  overflow-x: hidden;
+  cursor: none;
+  min-height: 100vh;
+}
+ 
+/* Animated background mesh */
+body::before {
+  content: "";
+  position: fixed; width: 200%; height: 200%;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(0,255,255,0.06) 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(124,58,237,0.06) 0%, transparent 45%);
+  animation: moveBg 22s linear infinite alternate;
+  z-index: -1; will-change: transform;
+}
+@keyframes moveBg {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(-7%,-5%) scale(1.04); }
+}
+ 
+/* Scanline overlay */
+body::after {
+  content: "";
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px);
+  pointer-events: none; z-index: 9990;
+}
+ 
+/* ══════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════ */
+#cursor {
+  position: fixed; width: 12px; height: 12px;
+  background: var(--cyan); border-radius: 50%;
+  pointer-events: none; z-index: 999999;
+  transform: translate3d(-100px,-100px,0) translate(-50%,-50%);
+  box-shadow: 0 0 16px var(--cyan), 0 0 36px rgba(0,255,255,0.3);
+  mix-blend-mode: screen; will-change: transform;
+  transition: opacity 0.15s;
+}
+#cursorRing {
+  position: fixed; width: 36px; height: 36px;
+  border: 1.5px solid rgba(0,255,255,0.5); border-radius: 50%;
+  pointer-events: none; z-index: 999998;
+  transform: translate3d(-100px,-100px,0) translate(-50%,-50%);
+  will-change: transform; transition: border-color 0.25s;
+}
+ 
+/* Particles */
+#particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+ 
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 15px 50px; min-height: 62px;
+  background: rgba(2,6,23,0.8);
+  box-shadow: 0 0 30px rgba(0,255,255,0.15), 0 1px 0 rgba(0,255,255,0.1);
+  backdrop-filter: blur(20px);
+  position: sticky; top: 0; z-index: 600;
+  transition: min-height 0.3s, padding 0.3s;
+}
+header.scrolled { min-height: 52px; padding: 10px 50px; }
+ 
+header h1 {
+  font-family: "Orbitron", sans-serif;
+  color: var(--cyan);
+  text-shadow: 0 0 20px rgba(0,255,255,0.7), 0 0 40px rgba(0,255,255,0.3);
+  font-size: 24px; letter-spacing: 2px; margin: 0; cursor: none;
+  min-width: 140px;
+}
+header h1 a { color: inherit; text-decoration: none; }
+ 
+/* Hamburger */
+.menu-btn {
+  width: 30px; height: 22px; display: flex;
+  flex-direction: column; justify-content: space-between;
+  cursor: none; z-index: 1001;
+}
+.menu-btn span {
+  height: 3px; width: 100%; background: var(--cyan);
+  border-radius: 10px; transition: transform 0.4s, opacity 0.4s;
+  box-shadow: 0 0 10px var(--cyan);
+}
+.menu-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.menu-btn.active span:nth-child(2) { opacity: 0; }
+.menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+ 
+body.menu-open > *:not(header):not(#menu) { filter: blur(8px); pointer-events: none; user-select: none; }
+ 
+.full-menu {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(2,6,23,0.6); backdrop-filter: blur(20px);
+  display: flex; justify-content: center; align-items: center;
+  flex-direction: column; opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease; z-index: 9999; padding: 40px 20px; text-align: center;
+}
+.full-menu.active { opacity: 1; pointer-events: all; }
+.full-menu a {
+  font-size: 30px; margin: 15px 0; text-decoration: none; color: white;
+  opacity: 0; transform: translateY(30px); transition: 0.4s; position: relative; cursor: none;
+}
+.full-menu.active a { opacity: 1; transform: translateY(0); }
+.full-menu a::after { content: ""; position: absolute; width: 0%; height: 3px; bottom: -5px; left: 0; background: var(--cyan); transition: 0.3s; }
+.full-menu a:hover::after { width: 100%; }
+.full-menu a:hover { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); transform: scale(1.1); }
+ 
+/* User avatar area */
+.user-profile-wrapper { position: relative; display: flex; align-items: center; gap: 18px; }
+.user-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--cyan), #7c3aed);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: var(--dark);
+  cursor: none; border: 2px solid rgba(0,255,255,0.5);
+  box-shadow: 0 0 12px rgba(0,255,255,0.4); transition: box-shadow 0.3s, transform 0.3s;
+  user-select: none; flex-shrink: 0;
+}
+.user-avatar:hover { box-shadow: 0 0 22px var(--cyan); transform: scale(1.08); }
+.user-avatar-wrap { position: relative; display: inline-block; }
+.online-dot {
+  position: absolute; bottom: 1px; right: 1px;
+  width: 10px; height: 10px; background: #22c55e;
+  border-radius: 50%; border: 2px solid var(--dark);
+  box-shadow: 0 0 6px #22c55e; display: none;
+}
+ 
+/* User Dropdown */
+.user-dropdown {
+  position: fixed; top: 70px; right: 20px; width: 270px;
+  max-height: calc(100vh - 90px);
+  background: rgba(6,18,40,0.97); border: 1px solid rgba(0,255,255,0.25);
+  border-radius: 18px; box-shadow: 0 0 35px rgba(0,255,255,0.2);
+  backdrop-filter: blur(20px); opacity: 0; pointer-events: none;
+  transform: translateY(-10px) scale(0.97); transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 10000; overflow: hidden; display: flex; flex-direction: column;
+}
+.user-dropdown.open { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+.udrop-sticky { flex-shrink: 0; }
+.udrop-scroll { overflow-y: auto; flex: 1; scrollbar-width: thin; scrollbar-color: rgba(0,255,255,0.4) transparent; }
+.udrop-scroll::-webkit-scrollbar { width: 4px; }
+.udrop-scroll::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.35); border-radius: 4px; }
+.udrop-bottom-sticky { flex-shrink: 0; border-top: 1px solid rgba(0,255,255,0.12); background: rgba(6,18,40,0.98); }
+.udrop-top { padding: 18px 18px 14px; border-bottom: 1px solid rgba(0,255,255,0.12); display: flex; align-items: center; gap: 12px; }
+.udrop-avatar-lg { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: var(--dark); flex-shrink: 0; box-shadow: 0 0 14px rgba(0,255,255,0.4); }
+.udrop-name { font-size: 15px; font-weight: 600; color: white; line-height: 1.3; }
+.udrop-handle { font-size: 12px; color: rgba(0,255,255,0.6); margin-top: 2px; }
+.udrop-stats { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1px solid rgba(0,255,255,0.12); }
+.udrop-stat { text-align: center; padding: 12px 6px; border-right: 1px solid rgba(0,255,255,0.1); transition: background 0.2s; cursor: none; }
+.udrop-stat:last-child { border-right: none; }
+.udrop-stat:hover { background: rgba(0,255,255,0.1); }
+.udrop-stat-val { font-size: 17px; font-weight: 700; color: var(--cyan); transition: transform 0.2s; display: inline-block; }
+.udrop-stat-label { font-size: 10px; color: rgba(255,255,255,0.45); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+.udrop-links { padding: 8px 0; }
+.udrop-link { display: flex; align-items: center; gap: 10px; padding: 10px 18px; font-size: 13px; color: rgba(255,255,255,0.8); text-decoration: none; transition: background 0.2s, color 0.2s, padding-left 0.2s; cursor: none; }
+.udrop-link:hover { background: rgba(0,255,255,0.08); color: var(--cyan); padding-left: 22px; }
+.udrop-link-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.udrop-vip { margin: 12px; padding: 10px 14px; border-radius: 12px; background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(0,255,255,0.1)); border: 1px solid rgba(124,58,237,0.4); display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: none; transition: border-color 0.2s, box-shadow 0.2s; }
+.udrop-vip:hover { border-color: var(--cyan); box-shadow: 0 0 12px rgba(0,255,255,0.15); }
+.udrop-vip-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+.udrop-vip-text strong { color: var(--cyan); font-size: 13px; }
+.udrop-vip-btn { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; background: linear-gradient(45deg, var(--cyan), #7c3aed); color: var(--dark); white-space: nowrap; flex-shrink: 0; }
+.udrop-signout { padding: 10px 18px 14px; }
+.udrop-signout-btn { width: 100%; padding: 9px; border-radius: 12px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.08); color: rgba(255,100,100,0.85); font-size: 13px; font-family: "Poppins",sans-serif; cursor: none; transition: background 0.2s, color 0.2s, box-shadow 0.2s; }
+.udrop-signout-btn:hover { background: rgba(255,80,80,0.18); color: #ff6464; box-shadow: 0 0 10px rgba(255,80,80,0.2); }
+.udrop-guest { padding: 20px 18px; text-align: center; }
+.udrop-guest p { font-size: 13px; opacity: 0.7; margin-bottom: 12px; }
+.udrop-guest-btn { display: inline-block; padding: 9px 22px; border-radius: 20px; background: linear-gradient(45deg, var(--cyan), #7c3aed); color: var(--dark); font-weight: 700; font-size: 13px; cursor: none; border: none; font-family: "Poppins",sans-serif; transition: box-shadow 0.2s, transform 0.2s; }
+.udrop-guest-btn:hover { box-shadow: 0 0 15px var(--cyan); transform: scale(1.05); }
+ 
+/* ══════════════════════════════════════════
+   PAGE HERO
+══════════════════════════════════════════ */
+.page-hero {
+  text-align: center; padding: 72px 24px 56px;
+  position: relative; overflow: hidden; min-height: 260px;
+  animation: heroFadeUp 0.8s ease both;
+}
+.page-hero::before {
+  content: "";
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 700px; height: 300px;
+  background: radial-gradient(ellipse, rgba(0,255,255,0.07), transparent 70%);
+  pointer-events: none;
+}
+/* Rotating ring decoration */
+.page-hero::after {
+  content: "";
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 520px; height: 240px; border-radius: 50%;
+  border: 1px solid rgba(0,255,255,0.05);
+  animation: ringPulse 4s ease-in-out infinite; pointer-events: none;
+}
+@keyframes ringPulse {
+  0%,100% { opacity:0.3; transform:translate(-50%,-50%) scale(1); }
+  50%      { opacity:1;   transform:translate(-50%,-50%) scale(1.04); }
+}
+ 
+.hero-eyebrow {
+  display: inline-block; font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--cyan); opacity: 0.7; background: rgba(0,255,255,0.06);
+  border: 1px solid rgba(0,255,255,0.2); padding: 5px 20px; border-radius: 30px;
+  margin-bottom: 20px; position: relative; z-index: 1;
+}
+.page-hero h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(30px, 6vw, 62px); font-weight: 900; line-height: 1.08;
+  background: linear-gradient(135deg, #fff 20%, var(--cyan) 55%, #a78bfa 85%);
+  -webkit-background-clip: text; color: transparent; background-clip: text;
+  letter-spacing: -1px; margin-bottom: 14px;
+  position: relative; z-index: 1;
+}
+.hero-sub {
+  font-size: 16px; opacity: 0.55; max-width: 480px; margin: 0 auto;
+  line-height: 1.75; font-weight: 300; position: relative; z-index: 1;
+}
+ 
+/* Last updated badge */
+.updated-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 22px; padding: 7px 20px; border-radius: 30px;
+  background: rgba(0,255,255,0.05); border: 1px solid rgba(0,255,255,0.15);
+  font-size: 12px; color: rgba(255,255,255,0.5); position: relative; z-index: 1;
+}
+.updated-badge span { color: var(--cyan); font-weight: 600; }
+ 
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+/* ══════════════════════════════════════════
+   QUICK NAV (sticky TOC)
+══════════════════════════════════════════ */
+.toc-strip {
+  position: sticky; top: 62px; z-index: 400;
+  background: rgba(2,6,23,0.92); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,255,255,0.1);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+  padding: 10px 24px; overflow-x: auto;
+  scrollbar-width: none;
+}
+.toc-strip::-webkit-scrollbar { display: none; }
+.toc-inner {
+  display: flex; gap: 8px; justify-content: center;
+  max-width: 1100px; margin: 0 auto; min-width: max-content;
+}
+.toc-btn {
+  padding: 6px 16px; border-radius: 30px; font-size: 11px; font-weight: 600;
+  border: 1px solid rgba(0,255,255,0.15); background: rgba(0,255,255,0.04);
+  color: rgba(255,255,255,0.55); cursor: none; transition: all 0.25s;
+  white-space: nowrap; font-family: "Poppins",sans-serif;
+  letter-spacing: 0.3px;
+}
+.toc-btn:hover {
+  border-color: rgba(0,255,255,0.4); color: var(--cyan);
+  background: rgba(0,255,255,0.08); transform: translateY(-1px);
+}
+.toc-btn.active {
+  background: linear-gradient(45deg, var(--cyan), var(--purple));
+  border-color: transparent; color: var(--dark); font-weight: 700;
+}
+ 
+/* ══════════════════════════════════════════
+   MAIN CONTENT LAYOUT
+══════════════════════════════════════════ */
+.content-wrap {
+  max-width: 1100px; margin: 0 auto;
+  padding: 48px 24px 80px;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+ 
+/* ── SIDEBAR ── */
+.sidebar {
+  position: sticky; top: 122px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+ 
+.sidebar-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(0,255,255,0.1);
+  border-radius: 18px; padding: 20px; transition: border-color 0.3s;
+}
+.sidebar-card:hover { border-color: rgba(0,255,255,0.25); }
+ 
+.sidebar-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+ 
+.sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
+.sidebar-nav a {
+  display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+  border-radius: 10px; font-size: 13px; color: rgba(255,255,255,0.6);
+  text-decoration: none; transition: all 0.2s; cursor: none;
+  border: 1px solid transparent;
+}
+.sidebar-nav a:hover {
+  background: rgba(0,255,255,0.06); color: var(--cyan);
+  border-color: rgba(0,255,255,0.15); padding-left: 16px;
+}
+.sidebar-nav a.active {
+  background: rgba(0,255,255,0.08); color: var(--cyan);
+  border-color: rgba(0,255,255,0.2); font-weight: 600;
+}
+.sidebar-nav a .nav-num {
+  font-family: "Orbitron",sans-serif; font-size: 9px;
+  color: rgba(0,255,255,0.5); flex-shrink: 0; width: 18px;
+}
+ 
+.sidebar-info { font-size: 12px; line-height: 1.7; color: rgba(255,255,255,0.45); }
+.sidebar-info strong { color: rgba(0,255,255,0.7); display: block; margin-bottom: 4px; }
+ 
+.contact-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 16px; border-radius: 12px; font-size: 13px; font-weight: 600;
+  background: linear-gradient(45deg, rgba(0,255,255,0.15), rgba(124,58,237,0.15));
+  border: 1px solid rgba(0,255,255,0.25); color: var(--cyan);
+  text-decoration: none; cursor: none; transition: all 0.25s;
+}
+.contact-btn:hover {
+  background: linear-gradient(45deg, rgba(0,255,255,0.25), rgba(124,58,237,0.25));
+  box-shadow: 0 0 20px rgba(0,255,255,0.15); transform: translateY(-2px);
+}
+ 
+/* ── MAIN TERMS CONTENT ── */
+.terms-content { display: flex; flex-direction: column; gap: 0; }
+ 
+/* Glowing divider between header and content */
+.glow-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,255,0.3), rgba(124,58,237,0.2), transparent);
+  margin-bottom: 40px;
+}
+ 
+/* ── SECTION CARDS ── */
+.term-section {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px; padding: 32px 36px; margin-bottom: 20px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s;
+  /* scroll animation */
+  opacity: 0; transform: translateY(24px);
+  animation: sectionFadeIn 0.6s ease forwards;
+}
+.term-section:hover {
+  border-color: rgba(0,255,255,0.2);
+  box-shadow: 0 12px 40px rgba(0,255,255,0.06);
+}
+ 
+/* Subtle left accent bar on hover */
+.term-section::before {
+  content: "";
+  position: absolute; left: 0; top: 20px; bottom: 20px; width: 3px;
+  background: linear-gradient(to bottom, var(--cyan), var(--purple));
+  border-radius: 0 3px 3px 0;
+  transform: scaleY(0); transform-origin: center;
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+}
+.term-section:hover::before { transform: scaleY(1); }
+ 
+/* Corner glow */
+.term-section::after {
+  content: "";
+  position: absolute; top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(0,255,255,0.05), transparent 70%);
+  border-radius: 50%; pointer-events: none;
+  opacity: 0; transition: opacity 0.35s;
+}
+.term-section:hover::after { opacity: 1; }
+ 
+@keyframes sectionFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+ 
+/* Staggered animation delays */
+.term-section:nth-child(1)  { animation-delay: 0.05s; }
+.term-section:nth-child(2)  { animation-delay: 0.10s; }
+.term-section:nth-child(3)  { animation-delay: 0.15s; }
+.term-section:nth-child(4)  { animation-delay: 0.20s; }
+.term-section:nth-child(5)  { animation-delay: 0.25s; }
+.term-section:nth-child(6)  { animation-delay: 0.30s; }
+.term-section:nth-child(7)  { animation-delay: 0.35s; }
+.term-section:nth-child(8)  { animation-delay: 0.40s; }
+.term-section:nth-child(9)  { animation-delay: 0.45s; }
+.term-section:nth-child(10) { animation-delay: 0.50s; }
+ 
+/* Section header row */
+.term-header {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 18px;
+}
+.term-icon {
+  font-size: 28px; flex-shrink: 0; margin-top: 2px;
+  filter: drop-shadow(0 0 8px rgba(0,255,255,0.4));
+  transition: transform 0.3s;
+}
+.term-section:hover .term-icon { transform: scale(1.15) rotate(-5deg); }
+ 
+.term-title-wrap { flex: 1; }
+.term-num {
+  font-family: "Orbitron",sans-serif; font-size: 9px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: rgba(0,255,255,0.5);
+  margin-bottom: 4px; display: block;
+}
+.term-title {
+  font-family: "Orbitron", sans-serif; font-size: 16px; font-weight: 700;
+  background: linear-gradient(90deg, white, var(--cyan));
+  -webkit-background-clip: text; color: transparent; line-height: 1.3; background-clip: text;
+}
+ 
+.term-body { font-size: 14px; line-height: 1.85; color: rgba(255,255,255,0.72); }
+ 
+/* Bullet lists inside terms */
+.term-list {
+  list-style: none; margin: 14px 0 0; display: flex; flex-direction: column; gap: 8px;
+}
+.term-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.7;
+}
+.term-list li::before {
+  content: "▸"; color: var(--cyan); font-size: 12px;
+  flex-shrink: 0; margin-top: 3px;
+}
+ 
+/* Highlight boxes */
+.term-highlight {
+  margin-top: 16px; padding: 14px 18px; border-radius: 12px;
+  background: rgba(0,255,255,0.04); border: 1px solid rgba(0,255,255,0.14);
+  font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.7;
+}
+.term-highlight strong { color: var(--cyan); }
+ 
+/* Warning box */
+.term-warning {
+  margin-top: 16px; padding: 14px 18px; border-radius: 12px;
+  background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2);
+  font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.7;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.term-warning-icon { font-size: 16px; flex-shrink: 0; }
+ 
+/* ── CONTACT CTA AT BOTTOM ── */
+.contact-cta {
+  margin-top: 12px; padding: 40px 36px; border-radius: 24px;
+  background: linear-gradient(135deg, rgba(0,255,255,0.06), rgba(124,58,237,0.08));
+  border: 1px solid rgba(0,255,255,0.18);
+  text-align: center; position: relative; overflow: hidden;
+}
+.contact-cta::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(0,255,255,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0,255,255,0.03) 1px, transparent 1px);
+  background-size: 32px 32px; pointer-events: none;
+}
+.contact-cta-title {
+  font-family: "Orbitron",sans-serif; font-size: 20px; font-weight: 700;
+  background: linear-gradient(90deg, white, var(--cyan));
+  -webkit-background-clip: text; color: transparent; background-clip: text;
+  margin-bottom: 10px; position: relative;
+}
+.contact-cta-sub {
+  font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 22px;
+  position: relative; line-height: 1.6;
+}
+.contact-cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 30px; border-radius: 50px;
+  background: linear-gradient(45deg, var(--cyan), var(--purple));
+  color: var(--dark); font-weight: 700; font-size: 14px;
+  border: none; cursor: none; font-family: "Poppins",sans-serif;
+  transition: transform 0.3s, box-shadow 0.3s; position: relative;
+  text-decoration: none;
+}
+.contact-cta-btn:hover { transform: scale(1.06) translateY(-2px); box-shadow: 0 0 40px rgba(0,255,255,0.4); }
+ 
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+.footer { margin-top: 80px; padding: 40px 24px 20px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(0,255,255,0.08); }
+.footer-container { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 30px; }
+.footer-brand h2 { font-family: "Orbitron",sans-serif; color: var(--cyan); margin-bottom: 10px; font-size: 20px; }
+.footer-brand p { font-size: 14px; opacity: 0.6; }
+.footer-links h4 { margin-bottom: 10px; color: var(--cyan); font-size: 13px; }
+.footer-links a { display: block; text-decoration: none; color: rgba(255,255,255,0.6); margin-bottom: 7px; transition: color 0.2s, padding-left 0.2s; font-size: 13px; cursor: none; }
+.footer-links a:hover { color: var(--cyan); padding-left: 4px; }
+.footer-bottom { text-align: center; margin-top: 30px; font-size: 12px; opacity: 0.5; }
+.footer-note { font-size: 11px; margin-top: 8px; }
+.footer a { color: var(--cyan); text-decoration: none; }
+ 
+/* Toast */
+#toast {
+  position: fixed; bottom: 30px; right: 30px;
+  background: rgba(4,12,32,0.97); border: 1px solid rgba(0,255,255,0.3);
+  color: white; padding: 14px 24px; border-radius: 16px; font-size: 14px;
+  box-shadow: 0 0 30px rgba(0,255,255,0.15); z-index: 99999;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.35s, transform 0.35s; pointer-events: none;
+  backdrop-filter: blur(20px); max-width: 300px;
+}
+#toast.show { opacity: 1; transform: translateY(0); }
+ 
+/* Cookie */
+#cookieBox {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: rgba(4,12,32,0.97); padding: 18px 24px; border-radius: 18px;
+  box-shadow: 0 0 40px rgba(0,255,255,0.2); border: 1px solid rgba(0,255,255,0.2);
+  display: none; z-index: 888; max-width: 92%; text-align: center;
+  backdrop-filter: blur(20px);
+}
+ 
+/* Back to top */
+#backToTop {
+  position: fixed; bottom: 32px; left: 32px;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(0,255,255,0.1); border: 1px solid rgba(0,255,255,0.3);
+  color: var(--cyan); font-size: 18px; cursor: none;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.3s, transform 0.3s, background 0.3s, box-shadow 0.3s;
+  z-index: 888; opacity: 0; transform: translateY(16px);
+  backdrop-filter: blur(10px);
+}
+#backToTop.visible { opacity: 1; transform: translateY(0); }
+#backToTop:hover { background: rgba(0,255,255,0.2); box-shadow: 0 0 20px rgba(0,255,255,0.3); transform: scale(1.1); }
+ 
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.3); border-radius: 6px; }
+ 
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .content-wrap { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+}
+@media (max-width: 768px) {
+  header { padding: 14px 20px; }
+  header.scrolled { padding: 10px 20px; }
+  .page-hero { padding: 50px 16px 40px; }
+  .term-section { padding: 24px 20px; }
+  .contact-cta { padding: 28px 20px; }
+  .content-wrap { padding: 32px 16px 60px; }
+}
+</style>
+</head>
+ 
+<body>
+ 
+<div id="cursor"></div>
+<div id="cursorRing"></div>
+<canvas id="particles"></canvas>
+ 
+<!-- FULLSCREEN MENU -->
+<div id="menu" class="full-menu" onclick="outsideMenuClick(event)">
+  <a><div onclick="toggleMenu()" style="cursor:none;font-size:24px;margin-bottom:10px;">✖</div></a>
+  <a href="homepageblog.html">Home</a>
+  <a href="blog,html.html">Explore</a>
+  <a href="shows.html">A–Z List</a>
+  <a href="binge.html">Binge Calculator</a>
+  <a href="contactus.html">Contact</a>
+  <a href="about.html">About</a>
+</div>
+ 
+<!-- HEADER -->
+<header id="mainHeader">
+  <h1><a href="homepageblog.html">🧠 AnimeIQ</a></h1>
+ 
+  <div class="user-profile-wrapper">
+    <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+ 
+    <div class="user-avatar-wrap">
+      <div class="user-avatar" id="userAvatar" onclick="toggleDropdown(event)">?</div>
+      <div class="online-dot" id="onlineDot"></div>
+    </div>
+ 
+    <div class="user-dropdown" id="userDropdown">
+      <!-- LOGGED IN -->
+      <div id="dropLoggedIn" style="display:none;display:contents;">
+        <div class="udrop-sticky">
+          <div class="udrop-top">
+            <div class="udrop-avatar-lg" id="dropAvatarLg">?</div>
+            <div>
+              <div class="udrop-name" id="dropName">Anime Fan</div>
+              <div class="udrop-handle" id="dropHandle">@user · AnimeIQ</div>
+            </div>
+          </div>
+          <div class="udrop-stats">
+            <div class="udrop-stat">
+              <div class="udrop-stat-val" id="statWatchlist">0</div>
+              <div class="udrop-stat-label">Watchlist 📋</div>
+            </div>
+            <div class="udrop-stat">
+              <div class="udrop-stat-val" id="statFavorites">0</div>
+              <div class="udrop-stat-label">Favourites ⭐</div>
+            </div>
+            <div class="udrop-stat">
+              <div class="udrop-stat-val" id="statSearches">0</div>
+              <div class="udrop-stat-label">Searches 🔍</div>
+            </div>
+          </div>
+        </div>
+        <div class="udrop-scroll">
+          <div class="udrop-links">
+            <a class="udrop-link" href="homepageblog.html"><span class="udrop-link-icon">🏠</span> Home</a>
+            <a class="udrop-link" href="blog,html.html"><span class="udrop-link-icon">🔍</span> Explore Anime</a>
+            <a class="udrop-link" href="shows.html"><span class="udrop-link-icon">📋</span> A–Z List</a>
+            <a class="udrop-link" href="binge.html"><span class="udrop-link-icon">⚡</span> Binge Calculator</a>
+            <a class="udrop-link" href="about.html"><span class="udrop-link-icon">ℹ️</span> About AnimeIQ</a>
+            <a class="udrop-link" href="contactus.html"><span class="udrop-link-icon">✉️</span> Contact</a>
+            <a class="udrop-link" href="privacy.html"><span class="udrop-link-icon">🔒</span> Privacy Policy</a>
+          </div>
+          <div class="udrop-vip" onclick="alert('AnimeIQ Pro coming soon! 🚀')">
+            <div class="udrop-vip-text"><strong>AnimeIQ Pro</strong><br>Ad-free • Watchlist sync • More</div>
+            <div class="udrop-vip-btn">Coming Soon</div>
+          </div>
+        </div>
+        <div class="udrop-bottom-sticky">
+          <div class="udrop-signout">
+            <button class="udrop-signout-btn" onclick="handleSignOut()">Sign Out</button>
+          </div>
+        </div>
+      </div>
+      <!-- GUEST -->
+      <div id="dropGuest">
+        <div class="udrop-guest">
+          <p>Sign in to save your watchlist &amp; favourites across devices.</p>
+          <button class="udrop-guest-btn" onclick="window.location.href='homepageblog.html'">Sign In / Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+ 
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <span class="hero-eyebrow">⚖️ Legal Information</span>
+  <h2>Terms &amp;<br>Conditions</h2>
+  <p class="hero-sub">Please read these terms carefully before using AnimeIQ. By accessing our platform, you agree to be bound by these terms.</p>
+  <div class="updated-badge">
+    📅 Last Updated: <span>January 2026</span>
+  </div>
+</section>
+ 
+<!-- STICKY TOC STRIP -->
+<div class="toc-strip">
+  <div class="toc-inner">
+    <button class="toc-btn" onclick="scrollToSection('s1')">Use of Website</button>
+    <button class="toc-btn" onclick="scrollToSection('s2')">Accounts</button>
+    <button class="toc-btn" onclick="scrollToSection('s3')">Intellectual Property</button>
+    <button class="toc-btn" onclick="scrollToSection('s4')">Anime Data</button>
+    <button class="toc-btn" onclick="scrollToSection('s5')">User Content</button>
+    <button class="toc-btn" onclick="scrollToSection('s6')">Prohibited Conduct</button>
+    <button class="toc-btn" onclick="scrollToSection('s7')">Liability</button>
+    <button class="toc-btn" onclick="scrollToSection('s8')">Privacy</button>
+    <button class="toc-btn" onclick="scrollToSection('s9')">Changes</button>
+    <button class="toc-btn" onclick="scrollToSection('s10')">Contact</button>
+  </div>
+</div>
+ 
+<!-- MAIN CONTENT -->
+<div class="content-wrap">
+ 
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">⚖️ Quick Nav</div>
+      <nav class="sidebar-nav" id="sidebarNav">
+        <a href="#s1" onclick="scrollToSection('s1'); return false;"><span class="nav-num">01</span> Use of Website</a>
+        <a href="#s2" onclick="scrollToSection('s2'); return false;"><span class="nav-num">02</span> Accounts</a>
+        <a href="#s3" onclick="scrollToSection('s3'); return false;"><span class="nav-num">03</span> Intellectual Property</a>
+        <a href="#s4" onclick="scrollToSection('s4'); return false;"><span class="nav-num">04</span> Anime Data</a>
+        <a href="#s5" onclick="scrollToSection('s5'); return false;"><span class="nav-num">05</span> User Content</a>
+        <a href="#s6" onclick="scrollToSection('s6'); return false;"><span class="nav-num">06</span> Prohibited Conduct</a>
+        <a href="#s7" onclick="scrollToSection('s7'); return false;"><span class="nav-num">07</span> Limitation of Liability</a>
+        <a href="#s8" onclick="scrollToSection('s8'); return false;"><span class="nav-num">08</span> Privacy &amp; Cookies</a>
+        <a href="#s9" onclick="scrollToSection('s9'); return false;"><span class="nav-num">09</span> Changes to Terms</a>
+        <a href="#s10" onclick="scrollToSection('s10'); return false;"><span class="nav-num">10</span> Contact Us</a>
+      </nav>
+    </div>
+ 
+    <div class="sidebar-card">
+      <div class="sidebar-title">ℹ️ About These Terms</div>
+      <p class="sidebar-info">
+        <strong>Effective Since</strong> January 2026
+        <br><br>
+        These terms govern your use of AnimeIQ. We've tried to make them clear and fair.
+        <br><br>
+        If anything is unclear, please reach out — we're always happy to help.
+      </p>
+    </div>
+ 
+    <div class="sidebar-card">
+      <div class="sidebar-title">📋 Related</div>
+      <div class="sidebar-nav">
+        <a href="privacy.html"><span class="nav-num">🔒</span> Privacy Policy</a>
+        <a href="contactus.html"><span class="nav-num">✉️</span> Contact Us</a>
+        <a href="about.html"><span class="nav-num">ℹ️</span> About AnimeIQ</a>
+      </div>
+    </div>
+ 
+    <a href="contactus.html" class="contact-btn">
+      ✉️ Have a Question?
+    </a>
+  </aside>
+ 
+  <!-- TERMS SECTIONS -->
+  <main class="terms-content">
+    <div class="glow-divider"></div>
+ 
+    <div class="term-section" id="s1">
+      <div class="term-header">
+        <span class="term-icon">🌐</span>
+        <div class="term-title-wrap">
+          <span class="term-num">Section 01</span>
+          <div class="term-title">Use of Website</div>
+        </div>
+      </div>
+      <p class="term-body">Welcome to AnimeIQ. By accessing and using our website, you confirm that you are at least 13 years of age and agree to comply with these Terms and Conditions. If you do not agree with any part of these terms, you must not use our platform.</p>
+      <ul class="term-list">
+        <li>You agree to use AnimeIQ for lawful, personal, and non-commercial purposes only.</li>
+        <li>You must not misuse the platform in any way that disrupts its availability to other users.</li>
+        <li>You are responsible for ensuring your use complies with all applicable local laws.</li>
+        <li>We reserve the right to restrict access to any user who violates these terms.</li>
+      </ul>
+      <div class="term-highlight">
+        <strong>In simple terms:</strong> Use AnimeIQ for what it's designed for — discovering anime, tracking episodes, and skipping fillers. Don't try to break it or abuse it.
+      </div>
+    </div>
+ 
+    <div class="term-section" id="s2">
+      <div class="term-header">
+        <span class="term-icon">👤</span>
+        <div class="term-title-wrap">
+          <span class="term-num">Section 02</span>
+          <div class="term-title">User Accounts</div>
+        </div>
+      </div>
+      <p class="term-body">Some features of AnimeIQ require you to create an account. When you register, you agree to provide accurate and complete information and to keep your credentials secure.</p>
+      <ul class="term-list">
+        <li>You are responsible for all activity that occurs under your account.</li>
+        <li>You must not share your account credentials with any other person.</li>
+        <li>If you suspect unauthorised access to your account, notify us immediately.</li>
+        <li>We reserve the right to suspend or terminate accounts that violate our policies.</li>
+        <li>Account data including watchlists and favourites may be stored locally or on our servers.</li>
+      </ul>
+      <div class="term-highlight">
+        <strong>Account security tip:</strong> Use a strong, unique password for your AnimeIQ account. We will never ask for your password via email or chat.
+      </div>
+    </div>
+ 
+    <div class="term-section" id="s3">
+      <div class="term-header">
+        <span class="term-icon">🎨</span>
+        <div class="term-title-wrap">
+          <span class="term-num">Section 03</span>
+          <div class="term-title">Intellectual Property</div>
+        </div>
+      </div>
+      <p class="term-body">All content on AnimeIQ — including but not limited to text, design, interface, branding, logos, code, and graphics — is the intellectual property of AnimeIQ unless otherwise stated.</p>
+      <ul class="term-list">
+        <li>You may not reproduce, duplicate, copy, or exploit any portion of the website without our express written permission.</li>
+        <li>Anime artwork, character images, and related media remain the property of their respective creators and studios.</li>
+        <li>The AnimeIQ name, logo, and brand identity are protected trademarks.</li>
+        <li>Our code and design systems may not be reverse-engineered or replicated.</li>
+      </ul>
+      <div class="term-warning">
+        <span class="term-warning-icon">⚠️</span>
+        <span>Anime titles, storylines, characters, and related content belong to their respective studios and publishers. AnimeIQ is an independent fan platform and is not affiliated with any anime studio or publisher.</span>
+      </div>
+    </div>
+ 
+    <div class="term-section" id="s4">
+      <div class="term-header">
+        <span class="term-icon">📊</span>
+        <div class="term-title-wrap">
+          <span class="term-num">Section 04</span>
+          <div class="term-title">Anime Data &amp; Third-Party Sources</div>
+        </div>
+      </div>
+      <p class="term-body">AnimeIQ sources its anime data, episode information, scores, and related metadata from third-party APIs including but not limited to the Jikan API (MyAnimeList) and AnimeFillerList.com.</p>
+      <ul class="term-list">
+        <li>We do not guarantee the accuracy, completeness, or timeliness of data obtained from external sources.</li>
+        <li>Filler classifications are provided for guidance only and may not be exhaustive or 100% accurate.</li>
+        <li>Scores and rankings reflect third-party community data and may change over time.</li>
+        <li>We are not responsible for any inaccuracies originating from these external data providers.</li>
+      </ul>
+      <div class="term-highlight">
+        <strong>Data attribution:</strong> Episode and anime data is powered by the <a href="https://jikan.moe" target="_blank" rel="noopener" style="color:var(--cyan);">Jikan API</a>. AnimeIQ is not affiliated with MyAnimeList or any of its parent organisations.
+      </div>
+    </div>
+ 
+    <div class="term-section" id="s5">
+      <div class="term-header">
+        <span class="term-icon">💬</span>
+        <div class="term-title-wrap">
+          <span class="term-num">Section 05</span>
+          <div class="term-title">User Content</div>
+        </div>
+      </div>
+      <p class="term-body">Users may interact with AnimeIQ through features such as watchlists, favourites, and other personalisation tools. By using these features, you grant us a limited licence to store and display your content on the platform.</p>
+      <ul class="term-list">
+        <li>You retain ownership of any personal lists or data you create on AnimeIQ.</li>
+        <li>You must not upload, post, or share content that is illegal, offensive, or violates any third-party rights.</li>
+        <li>We reserve the right to remove any user-generated content that violates these terms.</li>
+      </ul>
+    </div>
+ 
+    <div class="term-section" id="s6">
+      <div class="term-header">
+        <span class="term-icon">🚫</span>
+        <div class="term-title-wrap">
+          <span class="term-num">Section 06</span>
+          <div class="term-title">Prohibited Conduct</div>
+        </div>
+      </div>
+      <p class="term-body">To keep AnimeIQ safe and enjoyable for everyone, certain behaviours are strictly prohibited when using the platform.</p>
+      <ul class="term-list">
+        <li>Attempting to gain unauthorised access to the website's backend systems or databases.</li>
+        <li>Using automated scripts, bots, or scrapers to harvest data from AnimeIQ at scale.</li>
+        <li>Attempting to overload, disrupt, or attack the platform (DDoS or similar attacks).</li>
+        <li>Impersonating another person or entity.</li>
+        <li>Using the platform to distribute spam, malware, or malicious content.</li>
+        <li>Circumventing any security or access restriction measures.</li>
+      </ul>
+      <div class="term-warning">
+        <span class="term-warning-icon">⚠️</span>
+        <span>Violations of this section may result in immediate permanent account termination and may be reported to relevant authorities where required by law.</span>
+      </div>
+    </div>
+ 
+    <div class="term-section" id="s7">
+      <div class="term-header">
+        <span class="term-icon">⚖️</span>
+        <div class="term-title-wrap">
+          <span class="term-num">Section 07</span>
+          <div class="term-title">Limitation of Liability</div>
+        </div>
+      </div>
+      <p class="term-body">AnimeIQ is provided on an "as is" and "as available" basis. To the maximum extent permitted by law, we disclaim all warranties of any kind, whether express or implied.</p>
+      <ul class="term-list">
+        <li>We are not liable for any direct, indirect, incidental, or consequential damages arising from your use of the platform.</li>
+        <li>We do not guarantee uninterrupted or error-free access to the website.</li>
+        <li>We are not responsible for data loss resulting from technical failures or user error.</li>
+        <li>Our total liability to you for any claim shall not exceed the amount you have paid us in the past 12 months.</li>
+      </ul>
+      <div class="term-highlight">
+        <strong>In plain language:</strong> We do our best to keep AnimeIQ running and accurate, but we can't be held responsible if something goes wrong. Use the platform at your own risk.
+      </div>
+    </div>
+ 
+    <div class="term-section" id="s8">
+      <div class="term-header">
+        <span class="term-icon">🔒</span>
+        <div class="term-title-wrap">
+          <span class="term-num">Section 08</span>
+          <div class="term-title">Privacy &amp; Cookies</div>
+        </div>
+      </div>
+      <p class="term-body">Your privacy is important to us. By using AnimeIQ, you acknowledge and consent to our data practices as described in our Privacy Policy.</p>
+      <ul class="term-list">
+        <li>We collect minimal data necessary to provide and improve the platform.</li>
+        <li>We use cookies and similar tracking technologies to enhance your experience.</li>
+        <li>Your watchlist and favourites data is stored locally using browser storage technologies.</li>
+        <li>We do not sell your personal data to third parties.</li>
+        <li>For full details, please read our <a href="privacy.html" style="color:var(--cyan);text-decoration:none;">Privacy Policy</a>.</li>
+      </ul>
+    </div>
+ 
+    <div class="term-section" id="s9">
+      <div class="term-header">
+        <span class="term-icon">📝</span>
+        <div class="term-title-wrap">
+          <span class="term-num">Section 09</span>
+          <div class="term-title">Changes to These Terms</div>
+        </div>
+      </div>
+      <p class="term-body">We reserve the right to update or modify these Terms and Conditions at any time. Changes will be effective immediately upon posting to the website.</p>
+      <ul class="term-list">
+        <li>We will update the "Last Updated" date at the top of this page when changes are made.</li>
+        <li>We may notify users of significant changes via email or a notice on the website.</li>
+        <li>Your continued use of AnimeIQ after changes are posted constitutes acceptance of the revised terms.</li>
+        <li>We encourage you to review these terms periodically to stay informed.</li>
+      </ul>
+      <div class="term-highlight">
+        <strong>Stay informed:</strong> Bookmark this page and check back occasionally. We'll always be transparent about what has changed and why.
+      </div>
+    </div>
+ 
+    <div class="term-section" id="s10">
+      <div class="term-header">
+        <span class="term-icon">✉️</span>
+        <div class="term-title-wrap">
+          <span class="term-num">Section 10</span>
+          <div class="term-title">Contact Us</div>
+        </div>
+      </div>
+      <p class="term-body">If you have any questions, concerns, or requests regarding these Terms and Conditions, our team is here to help. We aim to respond to all enquiries within 48 hours.</p>
+      <ul class="term-list">
+        <li>Email: <a href="mailto:support@animeiq.com" style="color:var(--cyan);text-decoration:none;">support@animeiq.com</a></li>
+        <li>Contact form: <a href="contactus.html" style="color:var(--cyan);text-decoration:none;">animeiq.com/contactus</a></li>
+        <li>For privacy-related requests, please reference "Privacy Request" in your subject line.</li>
+        <li>Legal enquiries should reference "Legal Notice" in your subject line.</li>
+      </ul>
+    </div>
+ 
+    <!-- Bottom CTA -->
+    <div class="contact-cta">
+      <div class="contact-cta-title">Still Have Questions?</div>
+      <div class="contact-cta-sub">Our team is always happy to clarify anything about our terms or your rights as a user.</div>
+      <a href="contactus.html" class="contact-cta-btn">✉️ Contact AnimeIQ</a>
+    </div>
+ 
+  </main>
+</div>
+ 
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <h2>🧠 AnimeIQ</h2>
+      <p>Discover anime, explore details, and skip fillers effortlessly.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="homepageblog.html">Home</a>
+      <a href="blog,html.html">Explore Anime</a>
+      <a href="shows.html">A–Z List</a>
+      <a href="binge.html">Binge Calculator</a>
+      <a href="about.html">About</a>
+      <a href="contactus.html">Contact</a>
+    </div>
+    <div class="footer-links">
+      <h4>Legal</h4>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="termsandcondition.html">Terms &amp; Conditions</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 AnimeIQ. All rights reserved. Built with ❤️ for anime fans.</p>
+    <p class="footer-note">Data provided by <a href="https://jikan.moe" target="_blank" rel="noopener">Jikan API</a> (MyAnimeList). AnimeIQ is not affiliated with MyAnimeList.</p>
+  </div>
+</footer>
+ 
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+<div id="toast"></div>
+ 
+<!-- COOKIE BOX -->
+<div id="cookieBox">
+  <p style="font-size:13px;opacity:0.8;margin:0 0 14px;line-height:1.6;">🍪 We use cookies to improve your experience. By using AnimeIQ, you agree to our <a href="privacy.html" style="color:var(--cyan);">Privacy Policy</a>.</p>
+  <button onclick="acceptCookies()" style="padding:9px 22px;border:none;border-radius:12px;background:linear-gradient(45deg,var(--cyan),var(--purple));color:#020617;cursor:none;font-family:'Poppins',sans-serif;font-weight:700;">Accept &amp; Continue</button>
+</div>
+ 
+<!-- FIREBASE AUTH -->
+<script type="module">
+  import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+ 
+  const app  = initializeApp({
+    apiKey:            "AIzaSyDq4YCBixnCnIeGKzEegq_63leL_oOsWtw",
+    authDomain:        "animeiq-24614.firebaseapp.com",
+    projectId:         "animeiq-24614",
+    storageBucket:     "animeiq-24614.appspot.com",
+    messagingSenderId: "690143889231",
+    appId:             "1:690143889231:web:4d7429ab545674b864a73a",
+    measurementId:     "G-2732CDYMZ6"
+  });
+  const auth = getAuth(app);
+ 
+  function getInitials(user) {
+    if (user.displayName) return user.displayName.split(" ").map(w=>w[0].toUpperCase()).join("").slice(0,2);
+    return user.email.slice(0,2).toUpperCase();
+  }
+ 
+  function refreshCounts(uid) {
+    const wl  = JSON.parse(localStorage.getItem(`aiq_${uid}_watchlist`)  || "[]");
+    const fav = JSON.parse(localStorage.getItem(`aiq_${uid}_favourites`) || "[]");
+    const sr  = parseInt(localStorage.getItem(`aiq_${uid}_searches`)     || "0");
+    document.getElementById("statWatchlist").textContent = wl.length;
+    document.getElementById("statFavorites").textContent = fav.length;
+    document.getElementById("statSearches").textContent  = sr;
+  }
+ 
+  window._currentUID = null;
+ 
+  onAuthStateChanged(auth, (user) => {
+    const li = document.getElementById("dropLoggedIn");
+    const g  = document.getElementById("dropGuest");
+    if (user) {
+      window._currentUID = user.uid;
+      const ini  = getInitials(user);
+      const name = user.displayName || user.email.split("@")[0];
+      const hndl = user.email.split("@")[0].toLowerCase();
+      document.getElementById("userAvatar").textContent   = ini;
+      document.getElementById("onlineDot").style.display  = "block";
+      document.getElementById("dropAvatarLg").textContent = ini;
+      document.getElementById("dropName").textContent     = name;
+      document.getElementById("dropHandle").textContent   = `@${hndl} · AnimeIQ`;
+      li.style.display = "contents"; g.style.display = "none";
+      refreshCounts(user.uid);
+    } else {
+      window._currentUID = null;
+      document.getElementById("userAvatar").textContent  = "?";
+      document.getElementById("onlineDot").style.display = "none";
+      li.style.display = "none"; g.style.display = "block";
+    }
+  });
+ 
+  window._firebaseSignOut = async () => {
+    await signOut(auth);
+    window.location.href = "homepageblog.html";
+  };
+</script>
+ 
+<!-- MAIN SCRIPT -->
+<script>
+  /* ── Toast ── */
+  function showToast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg; t.classList.add("show");
+    clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("show"), 2800);
+  }
+ 
+  /* ── Cookie ── */
+  function acceptCookies() {
+    localStorage.setItem("cookiesAccepted","true");
+    document.getElementById("cookieBox").style.display = "none";
+  }
+  if (!localStorage.getItem("cookiesAccepted")) {
+    document.getElementById("cookieBox").style.display = "block";
+  }
+ 
+  /* ── Menu ── */
+  function toggleMenu() {
+    document.getElementById("menu").classList.toggle("active");
+    document.getElementById("menuBtn").classList.toggle("active");
+    document.body.classList.toggle("menu-open");
+  }
+  function outsideMenuClick(e) {
+    if (e.target.id === "menu") {
+      document.getElementById("menu").classList.remove("active");
+      document.getElementById("menuBtn").classList.remove("active");
+      document.body.classList.remove("menu-open");
+    }
+  }
+  document.querySelectorAll(".full-menu a").forEach(a => a.addEventListener("click", () => {
+    document.getElementById("menu").classList.remove("active");
+    document.getElementById("menuBtn").classList.remove("active");
+    document.body.classList.remove("menu-open");
+  }));
+ 
+  /* ── Dropdown ── */
+  function toggleDropdown(e) { e.stopPropagation(); document.getElementById("userDropdown").classList.toggle("open"); }
+  document.addEventListener("click", e => {
+    const d = document.getElementById("userDropdown"), a = document.getElementById("userAvatar");
+    if (!d.contains(e.target) && e.target !== a) d.classList.remove("open");
+  });
+ 
+  async function handleSignOut() {
+    if (confirm("Sign out of AnimeIQ?")) {
+      document.getElementById("userDropdown").classList.remove("open");
+      showToast("👋 Signing out…");
+      await window._firebaseSignOut();
+    }
+  }
+ 
+  /* ── Scroll to section ── */
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const offset = el.getBoundingClientRect().top + window.scrollY - 130;
+    window.scrollTo({ top: offset, behavior: "smooth" });
+  }
+ 
+  /* ── Scroll spy — highlight TOC and sidebar on scroll ── */
+  const sectionIds = ["s1","s2","s3","s4","s5","s6","s7","s8","s9","s10"];
+  const tocBtns    = document.querySelectorAll(".toc-btn");
+  const sideLinks  = document.querySelectorAll("#sidebarNav a");
+ 
+  function updateActive(id) {
+    const idx = sectionIds.indexOf(id);
+    if (idx === -1) return;
+    tocBtns.forEach((b,i)  => b.classList.toggle("active", i === idx));
+    sideLinks.forEach((a,i) => a.classList.toggle("active", i === idx));
+  }
+ 
+  const spyObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) updateActive(e.target.id); });
+  }, { rootMargin: "-25% 0px -55% 0px" });
+ 
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) spyObs.observe(el);
+  });
+ 
+  /* ── Header shrink + back-to-top ── */
+  const mainHeader = document.getElementById("mainHeader");
+  const btt        = document.getElementById("backToTop");
+  let   _raf       = false;
+  window.addEventListener("scroll", () => {
+    if (_raf) return; _raf = true;
+    requestAnimationFrame(() => {
+      mainHeader.classList.toggle("scrolled", window.scrollY > 60);
+      btt.classList.toggle("visible", window.scrollY > 400);
+      _raf = false;
+    });
+  }, { passive: true });
+ 
+  /* ── Keyboard ESC ── */
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") {
+      document.getElementById("menu").classList.remove("active");
+      document.getElementById("menuBtn").classList.remove("active");
+      document.body.classList.remove("menu-open");
+    }
+  });
+ 
+  /* ══════════════════════════════════════════
+     GOD MODE CURSOR — always visible on desktop
+     Uses translate3d for GPU compositing (zero layout cost)
+  ══════════════════════════════════════════ */
+  const cursor    = document.getElementById("cursor");
+  const cursorRing= document.getElementById("cursorRing");
+  const isTouch   = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+ 
+  if (isTouch) {
+    cursor.style.display      = "none";
+    cursorRing.style.display  = "none";
+    document.body.style.cursor = "auto";
+  } else {
+    let mx=0, my=0, rx=0, ry=0;
+    document.addEventListener("mousemove", e => { mx=e.clientX; my=e.clientY; }, { passive: true });
+ 
+    (function animCursor() {
+      cursor.style.transform     = `translate3d(${mx}px,${my}px,0) translate(-50%,-50%)`;
+      rx += (mx-rx)*0.14; ry += (my-ry)*0.14;
+      cursorRing.style.transform = `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%)`;
+      requestAnimationFrame(animCursor);
+    })();
+ 
+    function addHover(selector) {
+      document.querySelectorAll(selector).forEach(el => {
+        el.addEventListener("mouseenter", () => {
+          cursor.style.opacity = "0.6";
+          cursorRing.style.transform = `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%) scale(1.45)`;
+          cursorRing.style.borderColor = "rgba(0,255,255,0.8)";
+        }, { passive: true });
+        el.addEventListener("mouseleave", () => {
+          cursor.style.opacity = "1";
+          cursorRing.style.borderColor = "rgba(0,255,255,0.5)";
+        }, { passive: true });
+      });
+    }
+    addHover("a, button, .toc-btn, .sidebar-nav a, .term-section, .contact-btn, .contact-cta-btn, .udrop-link, .udrop-guest-btn, .udrop-signout-btn, .menu-btn, .user-avatar, #backToTop");
+  }
+ 
+  /* ══════════════════════════════════════════
+     PARTICLES
+  ══════════════════════════════════════════ */
+  if (!isTouch) {
+    const canvas = document.getElementById("particles");
+    const ctx    = canvas.getContext("2d");
+    let W, H, rafId;
+ 
+    function resizeCanvas() { W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas, { passive: true });
+ 
+    const pts = Array.from({length:40}, () => ({
+      x: Math.random()*1920, y: Math.random()*1080,
+      r: Math.random()*1.3+0.2,
+      vx: (Math.random()-0.5)*0.22, vy: (Math.random()-0.5)*0.22,
+      alpha: Math.random()*0.25+0.06
+    }));
+ 
+    function draw() {
+      ctx.clearRect(0,0,W,H);
+      pts.forEach(p => {
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+        if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(0,255,255,${p.alpha})`; ctx.fill();
+      });
+      rafId = requestAnimationFrame(draw);
+    }
+ 
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) cancelAnimationFrame(rafId);
+      else draw();
+    }, { passive: true });
+ 
+    draw();
+  }
+</script>
+ 
+</body>
+</html>
+ 

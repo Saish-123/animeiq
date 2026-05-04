@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+<!-- ═══════════════════════════════════════════
+     SEO META — AdSense / Ezoic optimised
+═══════════════════════════════════════════ -->
+<meta name="description" content="Contact AnimeIQ — Send us your feedback, bug reports, collaboration ideas, or questions about our anime binge calculator and episode guide. We read every message.">
+<meta name="keywords" content="contact AnimeIQ, anime feedback, anime site support, AnimeIQ email, anime binge calculator support, anime IQ contact form">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AnimeIQ">
+<meta property="og:title" content="Contact Us | AnimeIQ — Anime Binge Calculator & Guide">
+<meta property="og:description" content="Have a question, idea, or bug report? Reach the AnimeIQ team — we respond to every message.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contact AnimeIQ">
+<meta name="twitter:description" content="Send us feedback, bug reports, or collaboration requests. We're always listening.">
+<link rel="canonical" href="https://animeiq.com/contactus.html">
+ 
+<title>Contact Us | AnimeIQ — We Read Every Message</title>
+ 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+ 
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "AnimeIQ Contact",
+  "description": "Contact the AnimeIQ team for support, feedback, or collaboration.",
+  "url": "https://animeiq.com/contactus.html",
+  "provider": {
+    "@type": "Organization",
+    "name": "AnimeIQ",
+    "url": "https://animeiq.com",
+    "email": "support@animeiq.com"
+  }
+}
+</script>
+ 
+<style>
+/* ══════════════════════════════════════════
+   ROOT & RESET
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+:root {
+  --cyan:         #00ffff;
+  --purple:       #7c3aed;
+  --dark:         #020617;
+  --dark2:        #0f172a;
+  --glass:        rgba(255,255,255,0.04);
+  --glass-border: rgba(0,255,255,0.12);
+  --card-bg:      rgba(4,14,36,0.97);
+  --success:      #22c55e;
+  --warning:      #f59e0b;
+  --error:        #ef4444;
+}
+ 
+html { scroll-behavior: smooth; }
+ 
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, var(--dark), var(--dark2));
+  color: white;
+  overflow-x: hidden;
+  min-height: 100vh;
+  cursor: none;
+}
+ 
+/* animated radial mesh bg */
+body::before {
+  content: "";
+  position: fixed; width: 200%; height: 200%;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(0,255,255,0.07) 0%, transparent 42%),
+    radial-gradient(circle at 85% 80%, rgba(124,58,237,0.07) 0%, transparent 42%),
+    radial-gradient(circle at 50% 50%, rgba(0,255,255,0.03) 0%, transparent 55%);
+  animation: moveBg 22s linear infinite alternate;
+  z-index: -1;
+}
+@keyframes moveBg {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(-7%,-5%) scale(1.04); }
+}
+ 
+/* scanline texture */
+body::after {
+  content: "";
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.022) 2px, rgba(0,0,0,0.022) 4px);
+  pointer-events: none; z-index: 9990;
+}
+ 
+/* ══════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════ */
+#cursor {
+  position: fixed; width: 12px; height: 12px;
+  background: var(--cyan); border-radius: 50%;
+  pointer-events: none; z-index: 999999;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 0 16px var(--cyan), 0 0 36px rgba(0,255,255,0.3);
+  mix-blend-mode: screen; transition: width 0.2s, height 0.2s, background 0.2s;
+}
+#cursorRing {
+  position: fixed; width: 36px; height: 36px;
+  border: 1.5px solid rgba(0,255,255,0.5); border-radius: 50%;
+  pointer-events: none; z-index: 999998;
+  transform: translate(-50%,-50%);
+  transition: width 0.25s, height 0.25s, border-color 0.25s;
+}
+ 
+/* ══════════════════════════════════════════
+   PARTICLES
+══════════════════════════════════════════ */
+#particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+ 
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: rgba(2,6,23,0.75);
+  box-shadow: 0 0 30px rgba(0,255,255,0.15), 0 1px 0 rgba(0,255,255,0.1);
+  backdrop-filter: blur(20px);
+  position: sticky; top: 0; z-index: 500;
+  transition: padding 0.3s;
+}
+header.scrolled { padding: 10px 50px; }
+header h1 {
+  font-family: "Orbitron", sans-serif;
+  color: var(--cyan);
+  text-shadow: 0 0 20px rgba(0,255,255,0.7), 0 0 40px rgba(0,255,255,0.3);
+  font-size: 24px; letter-spacing: 2px; margin: 0; cursor: none;
+}
+header h1 a { color: inherit; text-decoration: none; }
+ 
+/* ══════════════════════════════════════════
+   HAMBURGER MENU
+══════════════════════════════════════════ */
+.menu-btn {
+  width: 30px; height: 22px; display: flex;
+  flex-direction: column; justify-content: space-between;
+  cursor: none; z-index: 1001;
+}
+.menu-btn span {
+  height: 3px; width: 100%; background: var(--cyan);
+  border-radius: 10px; transition: 0.4s;
+  box-shadow: 0 0 10px var(--cyan);
+}
+.menu-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.menu-btn.active span:nth-child(2) { opacity: 0; }
+.menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+ 
+body.menu-open > *:not(header):not(#menu) { filter: blur(8px); pointer-events: none; user-select: none; }
+ 
+.full-menu {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(2,6,23,0.6); backdrop-filter: blur(20px);
+  display: flex; justify-content: center; align-items: center;
+  flex-direction: column; opacity: 0; pointer-events: none;
+  transition: 0.4s ease; z-index: 9999; padding: 40px 20px; text-align: center;
+}
+.full-menu.active { opacity: 1; pointer-events: all; }
+.full-menu a {
+  font-size: 30px; margin: 15px 0; text-decoration: none; color: white;
+  opacity: 0; transform: translateY(30px); transition: 0.4s; position: relative; cursor: none;
+}
+.full-menu.active a { opacity: 1; transform: translateY(0); }
+.full-menu a::after { content: ""; position: absolute; width: 0%; height: 3px; bottom: -5px; left: 0; background: var(--cyan); transition: 0.3s; }
+.full-menu a:hover::after { width: 100%; }
+.full-menu a:hover { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); transform: scale(1.1); }
+ 
+/* ══════════════════════════════════════════
+   USER PROFILE WRAPPER + DROPDOWN
+══════════════════════════════════════════ */
+.user-profile-wrapper { position: relative; display: flex; align-items: center; gap: 18px; }
+ 
+.user-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--cyan), #7c3aed);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: var(--dark);
+  cursor: none; border: 2px solid rgba(0,255,255,0.5);
+  box-shadow: 0 0 12px rgba(0,255,255,0.4); transition: 0.3s;
+  user-select: none; flex-shrink: 0; letter-spacing: 0;
+}
+.user-avatar:hover { box-shadow: 0 0 22px var(--cyan); transform: scale(1.08); }
+.user-avatar-wrap { position: relative; display: inline-block; }
+.online-dot {
+  position: absolute; bottom: 1px; right: 1px;
+  width: 10px; height: 10px; background: #22c55e;
+  border-radius: 50%; border: 2px solid var(--dark); box-shadow: 0 0 6px #22c55e;
+  display: none;
+}
+ 
+.user-dropdown {
+  position: fixed; top: 70px; right: 20px; width: 270px;
+  max-height: calc(100vh - 90px);
+  background: rgba(6,18,40,0.97); border: 1px solid rgba(0,255,255,0.25);
+  border-radius: 18px; box-shadow: 0 0 35px rgba(0,255,255,0.2);
+  backdrop-filter: blur(20px); opacity: 0; pointer-events: none;
+  transform: translateY(-10px) scale(0.97); transition: 0.25s ease;
+  z-index: 10000; overflow: hidden; display: flex; flex-direction: column;
+}
+.user-dropdown.open { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+ 
+.udrop-sticky { flex-shrink: 0; }
+.udrop-scroll { overflow-y: auto; flex: 1; scrollbar-width: thin; scrollbar-color: rgba(0,255,255,0.4) transparent; }
+.udrop-scroll::-webkit-scrollbar { width: 4px; }
+.udrop-scroll::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.35); border-radius: 4px; }
+.udrop-bottom-sticky { flex-shrink: 0; border-top: 1px solid rgba(0,255,255,0.12); background: rgba(6,18,40,0.98); }
+ 
+.udrop-top { padding: 18px 18px 14px; border-bottom: 1px solid rgba(0,255,255,0.12); display: flex; align-items: center; gap: 12px; }
+.udrop-avatar-lg { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: var(--dark); flex-shrink: 0; box-shadow: 0 0 14px rgba(0,255,255,0.4); }
+.udrop-name { font-size: 15px; font-weight: 600; color: white; line-height: 1.3; }
+.udrop-handle { font-size: 12px; color: rgba(0,255,255,0.6); margin-top: 2px; }
+ 
+.udrop-stats { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1px solid rgba(0,255,255,0.12); }
+.udrop-stat { text-align: center; padding: 12px 6px; border-right: 1px solid rgba(0,255,255,0.1); transition: 0.2s; cursor: default; }
+.udrop-stat:last-child { border-right: none; }
+.udrop-stat:hover { background: rgba(0,255,255,0.1); }
+.udrop-stat-val { font-size: 17px; font-weight: 700; color: var(--cyan); }
+.udrop-stat-label { font-size: 10px; color: rgba(255,255,255,0.45); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+ 
+.udrop-links { padding: 8px 0; }
+.udrop-link { display: flex; align-items: center; gap: 10px; padding: 10px 18px; font-size: 13px; color: rgba(255,255,255,0.8); text-decoration: none; transition: 0.2s; cursor: none; }
+.udrop-link:hover { background: rgba(0,255,255,0.08); color: var(--cyan); padding-left: 22px; }
+.udrop-link-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+ 
+.udrop-vip { margin: 12px; padding: 10px 14px; border-radius: 12px; background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(0,255,255,0.1)); border: 1px solid rgba(124,58,237,0.4); display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: none; transition: 0.2s; }
+.udrop-vip:hover { border-color: var(--cyan); box-shadow: 0 0 12px rgba(0,255,255,0.15); }
+.udrop-vip-text { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+.udrop-vip-text strong { color: var(--cyan); font-size: 13px; }
+.udrop-vip-btn { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; background: linear-gradient(45deg, var(--cyan), #7c3aed); color: var(--dark); white-space: nowrap; flex-shrink: 0; }
+ 
+.udrop-signout { padding: 10px 18px 14px; }
+.udrop-signout-btn { width: 100%; padding: 9px; border-radius: 12px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.08); color: rgba(255,100,100,0.85); font-size: 13px; font-family: "Poppins",sans-serif; cursor: none; transition: 0.2s; }
+.udrop-signout-btn:hover { background: rgba(255,80,80,0.18); color: #ff6464; box-shadow: 0 0 10px rgba(255,80,80,0.2); }
+ 
+.udrop-guest { padding: 20px 18px; text-align: center; }
+.udrop-guest p { font-size: 13px; opacity: 0.7; margin-bottom: 12px; }
+.udrop-guest-btn { display: inline-block; padding: 9px 22px; border-radius: 20px; background: linear-gradient(45deg, var(--cyan), #7c3aed); color: var(--dark); font-weight: 700; font-size: 13px; cursor: none; border: none; font-family: "Poppins",sans-serif; transition: 0.2s; }
+.udrop-guest-btn:hover { box-shadow: 0 0 15px var(--cyan); transform: scale(1.05); }
+ 
+/* ══════════════════════════════════════════
+   PAGE HERO
+══════════════════════════════════════════ */
+.page-hero {
+  text-align: center;
+  padding: 72px 24px 52px;
+  position: relative;
+  overflow: hidden;
+  animation: heroFadeUp 0.8s ease both;
+}
+.page-hero::before {
+  content: "";
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 700px; height: 320px;
+  background: radial-gradient(ellipse, rgba(0,255,255,0.06), transparent 70%);
+  pointer-events: none;
+}
+.page-hero::after {
+  content: "";
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 520px; height: 260px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,255,255,0.06);
+  animation: heroRingPulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes heroRingPulse {
+  0%,100% { opacity: 0.4; transform: translate(-50%,-50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%,-50%) scale(1.04); }
+}
+ 
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--cyan); opacity: 0.75;
+  background: rgba(0,255,255,0.06); border: 1px solid rgba(0,255,255,0.2);
+  padding: 5px 20px; border-radius: 30px; margin-bottom: 22px;
+  position: relative; z-index: 1;
+}
+.page-hero h1 {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(32px, 6vw, 68px);
+  font-weight: 900; line-height: 1.08;
+  background: linear-gradient(135deg, #fff 20%, var(--cyan) 55%, #a78bfa 85%);
+  -webkit-background-clip: text; color: transparent; background-clip: text;
+  letter-spacing: -1px; margin-bottom: 16px;
+  position: relative; z-index: 1;
+}
+.page-hero-sub {
+  font-size: 17px; opacity: 0.58; max-width: 520px;
+  margin: 0 auto; line-height: 1.75; font-weight: 300;
+  position: relative; z-index: 1;
+}
+ 
+/* mini stats strip */
+.hero-strip {
+  display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+  margin-top: 40px; position: relative; z-index: 1;
+}
+.hero-strip-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  padding: 8px 18px; border-radius: 30px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(0,255,255,0.1);
+  transition: 0.3s;
+}
+.hero-strip-item:hover { border-color: rgba(0,255,255,0.3); color: rgba(255,255,255,0.8); }
+ 
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,255,0.2), rgba(124,58,237,0.2), transparent);
+  margin: 0 40px;
+}
+ 
+/* ══════════════════════════════════════════
+   MAIN CONTACT LAYOUT
+══════════════════════════════════════════ */
+.contact-wrapper {
+  max-width: 1100px; margin: 0 auto;
+  padding: 60px 24px 80px;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .contact-wrapper { grid-template-columns: 1fr; }
+}
+ 
+/* ── FORM CARD ── */
+.form-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(0,255,255,0.18);
+  border-radius: 28px;
+  padding: 44px 40px 48px;
+  box-shadow: 0 0 60px rgba(0,255,255,0.07), 0 40px 100px rgba(0,0,0,0.5);
+  position: relative; overflow: hidden;
+  animation: heroFadeUp 0.9s ease 0.1s both;
+}
+.form-card::before {
+  content: "";
+  position: absolute; top: 0; left: 15%; right: 15%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
+}
+.form-card::after {
+  content: "";
+  position: absolute; inset: 0; border-radius: 28px;
+  background-image: linear-gradient(rgba(0,255,255,0.015) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0,255,255,0.015) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+ 
+.form-card-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(18px, 2.5vw, 26px); font-weight: 900;
+  background: linear-gradient(135deg, white, var(--cyan));
+  -webkit-background-clip: text; color: transparent; background-clip: text;
+  margin-bottom: 6px; position: relative; z-index: 1;
+}
+.form-card-sub {
+  font-size: 13px; color: rgba(255,255,255,0.4);
+  margin-bottom: 36px; position: relative; z-index: 1;
+}
+ 
+/* ── FLOATING LABEL INPUTS ── */
+.field-group {
+  position: relative;
+  margin-bottom: 22px;
+  z-index: 1;
+}
+ 
+.field-group input,
+.field-group textarea,
+.field-group select {
+  width: 100%;
+  padding: 18px 18px 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,255,255,0.13);
+  background: rgba(255,255,255,0.04);
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.field-group select option { background: #0f172a; color: white; }
+ 
+.field-group textarea {
+  resize: none;
+  height: 150px;
+  padding-top: 26px;
+  line-height: 1.6;
+}
+ 
+.field-group input:focus,
+.field-group textarea:focus,
+.field-group select:focus {
+  border-color: rgba(0,255,255,0.45);
+  background: rgba(0,255,255,0.05);
+  box-shadow: 0 0 0 3px rgba(0,255,255,0.1), 0 0 24px rgba(0,255,255,0.06);
+}
+ 
+/* Floating label */
+.field-label {
+  position: absolute; top: 14px; left: 18px;
+  font-size: 13px; color: rgba(255,255,255,0.38);
+  transition: 0.25s ease; pointer-events: none;
+  font-weight: 500;
+}
+.field-group input:focus ~ .field-label,
+.field-group input:not(:placeholder-shown) ~ .field-label,
+.field-group textarea:focus ~ .field-label,
+.field-group textarea:not(:placeholder-shown) ~ .field-label,
+.field-group select:focus ~ .field-label,
+.field-group.select-filled ~ .field-label,
+.field-group select:not([value=""]) ~ .field-label {
+  top: 6px; font-size: 10px; letter-spacing: 0.8px;
+  color: var(--cyan); text-transform: uppercase;
+}
+ 
+/* hide placeholder visually while floating label exists */
+.field-group input::placeholder,
+.field-group textarea::placeholder { color: transparent; }
+ 
+/* field icon */
+.field-icon {
+  position: absolute; right: 16px; top: 50%;
+  transform: translateY(-50%); font-size: 17px;
+  pointer-events: none; opacity: 0.4; transition: 0.3s;
+}
+.field-group:has(textarea) .field-icon { top: 22px; transform: none; }
+.field-group input:focus ~ .field-icon,
+.field-group textarea:focus ~ .field-icon,
+.field-group select:focus ~ .field-icon { opacity: 0.8; }
+ 
+/* char counter */
+.char-counter {
+  position: absolute; bottom: 10px; right: 14px;
+  font-size: 10px; color: rgba(255,255,255,0.28);
+  pointer-events: none; transition: 0.3s;
+}
+.char-counter.near { color: var(--warning); }
+.char-counter.over { color: var(--error); }
+ 
+/* validation */
+.field-group .field-error {
+  font-size: 11px; color: var(--error);
+  margin-top: 5px; padding-left: 4px;
+  display: none; animation: shakeX 0.35s ease;
+}
+.field-group.invalid input,
+.field-group.invalid textarea,
+.field-group.invalid select {
+  border-color: rgba(239,68,68,0.5);
+  box-shadow: 0 0 0 2px rgba(239,68,68,0.1);
+}
+.field-group.invalid .field-error { display: block; }
+.field-group.valid input,
+.field-group.valid textarea,
+.field-group.valid select { border-color: rgba(34,197,94,0.4); }
+ 
+@keyframes shakeX {
+  0%,100% { transform: translateX(0); }
+  25%      { transform: translateX(-6px); }
+  75%      { transform: translateX(6px); }
+}
+ 
+/* ── CATEGORY CHIPS ── */
+.category-chips {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 24px; position: relative; z-index: 1;
+}
+.chip {
+  padding: 6px 16px; border-radius: 30px;
+  font-size: 12px; font-weight: 600; cursor: none;
+  border: 1px solid rgba(0,255,255,0.15);
+  background: rgba(0,255,255,0.04);
+  color: rgba(255,255,255,0.6);
+  transition: 0.25s; user-select: none;
+}
+.chip:hover { border-color: rgba(0,255,255,0.35); color: white; }
+.chip.active {
+  border-color: var(--cyan); background: rgba(0,255,255,0.12);
+  color: var(--cyan); box-shadow: 0 0 12px rgba(0,255,255,0.15);
+}
+ 
+/* ── INPUT ROW (2-col) ── */
+.field-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 600px) { .field-row { grid-template-columns: 1fr; } }
+ 
+/* ── SUBMIT BUTTON ── */
+.submit-btn {
+  width: 100%; padding: 17px;
+  border-radius: 18px; border: none;
+  font-size: 15px; font-weight: 700;
+  font-family: "Poppins", sans-serif;
+  cursor: none;
+  background: linear-gradient(45deg, var(--cyan), var(--purple));
+  color: white; transition: 0.3s;
+  letter-spacing: 0.5px;
+  position: relative; overflow: hidden;
+  z-index: 1;
+  margin-top: 8px;
+}
+.submit-btn::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(45deg, var(--purple), var(--cyan));
+  opacity: 0; transition: 0.3s;
+}
+.submit-btn span { position: relative; z-index: 1; }
+.submit-btn:hover { transform: scale(1.02) translateY(-2px); box-shadow: 0 0 40px rgba(0,255,255,0.35); }
+.submit-btn:hover::before { opacity: 1; }
+.submit-btn:active { transform: scale(0.98); }
+.submit-btn:disabled { opacity: 0.6; transform: none; box-shadow: none; cursor: not-allowed; }
+ 
+/* ── SUCCESS STATE ── */
+.success-overlay {
+  display: none;
+  position: absolute; inset: 0; border-radius: 28px;
+  background: rgba(4,14,36,0.97);
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 40px;
+  z-index: 20;
+  animation: heroFadeUp 0.5s ease;
+}
+.success-overlay.show { display: flex; }
+.success-icon {
+  font-size: 72px; margin-bottom: 20px;
+  animation: bounceIn 0.6s cubic-bezier(.36,.07,.19,.97);
+}
+@keyframes bounceIn {
+  0%   { transform: scale(0.3); opacity: 0; }
+  50%  { transform: scale(1.1); }
+  70%  { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.success-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 22px; font-weight: 700; color: var(--cyan);
+  margin-bottom: 10px;
+}
+.success-sub { font-size: 14px; opacity: 0.6; line-height: 1.7; margin-bottom: 28px; }
+.success-reset {
+  padding: 12px 28px; border-radius: 50px;
+  border: 1px solid rgba(0,255,255,0.3);
+  background: rgba(0,255,255,0.08);
+  color: var(--cyan); font-size: 13px; font-weight: 600;
+  font-family: "Poppins",sans-serif; cursor: none; transition: 0.3s;
+}
+.success-reset:hover { background: rgba(0,255,255,0.18); box-shadow: 0 0 16px rgba(0,255,255,0.2); }
+ 
+/* ══════════════════════════════════════════
+   RIGHT SIDEBAR
+══════════════════════════════════════════ */
+.sidebar { display: flex; flex-direction: column; gap: 20px; animation: heroFadeUp 0.9s ease 0.2s both; }
+ 
+/* contact info card */
+.contact-info-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(0,255,255,0.14);
+  border-radius: 24px; padding: 32px 28px;
+  position: relative; overflow: hidden;
+}
+.contact-info-card::before {
+  content: "";
+  position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+ 
+.info-card-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 15px; font-weight: 700; color: var(--cyan);
+  margin-bottom: 22px; letter-spacing: 0.5px;
+}
+ 
+.info-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: 0.25s;
+}
+.info-item:last-child { border-bottom: none; }
+.info-item:hover { padding-left: 4px; }
+ 
+.info-item-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  border-radius: 12px;
+  background: rgba(0,255,255,0.08);
+  border: 1px solid rgba(0,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; transition: 0.3s;
+}
+.info-item:hover .info-item-icon {
+  background: rgba(0,255,255,0.15);
+  box-shadow: 0 0 14px rgba(0,255,255,0.2);
+}
+.info-item-text { flex: 1; }
+.info-item-label {
+  font-size: 10px; text-transform: uppercase;
+  letter-spacing: 1px; color: rgba(0,255,255,0.55);
+  margin-bottom: 3px; font-weight: 600;
+}
+.info-item-val {
+  font-size: 13px; color: rgba(255,255,255,0.8);
+  font-weight: 500;
+}
+ 
+/* response time card */
+.response-card {
+  background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(0,255,255,0.08));
+  border: 1px solid rgba(0,255,255,0.15);
+  border-radius: 20px; padding: 22px 24px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.response-card::before {
+  content: "";
+  position: absolute; top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,255,255,0.08), transparent 60%);
+}
+.response-emoji { font-size: 36px; margin-bottom: 10px; display: block;
+  animation: floatEmoji 3s ease-in-out infinite; }
+@keyframes floatEmoji {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.response-title { font-size: 14px; font-weight: 700; color: white; margin-bottom: 5px; }
+.response-sub { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.response-badge {
+  display: inline-block; margin-top: 12px;
+  padding: 4px 14px; border-radius: 20px;
+  font-size: 11px; font-weight: 700;
+  background: rgba(34,197,94,0.15);
+  border: 1px solid rgba(34,197,94,0.3);
+  color: #22c55e;
+}
+ 
+/* socials card */
+.social-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px; padding: 22px 24px;
+}
+.social-card-title {
+  font-size: 12px; text-transform: uppercase;
+  letter-spacing: 1.5px; color: rgba(255,255,255,0.35);
+  margin-bottom: 14px; font-weight: 600;
+}
+.social-links { display: flex; gap: 10px; flex-wrap: wrap; }
+.social-link {
+  flex: 1; min-width: 80px;
+  padding: 10px 8px; border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  text-align: center; text-decoration: none;
+  transition: 0.3s; cursor: none;
+}
+.social-link:hover {
+  border-color: rgba(0,255,255,0.3);
+  background: rgba(0,255,255,0.07);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,255,255,0.08);
+}
+.social-link-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+.social-link-name { font-size: 10px; color: rgba(255,255,255,0.5); }
+ 
+/* ══════════════════════════════════════════
+   FAQ SECTION
+══════════════════════════════════════════ */
+.faq-section {
+  max-width: 1100px; margin: 0 auto 80px;
+  padding: 0 24px;
+}
+.faq-header { text-align: center; margin-bottom: 40px; }
+.faq-eyebrow {
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--cyan); opacity: 0.6; display: block; margin-bottom: 12px;
+}
+.faq-header h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(22px, 3.5vw, 36px); font-weight: 700;
+  background: linear-gradient(90deg, white, var(--cyan));
+  -webkit-background-clip: text; color: transparent; background-clip: text;
+}
+ 
+/* accordion */
+.faq-list { display: flex; flex-direction: column; gap: 12px; }
+ 
+.faq-item {
+  background: var(--glass);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 18px;
+  overflow: hidden; transition: 0.35s;
+}
+.faq-item:hover { border-color: rgba(0,255,255,0.2); }
+.faq-item.open { border-color: rgba(0,255,255,0.3); box-shadow: 0 0 20px rgba(0,255,255,0.06); }
+ 
+.faq-q {
+  padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: none; gap: 16px;
+}
+.faq-q-text { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9); }
+.faq-item.open .faq-q-text { color: var(--cyan); }
+.faq-chevron {
+  font-size: 18px; color: rgba(0,255,255,0.5);
+  transition: transform 0.3s; flex-shrink: 0;
+}
+.faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--cyan); }
+ 
+.faq-a {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(.4,0,.2,1), padding 0.3s;
+}
+.faq-a-inner {
+  padding: 0 24px 20px;
+  font-size: 13px; color: rgba(255,255,255,0.6);
+  line-height: 1.8;
+  border-top: 1px solid rgba(0,255,255,0.07);
+  padding-top: 16px;
+}
+.faq-item.open .faq-a { max-height: 300px; }
+ 
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+.footer { padding: 40px 24px 20px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(0,255,255,0.08); }
+.footer-container { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 30px; }
+.footer-brand h2 { font-family: "Orbitron", sans-serif; color: var(--cyan); margin-bottom: 10px; font-size: 20px; }
+.footer-brand p { font-size: 14px; opacity: 0.6; }
+.footer-links h4 { margin-bottom: 10px; color: var(--cyan); font-size: 13px; letter-spacing: 0.5px; }
+.footer-links a { display: block; text-decoration: none; color: rgba(255,255,255,0.6); margin-bottom: 7px; transition: 0.2s; font-size: 13px; cursor: none; }
+.footer-links a:hover { color: var(--cyan); padding-left: 4px; }
+.footer-bottom { text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.04); font-size: 12px; opacity: 0.5; }
+.footer-note { font-size: 11px; margin-top: 6px; }
+.footer a { color: var(--cyan); text-decoration: none; }
+ 
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+#toast {
+  position: fixed; bottom: 30px; right: 30px;
+  background: rgba(4,12,32,0.97); border: 1px solid rgba(0,255,255,0.3);
+  color: white; padding: 14px 24px; border-radius: 16px; font-size: 14px;
+  box-shadow: 0 0 30px rgba(0,255,255,0.15); z-index: 99999;
+  opacity: 0; transform: translateY(16px);
+  transition: 0.35s cubic-bezier(.4,0,.2,1);
+  pointer-events: none; backdrop-filter: blur(20px); max-width: 300px;
+}
+#toast.show { opacity: 1; transform: translateY(0); }
+ 
+/* ══════════════════════════════════════════
+   COOKIE BANNER
+══════════════════════════════════════════ */
+#cookieBox {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: rgba(4,12,32,0.97); padding: 18px 24px; border-radius: 18px;
+  box-shadow: 0 0 40px rgba(0,255,255,0.2); border: 1px solid rgba(0,255,255,0.2);
+  display: none; z-index: 888; max-width: 92%; text-align: center;
+  backdrop-filter: blur(20px);
+}
+ 
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.3); border-radius: 6px; }
+ 
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  header { padding: 14px 20px; }
+  header.scrolled { padding: 10px 20px; }
+  .contact-wrapper { padding: 40px 16px 60px; }
+  .form-card { padding: 28px 20px 32px; }
+}
+</style>
+</head>
+ 
+<body>
+ 
+<!-- Cursor -->
+<div id="cursor"></div>
+<div id="cursorRing"></div>
+ 
+<!-- Particles -->
+<canvas id="particles"></canvas>
+ 
+<!-- ══════════════════════════════════════════
+     FULLSCREEN MENU
+══════════════════════════════════════════ -->
+<div id="menu" class="full-menu" onclick="outsideClick(event)">
+  <a><div onclick="toggleMenu()" style="cursor:none;font-size:24px;">✖</div></a>
+  <a href="homepageblog.html">Home</a>
+  <a href="explore.html">Explore</a>
+  <a href="binge.html">Binge Calculator</a>
+  <a href="contactus.html">Contact</a>
+  <a href="about.html">About</a>
+</div>
+ 
+<!-- ══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════ -->
+<header id="mainHeader">
+  <h1><a href="homepageblog.html">🧠 AnimeIQ</a></h1>
+ 
+  <div class="user-profile-wrapper">
+    <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+ 
+    <div class="user-avatar-wrap">
+      <div class="user-avatar" id="userAvatar" onclick="toggleDropdown(event)">?</div>
+      <div class="online-dot" id="onlineDot"></div>
+    </div>
+ 
+    <div class="user-dropdown" id="userDropdown">
+      <!-- LOGGED IN -->
+      <div id="dropLoggedIn" style="display:none; display:contents;">
+        <div class="udrop-sticky">
+          <div class="udrop-top">
+            <div class="udrop-avatar-lg" id="dropAvatarLg">?</div>
+            <div>
+              <div class="udrop-name" id="dropName">Anime Fan</div>
+              <div class="udrop-handle" id="dropHandle">@user · AnimeIQ</div>
+            </div>
+          </div>
+          <div class="udrop-stats">
+            <div class="udrop-stat"><div class="udrop-stat-val" id="statWatchlist">0</div><div class="udrop-stat-label">Watchlist 📋</div></div>
+            <div class="udrop-stat"><div class="udrop-stat-val" id="statFavorites">0</div><div class="udrop-stat-label">Favourites ⭐</div></div>
+            <div class="udrop-stat"><div class="udrop-stat-val" id="statSearches">0</div><div class="udrop-stat-label">Searches 🔍</div></div>
+          </div>
+        </div>
+        <div class="udrop-scroll">
+          <div class="udrop-links">
+            <a class="udrop-link" href="homepageblog.html"><span class="udrop-link-icon">🏠</span> Home</a>
+            <a class="udrop-link" href="explore.html"><span class="udrop-link-icon">🔍</span> Explore Anime</a>
+            <a class="udrop-link" href="binge.html"><span class="udrop-link-icon">⚡</span> Binge Calculator</a>
+            <a class="udrop-link" href="about.html"><span class="udrop-link-icon">ℹ️</span> About AnimeIQ</a>
+            <a class="udrop-link" href="contactus.html"><span class="udrop-link-icon">✉️</span> Contact</a>
+            <a class="udrop-link" href="privacy.html"><span class="udrop-link-icon">🔒</span> Privacy Policy</a>
+          </div>
+          <div class="udrop-vip" onclick="alert('AnimeIQ Pro coming soon! 🚀')">
+            <div class="udrop-vip-text"><strong>AnimeIQ Pro</strong><br>Ad-free • Watchlist sync • More</div>
+            <div class="udrop-vip-btn">Coming Soon</div>
+          </div>
+        </div>
+        <div class="udrop-bottom-sticky">
+          <div class="udrop-signout"><button class="udrop-signout-btn" onclick="handleSignOut()">Sign Out</button></div>
+        </div>
+      </div>
+      <!-- GUEST -->
+      <div id="dropGuest">
+        <div class="udrop-guest">
+          <p>Sign in to save your watchlist &amp; favourites across devices.</p>
+          <button class="udrop-guest-btn" onclick="window.location.href='homepageblog.html'">Sign In / Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+ 
+<!-- ══════════════════════════════════════════
+     PAGE HERO
+══════════════════════════════════════════ -->
+<section class="page-hero">
+  <span class="hero-eyebrow">✉️ Get In Touch</span>
+  <h1>Contact<br>AnimeIQ</h1>
+  <p class="page-hero-sub">Bugs, ideas, collabs, or just vibing? Drop us a message — we read every single one.</p>
+  <div class="hero-strip">
+    <div class="hero-strip-item"><span>⚡</span> Fast Response</div>
+    <div class="hero-strip-item"><span>🤝</span> Open to Collabs</div>
+    <div class="hero-strip-item"><span>🐛</span> Bug Reports Welcome</div>
+    <div class="hero-strip-item"><span>💡</span> Suggestions Loved</div>
+  </div>
+</section>
+ 
+<div class="divider"></div>
+ 
+<!-- ══════════════════════════════════════════
+     MAIN CONTACT SECTION
+══════════════════════════════════════════ -->
+<div class="contact-wrapper">
+ 
+  <!-- FORM CARD -->
+  <div class="form-card" id="formCard">
+ 
+    <!-- Success overlay -->
+    <div class="success-overlay" id="successOverlay">
+      <span class="success-icon">📨</span>
+      <div class="success-title">Message Sent!</div>
+      <p class="success-sub">Thanks for reaching out. We'll get back to you within 24–48 hours. Check your inbox for a confirmation email.</p>
+      <button class="success-reset" onclick="resetForm()">Send Another Message</button>
+    </div>
+ 
+    <h2 class="form-card-title">Send Us a Message</h2>
+    <p class="form-card-sub">Fill in the details below — takes 30 seconds</p>
+ 
+    <!-- Category chips -->
+    <div class="category-chips" id="chips">
+      <div class="chip active" data-val="General">💬 General</div>
+      <div class="chip" data-val="Bug Report">🐛 Bug Report</div>
+      <div class="chip" data-val="Feature Request">💡 Feature Request</div>
+      <div class="chip" data-val="Collaboration">🤝 Collaboration</div>
+      <div class="chip" data-val="Content Issue">📺 Content Issue</div>
+      <div class="chip" data-val="Other">✨ Other</div>
+    </div>
+ 
+    <form id="contactForm" novalidate>
+ 
+      <!-- Hidden category input -->
+      <input type="hidden" id="category" value="General">
+ 
+      <div class="field-row">
+        <div class="field-group" id="fg-name">
+          <input type="text" id="name" placeholder="Your name" autocomplete="given-name">
+          <label class="field-label" for="name">Your Name</label>
+          <span class="field-icon">👤</span>
+          <span class="field-error">Please enter your name</span>
+        </div>
+        <div class="field-group" id="fg-email">
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+          <label class="field-label" for="email">Email Address</label>
+          <span class="field-icon">📧</span>
+          <span class="field-error">Enter a valid email address</span>
+        </div>
+      </div>
+ 
+      <div class="field-group" id="fg-subject">
+        <input type="text" id="subject" placeholder="What's this about?" maxlength="120">
+        <label class="field-label" for="subject">Subject</label>
+        <span class="field-icon">📌</span>
+        <span class="field-error">Please add a subject</span>
+      </div>
+ 
+      <div class="field-group" id="fg-message">
+        <textarea id="message" placeholder="Tell us everything…" maxlength="1200"></textarea>
+        <label class="field-label" for="message">Message</label>
+        <span class="field-icon">✍️</span>
+        <span class="char-counter" id="charCount">0 / 1200</span>
+        <span class="field-error">Message must be at least 20 characters</span>
+      </div>
+ 
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span id="submitBtnText">🚀 Send Message</span>
+      </button>
+ 
+    </form>
+  </div>
+ 
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+ 
+    <!-- Contact Info -->
+    <div class="contact-info-card">
+      <div class="info-card-title">📡 Reach Us Directly</div>
+ 
+      <div class="info-item">
+        <div class="info-item-icon">📧</div>
+        <div class="info-item-text">
+          <div class="info-item-label">Email</div>
+          <div class="info-item-val">support@animeiq.com</div>
+        </div>
+      </div>
+ 
+      <div class="info-item">
+        <div class="info-item-icon">⏰</div>
+        <div class="info-item-text">
+          <div class="info-item-label">Response Time</div>
+          <div class="info-item-val">Usually within 24–48 hours</div>
+        </div>
+      </div>
+ 
+      <div class="info-item">
+        <div class="info-item-icon">🌍</div>
+        <div class="info-item-text">
+          <div class="info-item-label">Available</div>
+          <div class="info-item-val">Worldwide · All timezones</div>
+        </div>
+      </div>
+ 
+      <div class="info-item">
+        <div class="info-item-icon">🤝</div>
+        <div class="info-item-text">
+          <div class="info-item-label">Collaborations</div>
+          <div class="info-item-val">Open to content & brand partnerships</div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Response time card -->
+    <div class="response-card">
+      <span class="response-emoji">⚡</span>
+      <div class="response-title">We Actually Respond</div>
+      <p class="response-sub">Not a bot. Every message goes to a real human who loves anime as much as you do.</p>
+      <span class="response-badge">🟢 Currently Active</span>
+    </div>
+ 
+    <!-- Socials -->
+    <div class="social-card">
+      <div class="social-card-title">Find Us Online</div>
+      <div class="social-links">
+        <a href="#" class="social-link" aria-label="Twitter">
+          <span class="social-link-icon">🐦</span>
+          <span class="social-link-name">Twitter</span>
+        </a>
+        <a href="#" class="social-link" aria-label="Discord">
+          <span class="social-link-icon">💬</span>
+          <span class="social-link-name">Discord</span>
+        </a>
+        <a href="#" class="social-link" aria-label="Instagram">
+          <span class="social-link-icon">📸</span>
+          <span class="social-link-name">Instagram</span>
+        </a>
+        <a href="#" class="social-link" aria-label="YouTube">
+          <span class="social-link-icon">▶️</span>
+          <span class="social-link-name">YouTube</span>
+        </a>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+ 
+<!-- ══════════════════════════════════════════
+     FAQ
+══════════════════════════════════════════ -->
+<div class="faq-section" id="faq">
+  <div class="faq-header">
+    <span class="faq-eyebrow">Common Questions</span>
+    <h2>Before You Write — Check This</h2>
+  </div>
+  <div class="faq-list">
+ 
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">📺 The episode count for an anime is wrong — how do I report it?</span>
+        <span class="faq-chevron">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">Select "Content Issue" in the message category, then tell us the anime name and the correct episode count. We pull data from MyAnimeList via the Jikan API — if MAL has it wrong, you can also correct it directly on MAL.org and it'll sync to us.</div></div>
+    </div>
+ 
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">🐛 How do I report a bug?</span>
+        <span class="faq-chevron">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">Select the "Bug Report" chip above and describe what happened, what you expected, and which browser/device you were on. Screenshots help a lot — paste an image URL if you have one. We fix confirmed bugs fast.</div></div>
+    </div>
+ 
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">💡 Can I suggest a new feature?</span>
+        <span class="faq-chevron">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">Absolutely — feature requests are our favourite messages. Pick "Feature Request" and describe the idea in as much detail as you like. Popular suggestions get prioritised in our roadmap.</div></div>
+    </div>
+ 
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">🤝 Do you accept collaboration or sponsorship requests?</span>
+        <span class="faq-chevron">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">Yes — we're open to content collaborations, affiliate partnerships, and brand sponsorships that are a genuine fit for anime fans. Select "Collaboration" and tell us about yourself and the opportunity. We review every request.</div></div>
+    </div>
+ 
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">⏰ How long does it take to get a reply?</span>
+        <span class="faq-chevron">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">We aim to reply within 24 hours on weekdays and within 48 hours on weekends. Bug reports and collaboration requests may take slightly longer as they need more review. You'll also receive an automatic confirmation email as soon as you submit.</div></div>
+    </div>
+ 
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">🔒 Is my data safe when I submit this form?</span>
+        <span class="faq-chevron">▾</span>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">Yes. Your name, email, and message are only used to respond to your inquiry and to send the auto-reply confirmation. We don't sell or share your data. Full details in our <a href="privacy.html" style="color:var(--cyan);">Privacy Policy</a>.</div></div>
+    </div>
+ 
+  </div>
+</div>
+ 
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <h2>🧠 AnimeIQ</h2>
+      <p>Plan your anime journey smarter. Discover, explore, and skip fillers effortlessly.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="homepageblog.html">Home</a>
+      <a href="explore.html">Explore Anime</a>
+      <a href="binge.html">Binge Calculator</a>
+      <a href="about.html">About</a>
+      <a href="contactus.html">Contact</a>
+    </div>
+    <div class="footer-links">
+      <h4>Legal</h4>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="termsandcondition.html">Terms &amp; Conditions</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 AnimeIQ. All rights reserved. Built with ❤️ for anime fans.</p>
+    <p class="footer-note">Data provided by <a href="https://jikan.moe" target="_blank">Jikan API</a> (MyAnimeList). AnimeIQ is not affiliated with MyAnimeList.</p>
+  </div>
+</footer>
+ 
+<!-- TOAST -->
+<div id="toast"></div>
+ 
+<!-- COOKIE BANNER -->
+<div id="cookieBox">
+  <p style="font-size:13px;opacity:0.8;margin:0 0 14px;line-height:1.6;">🍪 We use cookies to improve your experience. By using AnimeIQ, you agree to our <a href="privacy.html" style="color:var(--cyan);">Privacy Policy</a>.</p>
+  <button onclick="acceptCookies()" style="padding:9px 22px;border:none;border-radius:12px;background:linear-gradient(45deg,var(--cyan),var(--purple));color:#020617;cursor:none;font-family:'Poppins',sans-serif;font-weight:700;">Accept & Continue</button>
+</div>
+ 
+<!-- ══════════════════════════════════════════
+     FIREBASE AUTH
+══════════════════════════════════════════ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+ 
+  const firebaseConfig = {
+    apiKey:            "AIzaSyDq4YCBixnCnIeGKzEegq_63leL_oOsWtw",
+    authDomain:        "animeiq-24614.firebaseapp.com",
+    projectId:         "animeiq-24614",
+    storageBucket:     "animeiq-24614.appspot.com",
+    messagingSenderId: "690143889231",
+    appId:             "1:690143889231:web:4d7429ab545674b864a73a",
+    measurementId:     "G-2732CDYMZ6"
+  };
+ 
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+ 
+  function getInitials(user) {
+    if (user.displayName) return user.displayName.split(" ").map(w => w[0].toUpperCase()).join("").slice(0,2);
+    return user.email.slice(0,2).toUpperCase();
+  }
+ 
+  function refreshCounts(uid) {
+    const wl  = JSON.parse(localStorage.getItem(`aiq_${uid}_watchlist`)  || "[]");
+    const fav = JSON.parse(localStorage.getItem(`aiq_${uid}_favourites`) || "[]");
+    const sr  = parseInt(localStorage.getItem(`aiq_${uid}_searches`)     || "0");
+    document.getElementById("statWatchlist").textContent = wl.length;
+    document.getElementById("statFavorites").textContent = fav.length;
+    document.getElementById("statSearches").textContent  = sr;
+  }
+ 
+  window._currentUID = null;
+ 
+  onAuthStateChanged(auth, (user) => {
+    const loggedInEl = document.getElementById("dropLoggedIn");
+    const guestEl    = document.getElementById("dropGuest");
+    if (user) {
+      window._currentUID = user.uid;
+      const initials    = getInitials(user);
+      const displayName = user.displayName || user.email.split("@")[0];
+      const handle      = user.email.split("@")[0].toLowerCase();
+      document.getElementById("userAvatar").textContent   = initials;
+      document.getElementById("onlineDot").style.display  = "block";
+      document.getElementById("dropAvatarLg").textContent = initials;
+      document.getElementById("dropName").textContent     = displayName;
+      document.getElementById("dropHandle").textContent   = `@${handle} · AnimeIQ`;
+      loggedInEl.style.display = "contents";
+      guestEl.style.display    = "none";
+      refreshCounts(user.uid);
+    } else {
+      window._currentUID = null;
+      document.getElementById("userAvatar").textContent  = "?";
+      document.getElementById("onlineDot").style.display = "none";
+      loggedInEl.style.display = "none";
+      guestEl.style.display    = "block";
+    }
+  });
+ 
+  window._firebaseSignOut = async () => {
+    await signOut(auth);
+    window.location.href = "homepageblog.html";
+  };
+</script>
+ 
+<!-- ══════════════════════════════════════════
+     EMAILJS
+══════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+ 
+<!-- ══════════════════════════════════════════
+     APP LOGIC
+══════════════════════════════════════════ -->
+<script>
+  /* ── EmailJS init ── */
+  (function(){ emailjs.init("R2d5dfHjmoUk_OyxK"); })();
+ 
+  /* ── Menu ── */
+  function toggleMenu() {
+    document.getElementById("menu").classList.toggle("active");
+    document.getElementById("menuBtn").classList.toggle("active");
+    document.body.classList.toggle("menu-open");
+  }
+  function outsideClick(e) {
+    if (e.target.id === "menu") {
+      document.getElementById("menu").classList.remove("active");
+      document.getElementById("menuBtn").classList.remove("active");
+      document.body.classList.remove("menu-open");
+    }
+  }
+  document.querySelectorAll(".full-menu a").forEach(l => l.addEventListener("click", () => {
+    document.getElementById("menu").classList.remove("active");
+    document.getElementById("menuBtn").classList.remove("active");
+    document.body.classList.remove("menu-open");
+  }));
+ 
+  /* ── Dropdown ── */
+  function toggleDropdown(e) { e.stopPropagation(); document.getElementById("userDropdown").classList.toggle("open"); }
+  document.addEventListener("click", e => {
+    const d = document.getElementById("userDropdown");
+    const a = document.getElementById("userAvatar");
+    if (!d.contains(e.target) && e.target !== a) d.classList.remove("open");
+  });
+ 
+  async function handleSignOut() {
+    if (confirm("Sign out of AnimeIQ?")) {
+      document.getElementById("userDropdown").classList.remove("open");
+      showToast("👋 Signing out…");
+      await window._firebaseSignOut();
+    }
+  }
+ 
+  /* ── Toast ── */
+  function showToast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove("show"), 3000);
+  }
+ 
+  /* ── Header shrink ── */
+  const mainHeader = document.getElementById("mainHeader");
+  window.addEventListener("scroll", () => {
+    mainHeader.classList.toggle("scrolled", window.scrollY > 60);
+  }, { passive: true });
+ 
+  /* ── Category chips ── */
+  document.querySelectorAll(".chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      document.getElementById("category").value = chip.dataset.val;
+    });
+  });
+ 
+  /* ── Char counter ── */
+  const msgEl   = document.getElementById("message");
+  const counter = document.getElementById("charCount");
+  msgEl.addEventListener("input", () => {
+    const len = msgEl.value.length;
+    counter.textContent = `${len} / 1200`;
+    counter.className = "char-counter" + (len > 1100 ? " over" : len > 900 ? " near" : "");
+  });
+ 
+  /* ── Validation helpers ── */
+  function validateField(id, fgId, check) {
+    const val = document.getElementById(id).value.trim();
+    const fg  = document.getElementById(fgId);
+    if (check(val)) { fg.classList.remove("invalid"); fg.classList.add("valid"); return true; }
+    fg.classList.add("invalid"); fg.classList.remove("valid"); return false;
+  }
+ 
+  function addLiveValidation(id, fgId, check) {
+    const el = document.getElementById(id);
+    el.addEventListener("blur", () => validateField(id, fgId, check));
+    el.addEventListener("input", () => {
+      const fg = document.getElementById(fgId);
+      if (fg.classList.contains("invalid")) validateField(id, fgId, check);
+    });
+  }
+ 
+  addLiveValidation("name",    "fg-name",    v => v.length >= 2);
+  addLiveValidation("email",   "fg-email",   v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+  addLiveValidation("subject", "fg-subject", v => v.length >= 3);
+  addLiveValidation("message", "fg-message", v => v.length >= 20);
+ 
+  /* ── Form submit ── */
+  document.getElementById("contactForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+ 
+    const nameOk    = validateField("name",    "fg-name",    v => v.length >= 2);
+    const emailOk   = validateField("email",   "fg-email",   v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+    const subjectOk = validateField("subject", "fg-subject", v => v.length >= 3);
+    const msgOk     = validateField("message", "fg-message", v => v.length >= 20);
+ 
+    if (!nameOk || !emailOk || !subjectOk || !msgOk) {
+      showToast("⚠️ Please fix the highlighted fields.");
+      return;
+    }
+ 
+    const btn     = document.getElementById("submitBtn");
+    const btnText = document.getElementById("submitBtnText");
+    btn.disabled  = true;
+    btnText.textContent = "📡 Sending…";
+ 
+    const name     = document.getElementById("name").value.trim();
+    const email    = document.getElementById("email").value.trim();
+    const subject  = document.getElementById("subject").value.trim();
+    const message  = document.getElementById("message").value.trim();
+    const category = document.getElementById("category").value;
+ 
+    /* Main email */
+    emailjs.send("service_fzw43ro", "template_x5710yq", {
+      from_name:  name,
+      from_email: email,
+      subject:    `[${category}] ${subject}`,
+      message:    message
+    })
+    .then(() => {
+      /* Auto-reply */
+      emailjs.send("service_fzw43ro", "template_lhbk9up", {
+        to_name:      name,
+        to_email:     email,
+        user_message: message
+      });
+ 
+      /* Show success */
+      document.getElementById("successOverlay").classList.add("show");
+      showToast("✅ Message sent successfully!");
+    })
+    .catch(err => {
+      btn.disabled = false;
+      btnText.textContent = "🚀 Send Message";
+      showToast("❌ Failed to send. Please try again or email us directly.");
+      console.error("EmailJS error:", err);
+    });
+  });
+ 
+  function resetForm() {
+    document.getElementById("contactForm").reset();
+    document.getElementById("charCount").textContent = "0 / 1200";
+    document.querySelectorAll(".field-group").forEach(fg => {
+      fg.classList.remove("valid","invalid");
+    });
+    document.getElementById("category").value = "General";
+    document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+    document.querySelector(".chip[data-val='General']").classList.add("active");
+    const btn     = document.getElementById("submitBtn");
+    const btnText = document.getElementById("submitBtnText");
+    btn.disabled  = false;
+    btnText.textContent = "🚀 Send Message";
+    document.getElementById("successOverlay").classList.remove("show");
+  }
+ 
+  /* ── FAQ accordion ── */
+  function toggleFaq(el) {
+    const item = el.closest(".faq-item");
+    const wasOpen = item.classList.contains("open");
+    document.querySelectorAll(".faq-item.open").forEach(i => i.classList.remove("open"));
+    if (!wasOpen) item.classList.add("open");
+  }
+ 
+  /* ── Cookie ── */
+  function acceptCookies() {
+    localStorage.setItem("cookiesAccepted","true");
+    document.getElementById("cookieBox").style.display = "none";
+  }
+  if (!localStorage.getItem("cookiesAccepted")) {
+    document.getElementById("cookieBox").style.display = "block";
+  }
+</script>
+ 
+<!-- ══════════════════════════════════════════
+     GOD MODE INTERACTIVITY
+══════════════════════════════════════════ -->
+<script>
+  /* ── Custom cursor ── */
+  const cursor     = document.getElementById("cursor");
+  const cursorRing = document.getElementById("cursorRing");
+  let mx = 0, my = 0, rx = 0, ry = 0;
+ 
+  document.addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY; });
+ 
+  (function animateCursor() {
+    cursor.style.left = mx + "px"; cursor.style.top = my + "px";
+    rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+    cursorRing.style.left = rx + "px"; cursorRing.style.top = ry + "px";
+    requestAnimationFrame(animateCursor);
+  })();
+ 
+  document.querySelectorAll("button, a, .chip, .faq-q, .info-item, .social-link, .hero-strip-item, .udrop-link, .udrop-guest-btn, .udrop-signout-btn").forEach(el => {
+    el.addEventListener("mouseenter", () => {
+      cursor.style.width = "8px"; cursor.style.height = "8px";
+      cursorRing.style.width = "50px"; cursorRing.style.height = "50px";
+      cursorRing.style.borderColor = "rgba(0,255,255,0.8)";
+    });
+    el.addEventListener("mouseleave", () => {
+      cursor.style.width = "12px"; cursor.style.height = "12px";
+      cursorRing.style.width = "36px"; cursorRing.style.height = "36px";
+      cursorRing.style.borderColor = "rgba(0,255,255,0.5)";
+    });
+  });
+ 
+  /* cursor changes colour when over inputs */
+  document.querySelectorAll("input, textarea").forEach(el => {
+    el.style.cursor = "text";
+    el.addEventListener("mouseenter", () => {
+      cursor.style.background = "rgba(0,255,255,0.5)";
+      cursor.style.width = "3px"; cursor.style.height = "20px";
+      cursor.style.borderRadius = "2px";
+    });
+    el.addEventListener("mouseleave", () => {
+      cursor.style.background = "var(--cyan)";
+      cursor.style.width = "12px"; cursor.style.height = "12px";
+      cursor.style.borderRadius = "50%";
+    });
+  });
+ 
+  /* ── Particles ── */
+  const canvas = document.getElementById("particles");
+  const ctx    = canvas.getContext("2d");
+  let W, H;
+  function resizeCanvas() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resizeCanvas(); window.addEventListener("resize", resizeCanvas);
+ 
+  const pts = Array.from({length: 52}, () => ({
+    x: Math.random()*1920, y: Math.random()*1080,
+    r: Math.random()*1.4 + 0.2,
+    vx: (Math.random()-0.5)*0.22, vy: (Math.random()-0.5)*0.22,
+    alpha: Math.random()*0.28 + 0.06
+  }));
+ 
+  (function drawParticles() {
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(0,255,255,${p.alpha})`; ctx.fill();
+    });
+    requestAnimationFrame(drawParticles);
+  })();
+ 
+  /* ── Scroll reveal ── */
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = "1";
+        e.target.style.transform = "translateY(0)";
+      }
+    });
+  }, { threshold: 0.1 });
+ 
+  document.querySelectorAll(".faq-item, .info-item, .social-link").forEach((el, i) => {
+    el.style.opacity = "0";
+    el.style.transform = "translateY(24px)";
+    el.style.transition = `opacity 0.5s ease ${i * 0.06}s, transform 0.5s ease ${i * 0.06}s`;
+    revealObs.observe(el);
+  });
+ 
+  /* ── Mobile: disable custom cursor ── */
+  if ('ontouchstart' in window) {
+    cursor.style.display = "none";
+    cursorRing.style.display = "none";
+    document.body.style.cursor = "auto";
+    document.querySelectorAll("*").forEach(el => { if (el.style.cursor === "none") el.style.cursor = "auto"; });
+  }
+</script>
+ 
+</body>
+</html>
+ 
