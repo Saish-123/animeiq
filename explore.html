@@ -968,7 +968,7 @@
  
 <!-- MAIN APP LOGIC -->
 <script>
-  const API       = "http://localhost:3000";
+  const API       = "https://anime-backend-73df.onrender.com";
   const container = document.getElementById("animeContainer");
   const loader    = document.getElementById("loader");
   const resultsBar= document.getElementById("resultsBar");
@@ -1043,7 +1043,7 @@
       body.innerHTML = `<div class="list-empty"><div class="list-empty-icon">${isWatch ? "📋" : "⭐"}</div><p>${isWatch ? "Your watchlist is empty" : "No favourites yet"}</p><small>${isWatch ? "Add anime from their detail page" : "Star the anime you love from their detail page"}</small></div>`;
       return;
     }
-    const proxyUrl = (url) => url ? `http://localhost:3000/img?url=${encodeURIComponent(url)}` : "";
+    const proxyUrl = (url) => url ? `https://anime-backend-73df.onrender.com/img?url=${encodeURIComponent(url)}` : "";
     let html = `<button class="list-clear-btn" onclick="clearList('${type}','${bodyId}','${badgeId}')">🗑️ Clear All</button><div class="list-anime-grid">`;
     list.forEach(anime => {
       const img = proxyUrl(anime.image);
@@ -1166,7 +1166,7 @@
     container.innerHTML = `<div class="empty-state"><div class="empty-icon">😢</div><div class="empty-title">${msg}</div><div class="empty-sub">Try refreshing or searching for something else</div></div>`;
   }
  
-  function proxyImg(url) { return url ? `http://localhost:3000/img?url=${encodeURIComponent(url)}` : ""; }
+  function proxyImg(url) { return url ? `https://anime-backend-73df.onrender.com/img?url=${encodeURIComponent(url)}` : ""; }
  
   function display(list) {
     loader.style.display = "none";
