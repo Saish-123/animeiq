@@ -5,16 +5,8 @@
   <meta name="referrer" content="no-referrer">
   <meta name="description" content="AnimeIQ - Discover, search and explore anime. Find episode guides, scores, genres and more.">
   <meta name="robots" content="index, follow">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXX">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://anime-backend-73df.onrender.com">
-  <link rel="canonical" href="https://yourdomain.com/explore.html">
-  <meta property="og:title" content="AnimeIQ — Explore Anime, Find Filler Episodes & Episode Guides">
-  <meta property="og:description" content="Search 20,000+ anime. Find filler episode lists, canon guides, scores, genres — all free.">
-  <meta property="og:image" content="https://yourdomain.com/og-image.jpg">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
   <title>AnimeIQ — Explore Anime</title>
  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
@@ -42,6 +34,7 @@
       color: white;
       overflow-x: hidden;
       cursor: none;
+      min-width: 320px;
     }
  
     body::before {
@@ -51,8 +44,6 @@
         radial-gradient(circle at 20% 20%, rgba(0,255,255,0.06) 0%, transparent 45%),
         radial-gradient(circle at 80% 80%, rgba(124,58,237,0.06) 0%, transparent 45%);
       animation: moveBg 20s infinite linear alternate;
-      /* FIX: pointer-events:none was missing — the pseudo-element was blocking clicks */
-      pointer-events: none;
       z-index: -1;
     }
  
@@ -69,7 +60,7 @@
     }
  
     /* ══════════════════════════════════════════
-       CUSTOM CURSOR
+       CUSTOM CURSOR — hidden on touch
     ══════════════════════════════════════════ */
     #cursor {
       position: fixed; width: 12px; height: 12px;
@@ -77,10 +68,7 @@
       pointer-events: none; z-index: 999999;
       transform: translate(-50%,-50%);
       box-shadow: 0 0 16px var(--cyan), 0 0 36px rgba(0,255,255,0.3);
-      mix-blend-mode: screen;
-      transition: width 0.2s, height 0.2s;
-      /* FIX: will-change promotes cursor to its own compositor layer for zero-jank tracking */
-      will-change: transform;
+      mix-blend-mode: screen; transition: width 0.2s, height 0.2s;
     }
     #cursorRing {
       position: fixed; width: 36px; height: 36px;
@@ -88,8 +76,6 @@
       pointer-events: none; z-index: 999998;
       transform: translate(-50%,-50%);
       transition: width 0.25s, height 0.25s, border-color 0.25s;
-      /* FIX: will-change promotes ring to compositor layer — smooth lag-follow effect */
-      will-change: transform;
     }
  
     #particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
@@ -101,25 +87,27 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 50px;
+      padding: 15px clamp(16px, 4vw, 50px);
       background: rgba(2,6,23,0.75);
       box-shadow: 0 0 30px rgba(0,255,255,0.15), 0 1px 0 rgba(0,255,255,0.1);
       backdrop-filter: blur(20px);
       position: sticky; top: 0; z-index: 500;
       transition: padding 0.3s;
     }
-    header.scrolled { padding: 10px 50px; }
+    header.scrolled { padding: 10px clamp(16px, 4vw, 50px); }
     header h1 {
       font-family: "Orbitron", sans-serif;
       color: var(--cyan);
       text-shadow: 0 0 20px rgba(0,255,255,0.7), 0 0 40px rgba(0,255,255,0.3);
-      font-size: 24px; letter-spacing: 2px; margin: 0; cursor: none;
+      font-size: clamp(16px, 4vw, 24px);
+      letter-spacing: 2px; margin: 0; cursor: none;
+      white-space: nowrap;
     }
  
     .menu-btn {
       width: 30px; height: 22px; display: flex;
       flex-direction: column; justify-content: space-between;
-      cursor: none; z-index: 1001;
+      cursor: none; z-index: 1001; flex-shrink: 0;
     }
     .menu-btn span {
       height: 3px; width: 100%; background: var(--cyan);
@@ -130,55 +118,32 @@
     .menu-btn.active span:nth-child(2) { opacity: 0; }
     .menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
  
-    /*
-     * FIX: Original selector blurred ALL direct children of body when menu opened,
-     * including fixed layers like the dropdown, toast, modals, and panels.
-     * Explicitly excluding them prevents visual corruption on those overlays.
-     */
-    body.menu-open > *:not(header):not(#menu):not(#cursor):not(#cursorRing):not(#particles):not(#toast):not(#cookieBox):not(#watchlistOverlay):not(#favouritesOverlay):not(#userDropdown):not(#animeModal) {
-      filter: blur(8px);
-      pointer-events: none;
-      user-select: none;
-    }
+    body.menu-open > *:not(header):not(#menu) { filter: blur(8px); pointer-events: none; user-select: none; }
  
     .full-menu {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(2,6,23,0.6); backdrop-filter: blur(20px);
       display: flex; justify-content: center; align-items: center;
       flex-direction: column; opacity: 0; pointer-events: none;
-      transition: opacity 0.4s ease; z-index: 9999; padding: 40px 20px; text-align: center;
+      transition: 0.4s ease; z-index: 9999; padding: 40px 20px; text-align: center;
     }
     .full-menu.active { opacity: 1; pointer-events: all; }
     .full-menu a {
-      font-size: 30px; margin: 15px 0; text-decoration: none; color: white;
-      opacity: 0; transform: translateY(30px);
-      /*
-       * FIX: Split transition into individual properties.
-       * "transition: 0.4s" applied to ALL properties including transform,
-       * which caused the hover scale(1.1) to fight the active-state translateY(0).
-       * Now transform only transitions for the entrance animation, not on hover.
-       */
-      transition: opacity 0.4s ease, transform 0.4s ease, color 0.25s ease, text-shadow 0.25s ease;
-      position: relative;
+      font-size: clamp(22px, 5vw, 30px); margin: 12px 0; text-decoration: none; color: white;
+      opacity: 0; transform: translateY(30px); transition: 0.4s; position: relative;
     }
     .full-menu.active a { opacity: 1; transform: translateY(0); }
-    .full-menu a::after { content: ""; position: absolute; width: 0%; height: 3px; bottom: -5px; left: 0; background: var(--cyan); transition: width 0.3s; }
+    .full-menu a::after { content: ""; position: absolute; width: 0%; height: 3px; bottom: -5px; left: 0; background: var(--cyan); transition: 0.3s; }
     .full-menu a:hover::after { width: 100%; }
-    /*
-     * FIX: Removed transform:scale(1.1) from hover state.
-     * It conflicted with the translateY(0) set by .full-menu.active a,
-     * causing links to visually jump when hovered mid-animation.
-     * Color + glow alone produce a clean, professional hover effect.
-     */
-    .full-menu a:hover { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); }
+    .full-menu a:hover { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); transform: scale(1.1); }
  
-    .user-profile-wrapper { position: relative; display: flex; align-items: center; gap: 18px; }
+    .user-profile-wrapper { position: relative; display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
  
     .user-avatar {
-      width: 40px; height: 40px; border-radius: 50%;
+      width: 38px; height: 38px; border-radius: 50%;
       background: linear-gradient(135deg, var(--cyan), #7c3aed);
       display: flex; align-items: center; justify-content: center;
-      font-size: 16px; font-weight: 700; color: var(--dark);
+      font-size: 15px; font-weight: 700; color: var(--dark);
       cursor: none; border: 2px solid rgba(0,255,255,0.5);
       box-shadow: 0 0 12px rgba(0,255,255,0.4); transition: 0.3s;
       user-select: none; flex-shrink: 0;
@@ -189,13 +154,11 @@
       position: absolute; bottom: 1px; right: 1px;
       width: 10px; height: 10px; background: #22c55e;
       border-radius: 50%; border: 2px solid var(--dark); box-shadow: 0 0 6px #22c55e;
-      /* FIX: Moved display:none to CSS — redundant inline style was overriding
-         JS-set visibility and causing the dot to always show on non-authed pages */
-      display: none;
     }
  
+    /* ── Dropdown ── */
     .user-dropdown {
-      position: fixed; top: 70px; right: 20px; width: 270px;
+      position: fixed; top: 70px; right: 12px; width: min(270px, calc(100vw - 24px));
       max-height: calc(100vh - 90px);
       background: rgba(6,18,40,0.97); border: 1px solid rgba(0,255,255,0.25);
       border-radius: 18px; box-shadow: 0 0 35px rgba(0,255,255,0.2);
@@ -237,7 +200,7 @@
  
     .udrop-signout { padding: 10px 18px 14px; }
     .udrop-signout-btn { width: 100%; padding: 9px; border-radius: 12px; border: 1px solid rgba(255,80,80,0.3); background: rgba(255,80,80,0.08); color: rgba(255,100,100,0.85); font-size: 13px; font-family: "Poppins",sans-serif; cursor: none; transition: 0.2s; }
-    .udrop-signout-btn:hover { background: rgba(255,80,80,0.18); color: #ff6464; box-shadow: 0 0 10px rgba(255,80,80,0.2); }
+    .udrop-signout-btn:hover { background: rgba(255,80,80,0.18); color: #ff6464; box-shadow: 0 0 10px rgba(255,80,80,0.2); transform: none; }
  
     .udrop-guest { padding: 20px 18px; text-align: center; }
     .udrop-guest p { font-size: 13px; opacity: 0.7; margin-bottom: 12px; }
@@ -248,7 +211,7 @@
        PAGE HERO BANNER
     ══════════════════════════════════════════ */
     .page-hero {
-      text-align: center; padding: 72px 24px 50px;
+      text-align: center; padding: clamp(40px, 8vw, 72px) clamp(16px, 4vw, 24px) clamp(30px, 5vw, 50px);
       position: relative; overflow: hidden;
       animation: fadeUp 0.8s ease both;
     }
@@ -256,26 +219,26 @@
       content: "";
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%,-50%);
-      width: 600px; height: 300px;
+      width: min(600px, 90vw); height: 300px;
       background: radial-gradient(ellipse, rgba(0,255,255,0.06), transparent 70%);
       pointer-events: none;
     }
     .page-hero-eyebrow {
       display: inline-block;
-      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      font-size: clamp(9px, 2vw, 10px); letter-spacing: 4px; text-transform: uppercase;
       color: var(--cyan); opacity: 0.7;
       background: rgba(0,255,255,0.06); border: 1px solid rgba(0,255,255,0.2);
       padding: 5px 18px; border-radius: 30px; margin-bottom: 20px;
     }
     .page-hero h2 {
       font-family: "Orbitron", sans-serif;
-      font-size: clamp(28px, 5vw, 58px);
+      font-size: clamp(24px, 6vw, 58px);
       font-weight: 900; line-height: 1.1;
       background: linear-gradient(135deg, #fff 20%, var(--cyan) 55%, #a78bfa 85%);
       -webkit-background-clip: text; color: transparent; background-clip: text;
       letter-spacing: -1px; margin-bottom: 14px;
     }
-    .page-hero p { font-size: 16px; opacity: 0.55; max-width: 480px; margin: 0 auto; line-height: 1.7; font-weight: 300; }
+    .page-hero p { font-size: clamp(13px, 2.5vw, 16px); opacity: 0.55; max-width: 480px; margin: 0 auto; line-height: 1.7; font-weight: 300; }
  
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(28px); }
@@ -283,15 +246,21 @@
     }
  
     /* ══════════════════════════════════════════
-       CONTROLS BAR
+       CONTROLS BAR — fully responsive
     ══════════════════════════════════════════ */
     .controls {
       display: flex; justify-content: center; align-items: center;
-      gap: 10px; margin: 0 24px 36px; flex-wrap: wrap;
+      gap: 8px; margin: 0 clamp(12px, 3vw, 24px) 28px; flex-wrap: wrap;
+      padding: 0 4px;
     }
-    .search-wrapper { position: relative; width: 300px; transition: 0.3s; z-index: 10; }
+    .search-wrapper {
+      position: relative;
+      width: min(300px, calc(100vw - 32px));
+      flex-shrink: 1;
+      transition: 0.3s; z-index: 10;
+    }
     #search {
-      width: 100%; padding: 13px 20px 13px 46px;
+      width: 100%; padding: 12px 18px 12px 44px;
       border-radius: 50px; border: 1px solid rgba(0,255,255,0.15);
       background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
       outline: none; transition: 0.3s; font-family: "Poppins", sans-serif;
@@ -310,7 +279,7 @@
       position: absolute; top: calc(100% + 8px); left: 0; width: 100%;
       background: rgba(4,12,32,0.98); border: 1px solid rgba(0,255,255,0.2);
       border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 20px rgba(0,255,255,0.1);
-      max-height: 280px; overflow-y: auto; display: none; z-index: 100;
+      max-height: 260px; overflow-y: auto; display: none; z-index: 200;
       animation: fadeIn 0.2s ease; backdrop-filter: blur(20px);
     }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
@@ -325,11 +294,12 @@
     .suggestion-item:hover { background: rgba(0,255,255,0.08); color: var(--cyan); padding-left: 22px; }
  
     .ctrl-btn {
-      padding: 12px 22px; border-radius: 50px; border: 1px solid rgba(0,255,255,0.2);
+      padding: 11px 18px; border-radius: 50px; border: 1px solid rgba(0,255,255,0.2);
       background: rgba(255,255,255,0.04); backdrop-filter: blur(10px);
       color: rgba(255,255,255,0.8); cursor: none;
-      font-family: "Poppins", sans-serif; font-size: 13px; font-weight: 500;
+      font-family: "Poppins", sans-serif; font-size: clamp(12px, 2vw, 13px); font-weight: 500;
       transition: 0.3s; white-space: nowrap; position: relative; overflow: hidden;
+      flex-shrink: 0;
     }
     .ctrl-btn::before { content: ""; position: absolute; inset: 0; border-radius: 50px; background: linear-gradient(45deg, var(--cyan), var(--purple)); opacity: 0; transition: 0.3s; }
     .ctrl-btn span { position: relative; z-index: 1; }
@@ -339,17 +309,19 @@
     .ctrl-btn.active-filter { background: linear-gradient(45deg, var(--cyan), var(--purple)); border-color: transparent; color: var(--dark); font-weight: 700; }
     .ctrl-btn.active-filter::before { opacity: 0; }
  
+    /* ── Results bar ── */
     .results-bar {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 24px 20px; max-width: 1400px; margin: 0 auto;
-      flex-wrap: wrap; gap: 12px;
+      padding: 0 clamp(12px, 3vw, 24px) 20px; max-width: 1400px; margin: 0 auto;
+      flex-wrap: wrap; gap: 10px;
     }
-    .results-info { font-size: 13px; color: rgba(255,255,255,0.45); font-family: "Orbitron", sans-serif; letter-spacing: 0.5px; }
+    .results-info { font-size: 12px; color: rgba(255,255,255,0.45); font-family: "Orbitron", sans-serif; letter-spacing: 0.5px; }
     .results-info span { color: var(--cyan); font-weight: 700; }
     .view-toggle { display: flex; gap: 6px; }
-    .view-btn { width: 36px; height: 36px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.4); cursor: none; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: 0.2s; }
+    .view-btn { width: 34px; height: 34px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.4); cursor: none; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: 0.2s; }
     .view-btn:hover, .view-btn.active { border-color: rgba(0,255,255,0.4); color: var(--cyan); background: rgba(0,255,255,0.06); }
  
+    /* ── Loader ── */
     .loader { text-align: center; padding: 60px 20px; display: none; }
     .loader-inner { display: inline-flex; flex-direction: column; align-items: center; gap: 20px; }
     .loader-ring { width: 60px; height: 60px; border-radius: 50%; border: 2px solid rgba(0,255,255,0.1); border-top-color: var(--cyan); animation: spin 0.9s linear infinite; box-shadow: 0 0 20px rgba(0,255,255,0.2); }
@@ -358,95 +330,108 @@
     @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
  
     /* ══════════════════════════════════════════
-       ANIME GRID
+       ANIME GRID — responsive at all sizes
     ══════════════════════════════════════════ */
     .grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px; padding: 0 24px 24px; max-width: 1400px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(160px, calc(50vw - 20px)), 1fr));
+      gap: clamp(10px, 2vw, 20px);
+      padding: 0 clamp(12px, 3vw, 24px) clamp(12px, 3vw, 24px);
+      max-width: 1400px; margin: 0 auto;
     }
-    .grid.list-view { grid-template-columns: 1fr; gap: 12px; }
-    .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; cursor: none; transition: 0.35s cubic-bezier(.4,0,.2,1); overflow: hidden; position: relative; display: flex; flex-direction: column; }
-    .card:hover { border-color: rgba(0,255,255,0.35); transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 60px rgba(0,255,255,0.1), 0 0 0 1px rgba(0,255,255,0.1); }
+    .grid.list-view { grid-template-columns: 1fr; gap: 10px; }
+ 
+    .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; cursor: none; transition: 0.35s cubic-bezier(.4,0,.2,1); overflow: hidden; position: relative; display: flex; flex-direction: column; }
+    .card:hover { border-color: rgba(0,255,255,0.35); transform: translateY(-6px) scale(1.02); box-shadow: 0 20px 60px rgba(0,255,255,0.1), 0 0 0 1px rgba(0,255,255,0.1); }
     .card-img-wrap { position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; flex-shrink: 0; }
     .card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s ease; filter: brightness(0.85) saturate(1.1); }
     .card:hover img { transform: scale(1.08); filter: brightness(0.7) saturate(1.3); }
     .card-img-wrap::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(2,6,23,0.95) 0%, rgba(2,6,23,0.2) 50%, transparent 100%); opacity: 0.6; transition: 0.4s; }
     .card:hover .card-img-wrap::after { opacity: 1; }
-    .card-score { position: absolute; top: 10px; right: 10px; z-index: 3; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border: 1px solid rgba(245,158,11,0.4); color: #f59e0b; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; font-family: "Orbitron", sans-serif; transition: 0.3s; }
+    .card-score { position: absolute; top: 8px; right: 8px; z-index: 3; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border: 1px solid rgba(245,158,11,0.4); color: #f59e0b; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; font-family: "Orbitron", sans-serif; transition: 0.3s; }
     .card:hover .card-score { border-color: #f59e0b; box-shadow: 0 0 10px rgba(245,158,11,0.3); }
-    .card-type { position: absolute; top: 10px; left: 10px; z-index: 3; background: rgba(0,255,255,0.12); backdrop-filter: blur(8px); border: 1px solid rgba(0,255,255,0.25); color: var(--cyan); font-size: 9px; font-weight: 700; padding: 3px 9px; border-radius: 20px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .card-type { position: absolute; top: 8px; left: 8px; z-index: 3; background: rgba(0,255,255,0.12); backdrop-filter: blur(8px); border: 1px solid rgba(0,255,255,0.25); color: var(--cyan); font-size: 8px; font-weight: 700; padding: 3px 8px; border-radius: 20px; letter-spacing: 0.5px; text-transform: uppercase; }
     .card-view-overlay { position: absolute; inset: 0; z-index: 4; display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
     .card:hover .card-view-overlay { opacity: 1; }
-    .view-pulse { width: 52px; height: 52px; border-radius: 50%; background: rgba(0,255,255,0.15); border: 1.5px solid rgba(0,255,255,0.6); display: flex; align-items: center; justify-content: center; font-size: 20px; transform: scale(0.6); transition: 0.35s; backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(0,255,255,0.3); }
+    .view-pulse { width: 48px; height: 48px; border-radius: 50%; background: rgba(0,255,255,0.15); border: 1.5px solid rgba(0,255,255,0.6); display: flex; align-items: center; justify-content: center; font-size: 18px; transform: scale(0.6); transition: 0.35s; backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(0,255,255,0.3); }
     .card:hover .view-pulse { transform: scale(1); }
-    .card-body { padding: 14px 14px 16px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
-    .card-title { font-size: 14px; font-weight: 700; color: white; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.2s; line-clamp: 2; }
+    .card-body { padding: 12px 12px 14px; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+    .card-title { font-size: clamp(12px, 2vw, 14px); font-weight: 700; color: white; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.2s; }
     .card:hover .card-title { color: var(--cyan); }
-    .card-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
-    .card-meta-item { font-size: 11px; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 3px; }
+    .card-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+    .card-meta-item { font-size: 10px; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 3px; }
     .card::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); transform: scaleX(0); transition: transform 0.4s; }
     .card:hover::after { transform: scaleX(1); }
-    .grid.list-view .card { flex-direction: row; height: 100px; }
-    .grid.list-view .card-img-wrap { width: 70px; height: 100px; aspect-ratio: unset; flex-shrink: 0; border-radius: 0; }
+ 
+    /* List view */
+    .grid.list-view .card { flex-direction: row; height: 90px; }
+    .grid.list-view .card-img-wrap { width: 65px; height: 90px; aspect-ratio: unset; flex-shrink: 0; border-radius: 0; }
     .grid.list-view .card-img-wrap::after { display: none; }
     .grid.list-view .card-view-overlay { display: none; }
-    .grid.list-view .card-score { top: 8px; right: 8px; font-size: 10px; }
+    .grid.list-view .card-score { top: 6px; right: 6px; font-size: 9px; }
     .grid.list-view .card-type { display: none; }
-    .grid.list-view .card-body { padding: 12px 16px; justify-content: center; }
-    .grid.list-view .card-title { font-size: 15px; -webkit-line-clamp: 1; line-clamp: 1; }
+    .grid.list-view .card-body { padding: 10px 14px; justify-content: center; }
+    .grid.list-view .card-title { font-size: 14px; -webkit-line-clamp: 1; }
     .grid.list-view .card:hover { transform: translateX(6px) scale(1); }
     .grid.list-view .card::after { bottom: auto; top: 0; height: 100%; width: 2px; left: 0; right: auto; transform: scaleY(0); }
     .grid.list-view .card:hover::after { transform: scaleY(1); }
  
-    .empty-state { grid-column: 1 / -1; text-align: center; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
-    .empty-icon { font-size: 64px; filter: grayscale(0.3); }
-    .empty-title { font-size: 20px; font-weight: 700; color: rgba(255,255,255,0.6); }
-    .empty-sub { font-size: 14px; color: rgba(255,255,255,0.35); }
+    .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .empty-icon { font-size: 56px; filter: grayscale(0.3); }
+    .empty-title { font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.6); }
+    .empty-sub { font-size: 13px; color: rgba(255,255,255,0.35); }
  
     /* ══════════════════════════════════════════
-       ANIME DETAIL MODAL
+       MODAL — fully responsive
     ══════════════════════════════════════════ */
-    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); display: none; z-index: 999; overflow-y: auto; }
-    /* FIX: position:relative moved from inline style on the HTML element into CSS */
-    .modal-content { position: relative; margin: 40px auto 60px; width: min(86%, 920px); background: rgba(4,12,32,0.98); padding: 0; border-radius: 24px; animation: modalSlideUp 0.4s cubic-bezier(.4,0,.2,1); box-shadow: 0 0 60px rgba(0,255,255,0.15), 0 40px 100px rgba(0,0,0,0.6); border: 1px solid rgba(0,255,255,0.2); overflow: hidden; }
+    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); display: none; z-index: 999; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .modal-content {
+      margin: clamp(12px, 3vw, 40px) auto clamp(24px, 5vw, 60px);
+      width: min(92%, 920px);
+      background: rgba(4,12,32,0.98); padding: 0;
+      border-radius: clamp(14px, 3vw, 24px);
+      animation: modalSlideUp 0.4s cubic-bezier(.4,0,.2,1);
+      box-shadow: 0 0 60px rgba(0,255,255,0.15), 0 40px 100px rgba(0,0,0,0.6);
+      border: 1px solid rgba(0,255,255,0.2); overflow: hidden;
+    }
     @keyframes modalSlideUp { from { opacity: 0; transform: translateY(40px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
     .modal-content::before { content: ""; display: block; height: 1px; background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent); }
-    .modal-inner { padding: 28px 32px 36px; }
-    .close { position: absolute; top: 18px; right: 20px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6); font-size: 14px; cursor: none; display: flex; align-items: center; justify-content: center; transition: 0.2s; z-index: 10; }
+    .modal-inner { padding: clamp(16px, 4vw, 28px) clamp(16px, 4vw, 32px) clamp(24px, 5vw, 36px); }
+    .close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6); font-size: 13px; cursor: none; display: flex; align-items: center; justify-content: center; transition: 0.2s; z-index: 10; }
     .close:hover { background: rgba(255,80,80,0.15); border-color: rgba(255,80,80,0.4); color: #ff6464; transform: rotate(90deg); }
     .genre { color: var(--cyan); }
-    .filler-box { margin-top: 15px; max-height: 280px; overflow-y: auto; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(0,255,255,0.1); border-radius: 14px; }
+    .filler-box { margin-top: 15px; max-height: min(280px, 40vh); overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(0,255,255,0.1); border-radius: 14px; }
  
     /* ══════════════════════════════════════════
-       VERDICT SECTION — GOD MODE
+       VERDICT SECTION
     ══════════════════════════════════════════ */
     .verdict-section { margin: 24px 0 4px; position: relative; }
     .verdict-glow-line { height: 1px; background: linear-gradient(90deg, transparent, rgba(0,255,255,0.4), rgba(124,58,237,0.4), transparent); margin-bottom: 20px; }
     .verdict-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
     .verdict-header-icon { font-size: 18px; filter: drop-shadow(0 0 8px var(--cyan)); }
     .verdict-header-title { font-family: "Orbitron", sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; background: linear-gradient(90deg, white, var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .verdict-card { background: linear-gradient(135deg, rgba(0,255,255,0.04) 0%, rgba(124,58,237,0.06) 100%); border: 1px solid rgba(0,255,255,0.18); border-radius: 18px; padding: 20px 22px; position: relative; overflow: hidden; transition: 0.3s ease; animation: verdictReveal 0.6s cubic-bezier(.4,0,.2,1) both; }
+    .verdict-card { background: linear-gradient(135deg, rgba(0,255,255,0.04) 0%, rgba(124,58,237,0.06) 100%); border: 1px solid rgba(0,255,255,0.18); border-radius: 18px; padding: clamp(14px, 3vw, 20px) clamp(14px, 3vw, 22px); position: relative; overflow: hidden; transition: 0.3s ease; animation: verdictReveal 0.6s cubic-bezier(.4,0,.2,1) both; }
     @keyframes verdictReveal { from { opacity: 0; transform: translateY(14px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
     .verdict-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--cyan), var(--purple), var(--cyan)); background-size: 200% 100%; animation: gradientShift 3s linear infinite; }
     @keyframes gradientShift { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
     .verdict-card::after { content: ""; position: absolute; bottom: -40px; right: -40px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(0,255,255,0.06), transparent 70%); border-radius: 50%; pointer-events: none; }
-    .verdict-label-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .verdict-label-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
     .verdict-icon { font-size: 22px; filter: drop-shadow(0 0 6px rgba(0,255,255,0.5)); flex-shrink: 0; }
     .verdict-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); opacity: 0.75; }
     .verdict-vibe { margin-left: auto; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; background: linear-gradient(45deg, rgba(0,255,255,0.15), rgba(124,58,237,0.15)); border: 1px solid rgba(0,255,255,0.25); color: rgba(0,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
-    .verdict-text { font-size: 14px; line-height: 1.75; color: rgba(255,255,255,0.88); font-weight: 400; margin-bottom: 16px; font-style: italic; position: relative; padding-left: 14px; }
+    .verdict-text { font-size: clamp(13px, 2vw, 14px); line-height: 1.75; color: rgba(255,255,255,0.88); font-weight: 400; margin-bottom: 16px; font-style: italic; position: relative; padding-left: 14px; }
     .verdict-text::before { content: ""; position: absolute; left: 0; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--cyan), var(--purple)); border-radius: 2px; }
     .verdict-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 14px 0; }
-    .verdict-watch-section { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .verdict-watch-section { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .verdict-watch-box { border-radius: 12px; padding: 12px 14px; position: relative; overflow: hidden; }
     .verdict-watch-box.yes { background: rgba(34,197,94,0.07); border: 1px solid rgba(34,197,94,0.25); }
     .verdict-watch-box.skip { background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.25); }
     .verdict-watch-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
     .verdict-watch-box.yes .verdict-watch-label { color: #4ade80; }
     .verdict-watch-box.skip .verdict-watch-label { color: #f87171; }
-    .verdict-watch-text { font-size: 12px; line-height: 1.65; color: rgba(255,255,255,0.65); }
+    .verdict-watch-text { font-size: clamp(11px, 1.8vw, 12px); line-height: 1.65; color: rgba(255,255,255,0.65); }
     .verdict-filler-section { margin-top: 14px; padding: 13px 16px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); }
-    .verdict-filler-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .verdict-filler-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; }
     .verdict-filler-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; text-transform: uppercase; }
     .verdict-filler-pct { font-size: 12px; font-weight: 700; font-family: "Orbitron", sans-serif; }
     .verdict-filler-bar-wrap { height: 6px; background: rgba(255,255,255,0.06); border-radius: 6px; overflow: hidden; }
@@ -455,90 +440,153 @@
     .verdict-filler-advice { margin-top: 8px; font-size: 11px; color: rgba(255,255,255,0.45); line-height: 1.5; }
  
     /* ══════════════════════════════════════════
-       LIST PANELS
+       LIST PANELS — responsive
     ══════════════════════════════════════════ */
     .list-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(14px); z-index: 10001; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
     .list-overlay.active { opacity: 1; pointer-events: all; }
-    .list-panel { width: 100%; max-width: 860px; max-height: 82vh; background: rgba(4,12,28,0.98); border: 1px solid rgba(0,255,255,0.2); border-bottom: none; border-radius: 24px 24px 0 0; box-shadow: 0 -6px 60px rgba(0,255,255,0.18); display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.42s cubic-bezier(.32,1,.54,1); overflow: hidden; }
+    .list-panel { width: 100%; max-width: 860px; max-height: min(82vh, calc(100vh - 60px)); background: rgba(4,12,28,0.98); border: 1px solid rgba(0,255,255,0.2); border-bottom: none; border-radius: 24px 24px 0 0; box-shadow: 0 -6px 60px rgba(0,255,255,0.18); display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.42s cubic-bezier(.32,1,.54,1); overflow: hidden; }
     .list-overlay.active .list-panel { transform: translateY(0); }
     .list-handle { width: 40px; height: 4px; background: rgba(0,255,255,0.3); border-radius: 2px; margin: 14px auto 0; flex-shrink: 0; }
-    .list-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px 14px; border-bottom: 1px solid rgba(0,255,255,0.1); flex-shrink: 0; }
-    .list-header-left { display: flex; align-items: center; gap: 12px; }
-    .list-panel-icon { font-size: 26px; filter: drop-shadow(0 0 8px var(--cyan)); }
-    .list-panel-title { font-size: 20px; font-weight: 700; background: linear-gradient(45deg, var(--cyan), #7c3aed); -webkit-background-clip: text; color: transparent; background-clip: text; }
+    .list-header { display: flex; align-items: center; justify-content: space-between; padding: 16px clamp(16px, 4vw, 24px) 14px; border-bottom: 1px solid rgba(0,255,255,0.1); flex-shrink: 0; }
+    .list-header-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .list-panel-icon { font-size: 24px; filter: drop-shadow(0 0 8px var(--cyan)); }
+    .list-panel-title { font-size: clamp(16px, 4vw, 20px); font-weight: 700; background: linear-gradient(45deg, var(--cyan), #7c3aed); -webkit-background-clip: text; color: transparent; background-clip: text;}
     .list-count-badge { background: rgba(0,255,255,0.15); border: 1px solid rgba(0,255,255,0.3); color: var(--cyan); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
     .list-close-btn { width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: white; font-size: 16px; cursor: none; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0; }
     .list-close-btn:hover { background: rgba(255,80,80,0.15); border-color: rgba(255,80,80,0.4); color: #ff6464; transform: rotate(90deg); }
-    .list-body { flex: 1; overflow-y: auto; padding: 16px 24px 24px; }
-    .list-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; opacity: 0.6; text-align: center; gap: 14px; }
-    .list-empty-icon { font-size: 52px; }
-    .list-empty p { font-size: 15px; margin: 0; }
+    .list-body { flex: 1; overflow-y: auto; padding: 14px clamp(14px, 3vw, 24px) 24px; -webkit-overflow-scrolling: touch; }
+    .list-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 50px 20px; opacity: 0.6; text-align: center; gap: 14px; }
+    .list-empty-icon { font-size: 48px; }
+    .list-empty p { font-size: 14px; margin: 0; }
     .list-empty small { font-size: 12px; opacity: 0.6; }
-    .list-anime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+    .list-anime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(140px, calc(50vw - 24px)), 1fr)); gap: 14px; }
     .list-anime-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; cursor: none; transition: 0.25s ease; position: relative; }
     .list-anime-item:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 30px rgba(0,255,255,0.2); border-color: rgba(0,255,255,0.4); }
     .list-anime-thumb { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; transition: 0.3s; }
     .list-anime-item:hover .list-anime-thumb { transform: scale(1.04); }
-    .list-anime-info { padding: 9px 10px 10px; }
-    .list-anime-name { font-size: 12px; font-weight: 600; color: white; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-clamp: 2; }
-    .list-remove-btn { position: absolute; top: 7px; right: 7px; width: 26px; height: 26px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 1px solid rgba(255,80,80,0.4); color: rgba(255,100,100,0.85); font-size: 13px; cursor: none; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.7); transition: 0.2s; }
+    .list-anime-info { padding: 8px 9px 10px; }
+    .list-anime-name { font-size: 11px; font-weight: 600; color: white; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .list-remove-btn { position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border-radius: 50%; background: rgba(0,0,0,0.7); border: 1px solid rgba(255,80,80,0.4); color: rgba(255,100,100,0.85); font-size: 12px; cursor: none; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.7); transition: 0.2s; }
     .list-anime-item:hover .list-remove-btn { opacity: 1; transform: scale(1); }
     .list-remove-btn:hover { background: rgba(255,50,50,0.25); border-color: rgba(255,80,80,0.8); color: #ff6464; transform: scale(1.15) !important; }
-    .list-open-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%); opacity: 0; transition: 0.2s; display: flex; align-items: flex-end; padding-bottom: 40px; justify-content: center; }
+    .list-open-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%); opacity: 0; transition: 0.2s; display: flex; align-items: flex-end; padding-bottom: 36px; justify-content: center; }
     .list-anime-item:hover .list-open-overlay { opacity: 1; }
     .list-open-label { font-size: 11px; font-weight: 600; color: var(--cyan); letter-spacing: 0.5px; text-shadow: 0 0 8px var(--cyan); }
-    .list-clear-btn { background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.3); color: rgba(255,100,100,0.8); font-size: 12px; padding: 6px 16px; border-radius: 20px; cursor: none; font-family: "Poppins",sans-serif; transition: 0.2s; margin-left: auto; display: block; margin-bottom: 16px; }
-    .list-clear-btn:hover { background: rgba(255,80,80,0.18); color: #ff6464; box-shadow: 0 0 10px rgba(255,80,80,0.2); }
+    .list-clear-btn { background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.3); color: rgba(255,100,100,0.8); font-size: 12px; padding: 6px 16px; border-radius: 20px; cursor: none; font-family: "Poppins",sans-serif; transition: 0.2s; margin-left: auto; display: block; margin-bottom: 14px; }
+    .list-clear-btn:hover { background: rgba(255,80,80,0.18); color: #ff6464; box-shadow: 0 0 10px rgba(255,80,80,0.2); transform: none; }
  
-    /* FAQ */
-    .faq-section { max-width: 1060px; margin: 80px auto 20px; padding: 0 24px; text-align: center; }
+    /* ── FAQ ── */
+    .faq-section { max-width: 1060px; margin: clamp(40px, 8vw, 80px) auto 20px; padding: 0 clamp(16px, 4vw, 24px); text-align: center; }
     .faq-eyebrow { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--cyan); opacity: 0.6; display: block; margin-bottom: 14px; }
-    .faq-section h2 { font-family: "Orbitron", sans-serif; font-size: clamp(24px, 3.5vw, 40px); font-weight: 700; background: linear-gradient(90deg, white, var(--cyan)); -webkit-background-clip: text; color: transparent; margin-bottom: 40px; background-clip: text; }
-    .faq-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 16px; }
-    .faq-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.07); padding: 24px 22px; border-radius: 18px; text-align: left; transition: 0.35s; cursor: default; position: relative; overflow: hidden; }
+    .faq-section h2 { font-family: "Orbitron", sans-serif; font-size: clamp(20px, 4vw, 40px); font-weight: 700; background: linear-gradient(90deg, white, var(--cyan)); -webkit-background-clip: text; color: transparent; margin-bottom: 36px; background-clip: text;}
+    .faq-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 14px; }
+    .faq-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.07); padding: 22px 20px; border-radius: 18px; text-align: left; transition: 0.35s; cursor: default; position: relative; overflow: hidden; }
     .faq-card::before { content: ""; position: absolute; inset: 0; border-radius: 18px; background: radial-gradient(circle at 20% 20%, rgba(0,255,255,0.06), transparent 60%); opacity: 0; transition: 0.4s; }
     .faq-card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,255,255,0.08); border-color: rgba(0,255,255,0.25); }
     .faq-card:hover::before { opacity: 1; }
-    .faq-card h4 { margin-bottom: 10px; color: var(--cyan); font-size: 15px; }
+    .faq-card h4 { margin-bottom: 10px; color: var(--cyan); font-size: clamp(13px, 2vw, 15px); }
     .faq-card p { font-size: 13px; opacity: 0.7; line-height: 1.7; }
  
-    /* FOOTER */
-    .footer { margin-top: 80px; padding: 40px 24px 20px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(0,255,255,0.08); }
-    .footer-container { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 30px; }
-    .footer-brand h2 { font-family: "Orbitron", sans-serif; color: var(--cyan); margin-bottom: 10px; font-size: 20px; }
-    .footer-brand p { font-size: 14px; opacity: 0.6; }
+    /* ── Footer ── */
+    .footer { margin-top: clamp(40px, 8vw, 80px); padding: clamp(24px, 5vw, 40px) clamp(16px, 4vw, 24px) 20px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(0,255,255,0.08); }
+    .footer-container { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 26px; }
+    .footer-brand h2 { font-family: "Orbitron", sans-serif; color: var(--cyan); margin-bottom: 10px; font-size: clamp(16px, 3vw, 20px); }
+    .footer-brand p { font-size: 13px; opacity: 0.6; }
     .footer-links h4 { margin-bottom: 10px; color: var(--cyan); font-size: 13px; letter-spacing: 1px; }
     .footer-links a { display: block; text-decoration: none; color: rgba(255,255,255,0.6); margin-bottom: 7px; transition: 0.2s; font-size: 13px; cursor: none; }
     .footer-links a:hover { color: var(--cyan); padding-left: 4px; }
-    .footer-bottom { text-align: center; margin-top: 30px; font-size: 12px; opacity: 0.5; }
+    .footer-bottom { text-align: center; margin-top: 28px; font-size: 12px; opacity: 0.5; }
     .footer-note { font-size: 11px; margin-top: 8px; }
     .footer a { color: var(--cyan); }
  
-    /* TOAST */
-    #toast { position: fixed; bottom: 30px; right: 30px; background: rgba(4,12,32,0.97); border: 1px solid rgba(0,255,255,0.3); color: white; padding: 14px 24px; border-radius: 16px; font-size: 14px; box-shadow: 0 0 30px rgba(0,255,255,0.15); z-index: 99999; opacity: 0; transform: translateY(16px); transition: 0.35s cubic-bezier(.4,0,.2,1); pointer-events: none; backdrop-filter: blur(20px); max-width: 320px; }
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: clamp(16px, 4vw, 30px);
+      right: clamp(12px, 3vw, 30px);
+      left: auto;
+      max-width: min(300px, calc(100vw - 24px));
+      background: rgba(4,12,32,0.97); border: 1px solid rgba(0,255,255,0.3);
+      color: white; padding: 12px 20px; border-radius: 16px; font-size: 13px;
+      box-shadow: 0 0 30px rgba(0,255,255,0.15); z-index: 99999;
+      opacity: 0; transform: translateY(16px);
+      transition: 0.35s cubic-bezier(.4,0,.2,1); pointer-events: none;
+      backdrop-filter: blur(20px); word-wrap: break-word;
+    }
     #toast.show { opacity: 1; transform: translateY(0); }
  
-    /* COOKIE */
-    #cookieBox { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: rgba(4,12,32,0.97); padding: 18px 24px; border-radius: 18px; box-shadow: 0 0 40px rgba(0,255,255,0.2); border: 1px solid rgba(0,255,255,0.2); display: none; z-index: 888; max-width: 92%; text-align: center; backdrop-filter: blur(20px); }
+    /* ── Cookie ── */
+    #cookieBox {
+      position: fixed; bottom: 16px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(4,12,32,0.97); padding: 16px 20px;
+      border-radius: 18px; box-shadow: 0 0 40px rgba(0,255,255,0.2);
+      border: 1px solid rgba(0,255,255,0.2); display: none; z-index: 888;
+      width: min(92%, 480px); text-align: center; backdrop-filter: blur(20px);
+    }
  
-    ::-webkit-scrollbar { width: 6px; }
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.3); border-radius: 6px; }
  
+    /* ══════════════════════════════════════════
+       RESPONSIVE BREAKPOINTS
+    ══════════════════════════════════════════ */
+ 
+    /* Large tablets / small desktops */
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(auto-fill, minmax(min(170px, calc(50vw - 20px)), 1fr)); }
+    }
+ 
+    /* Tablets */
     @media (max-width: 768px) {
-      header { padding: 14px 20px; }
-      .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px 16px; }
-      .modal-content { width: 96%; margin: 20px auto 40px; }
-      .modal-inner { padding: 20px 18px 28px; }
-      .controls { margin: 0 16px 28px; }
-      .search-wrapper { width: 100%; }
+      .controls { gap: 7px; margin-bottom: 22px; }
+      .ctrl-btn { padding: 10px 14px; font-size: 12px; }
       .verdict-watch-section { grid-template-columns: 1fr; }
+      .modal-content { width: 95%; }
     }
-    @media (max-width: 480px) {
+ 
+    /* Large phones */
+    @media (max-width: 600px) {
       .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .list-anime-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
     }
-    @media (pointer: coarse) {
-      #cursor, #cursorRing { display: none; }
-      body { cursor: auto; }
+ 
+    /* Small phones */
+    @media (max-width: 480px) {
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .ctrl-btn { padding: 9px 12px; font-size: 11px; }
+      .controls { gap: 6px; }
+      .faq-container { grid-template-columns: 1fr; }
+      .modal-inner { padding: 14px 14px 24px; }
+      .filler-box { max-height: min(220px, 35vh); }
+    }
+ 
+    /* Very small phones (320px) */
+    @media (max-width: 360px) {
+      header h1 { font-size: 14px; letter-spacing: 1px; }
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 7px; }
+      .verdict-watch-section { grid-template-columns: 1fr; }
+      .ctrl-btn { padding: 8px 10px; font-size: 11px; }
+    }
+ 
+    /* Landscape phones */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .page-hero { padding: 24px 16px 20px; }
+      .page-hero h2 { font-size: 28px; margin-bottom: 8px; }
+      .modal-content { margin: 8px auto 20px; }
+      .list-panel { max-height: 90vh; }
+    }
+ 
+    /* Touch devices — auto cursor */
+    @media (hover: none) and (pointer: coarse) {
+      #cursor, #cursorRing { display: none !important; }
+      body { cursor: auto !important; }
+      * { cursor: auto !important; }
+      .ctrl-btn, .card, .suggestion-item, .udrop-link,
+      .list-close-btn, .list-remove-btn, .list-clear-btn,
+      .udrop-guest-btn, .udrop-signout-btn, .close,
+      .view-btn, .menu-btn, .user-avatar { cursor: pointer !important; }
     }
   </style>
 </head>
@@ -566,17 +614,10 @@
     </div>
     <div class="user-avatar-wrap">
       <div class="user-avatar" id="userAvatar" onclick="toggleDropdown(event)">?</div>
-      <!-- FIX: Removed redundant inline style="display:none;" — CSS already sets display:none -->
-      <div class="online-dot" id="onlineDot"></div>
+      <div class="online-dot" id="onlineDot" style="display:none;"></div>
     </div>
     <div class="user-dropdown" id="userDropdown">
-      <!--
-        FIX: Removed the broken inline style="display:none; display:contents;"
-        Two conflicting display declarations on the same attribute — the browser picks
-        the last one, so display:none was silently ignored and the logged-in panel
-        always rendered. JS now sets display correctly via onAuthStateChanged.
-      -->
-      <div id="dropLoggedIn">
+      <div id="dropLoggedIn" style="display:none; display:contents;">
         <div class="udrop-sticky">
           <div class="udrop-top">
             <div class="udrop-avatar-lg" id="dropAvatarLg">?</div>
@@ -604,10 +645,9 @@
           <div class="udrop-links">
             <a class="udrop-link" href="homepageblog.html"><span class="udrop-link-icon">🏠</span> Home</a>
             <a class="udrop-link" href="explore.html"><span class="udrop-link-icon">🔍</span> Explore Anime</a>
-            <!-- FIX: href="#" causes an instant scroll-to-top on click; javascript:void(0) prevents it -->
-            <a class="udrop-link" href="javascript:void(0)" onclick="openListPanel('watchlist')"><span class="udrop-link-icon">📋</span> My Watchlist</a>
-            <a class="udrop-link" href="javascript:void(0)" onclick="openListPanel('favourites')"><span class="udrop-link-icon">⭐</span> My Favourites</a>
-            <a class="udrop-link" href="javascript:void(0)" onclick="openBingeCalc()"><span class="udrop-link-icon">⚡</span> Binge Calculator</a>
+            <a class="udrop-link" href="#" onclick="openListPanel('watchlist');return false;"><span class="udrop-link-icon">📋</span> My Watchlist</a>
+            <a class="udrop-link" href="#" onclick="openListPanel('favourites');return false;"><span class="udrop-link-icon">⭐</span> My Favourites</a>
+            <a class="udrop-link" href="#" onclick="openBingeCalc();return false;"><span class="udrop-link-icon">⚡</span> Binge Calculator</a>
             <a class="udrop-link" href="about.html"><span class="udrop-link-icon">ℹ️</span> About AnimeIQ</a>
             <a class="udrop-link" href="contactus.html"><span class="udrop-link-icon">✉️</span> Contact</a>
             <a class="udrop-link" href="privacy.html"><span class="udrop-link-icon">🔒</span> Privacy Policy</a>
@@ -668,9 +708,8 @@
 <div id="animeContainer" class="grid"></div>
  
 <!-- ANIME DETAIL MODAL -->
-<!-- FIX: Removed redundant inline style="position:relative;" — now correctly lives in .modal-content CSS -->
 <div id="animeModal" class="modal">
-  <div class="modal-content">
+  <div class="modal-content" style="position:relative;">
     <span class="close" onclick="closeModal()">✕</span>
     <div class="modal-inner" id="modalData"></div>
   </div>
@@ -729,10 +768,8 @@
     </div>
     <div class="footer-links">
       <h4>Quick Links</h4>
-      <!-- FIX: href="" triggers a full page reload on click, breaking any loaded state.
-           javascript:void(0) calls the JS function without any navigation side-effect. -->
-      <a href="javascript:void(0)" onclick="loadTop()">Top Anime</a>
-      <a href="javascript:void(0)" onclick="loadIsekai()">Best Isekai</a>
+      <a href="" onclick="loadTop();return false;">Top Anime</a>
+      <a href="" onclick="loadIsekai();return false;">Best Isekai</a>
       <a href="about.html">About</a>
       <a href="contactus.html">Contact</a>
     </div>
@@ -750,7 +787,7 @@
  
 <div id="cookieBox">
   <p style="font-size:13px;opacity:0.8;margin:0 0 14px;line-height:1.6;">🍪 We use cookies to improve your experience. By using AnimeIQ, you agree to our <a href="privacy.html" style="color:var(--cyan);">Privacy Policy</a>.</p>
-  <button onclick="acceptCookies()" style="padding:9px 22px;border:none;border-radius:12px;background:linear-gradient(45deg,var(--cyan),var(--purple));color:#020617;cursor:none;font-family:'Poppins',sans-serif;font-weight:700;">Accept &amp; Continue</button>
+  <button onclick="acceptCookies()" style="padding:9px 22px;border:none;border-radius:12px;background:linear-gradient(45deg,var(--cyan),var(--purple));color:#020617;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:700;">Accept & Continue</button>
 </div>
  
 <!-- FIREBASE -->
@@ -803,17 +840,8 @@
       document.getElementById("dropAvatarLg").textContent = initials;
       document.getElementById("dropName").textContent     = displayName;
       document.getElementById("dropHandle").textContent   = `@${handle} · AnimeIQ`;
-      /*
-       * FIX: Was setting display:"contents" which broke the flex column layout of
-       * .user-dropdown — udrop-sticky / udrop-scroll / udrop-bottom-sticky need a
-       * proper flex parent to stack and scroll correctly. "flex" + flex-direction
-       * column + flex:1 + overflow:hidden makes the inner layout work as intended.
-       */
-      loggedInEl.style.display       = "flex";
-      loggedInEl.style.flexDirection = "column";
-      loggedInEl.style.flex          = "1";
-      loggedInEl.style.overflow      = "hidden";
-      guestEl.style.display          = "none";
+      loggedInEl.style.display = "contents";
+      guestEl.style.display    = "none";
       refreshCounts(user.uid);
     } else {
       window._currentUID = null;
@@ -830,30 +858,16 @@
   };
 </script>
  
-<!-- ═══════════════════════════════════════════════════════
-     MAIN APP LOGIC — GOD MODE FIXED
-     Changes made:
-       • Fixed double-protocol proxy URL (http://https:// → https://)
-       • Added AbortController to all fetches (no stale results)
-       • Added in-memory anime detail cache (instant re-opens)
-       • Modal click-outside-to-close
-       • Score badge hidden when null (no "N/A" clutter)
-       • Episode table wrapped in overflow-x:auto for mobile
-       • Episode filter buttons track active state visually
-       • Filler bar animation fixed (JS delay instead of broken CSS)
-       • will-change:transform injected on cards for GPU promotion
-════════════════════════════════════════════════════════ -->
+<!-- MAIN APP LOGIC -->
 <script>
-  const API        = "https://anime-backend-73df.onrender.com";
-  const container  = document.getElementById("animeContainer");
-  const loader     = document.getElementById("loader");
-  const resultsBar = document.getElementById("resultsBar");
- 
-  // In-memory cache for anime detail pages — instant re-opens
-  const animeCache = {};
- 
-  // AbortController for search/suggestion fetches — kills stale requests
-  let searchAbort = null;
+  /* ══════════════════════════════════════════
+     FIX: Correct API URL — no port needed on Render
+     FIX: proxyImg — fixed double-protocol bug
+  ══════════════════════════════════════════ */
+  const API       = "https://anime-backend-73df.onrender.com";
+  const container = document.getElementById("animeContainer");
+  const loader    = document.getElementById("loader");
+  const resultsBar= document.getElementById("resultsBar");
  
   let currentView = "grid";
  
@@ -918,8 +932,8 @@
   function handleOverlayClick(e, overlayId) { if (e.target.id === overlayId) closeListPanel(overlayId); }
  
   function renderListPanel(type, bodyId, badgeId) {
-    const list  = getUserList(type);
-    const body  = document.getElementById(bodyId);
+    const list = getUserList(type);
+    const body = document.getElementById(bodyId);
     const badge = document.getElementById(badgeId);
     const isWatch = type === "watchlist";
     badge.textContent = list.length;
@@ -927,8 +941,8 @@
       body.innerHTML = `<div class="list-empty"><div class="list-empty-icon">${isWatch ? "📋" : "⭐"}</div><p>${isWatch ? "Your watchlist is empty" : "No favourites yet"}</p><small>${isWatch ? "Add anime from their detail page" : "Star the anime you love from their detail page"}</small></div>`;
       return;
     }
-    // FIXED: correct proxy URL (was http://https://)
-    const proxyUrl = (url) => url ? `https://anime-backend-73df.onrender.com/img?url=${encodeURIComponent(url)}` : "";
+    /* FIX: correct proxy URL — no double protocol */
+    const proxyUrl = (url) => url ? `${API}/img?url=${encodeURIComponent(url)}` : "";
     let html = `<button class="list-clear-btn" onclick="clearList('${type}','${bodyId}','${badgeId}')">🗑️ Clear All</button><div class="list-anime-grid">`;
     list.forEach(anime => {
       const img = proxyUrl(anime.image);
@@ -994,15 +1008,20 @@
       document.body.classList.remove("menu-open");
     }
   }
+ 
   document.querySelectorAll(".full-menu a").forEach(l => l.addEventListener("click", () => {
     document.getElementById("menu").classList.remove("active");
     document.getElementById("menuBtn").classList.remove("active");
     document.body.classList.remove("menu-open");
   }));
  
-  function toggleDropdown(e) { e.stopPropagation(); document.getElementById("userDropdown").classList.toggle("open"); }
+  function toggleDropdown(e) {
+    e.stopPropagation();
+    document.getElementById("userDropdown").classList.toggle("open");
+  }
+ 
   document.addEventListener("click", (e) => {
-    const drop   = document.getElementById("userDropdown");
+    const drop = document.getElementById("userDropdown");
     const avatar = document.getElementById("userAvatar");
     if (!drop.contains(e.target) && e.target !== avatar) drop.classList.remove("open");
   });
@@ -1015,18 +1034,25 @@
     }
   }
  
-  function openBingeCalc() { document.getElementById("userDropdown").classList.remove("open"); window.location.href = "binge.html"; }
+  function openBingeCalc() {
+    document.getElementById("userDropdown").classList.remove("open");
+    window.location.href = "binge.html";
+  }
  
   function trackSearch() {
     if (!window._currentUID) return;
     const key = `aiq_${window._currentUID}_searches`;
     const n = parseInt(localStorage.getItem(key) || "0") + 1;
-    localStorage.setItem(key, n); window._refreshCounts(window._currentUID);
+    localStorage.setItem(key, n);
+    window._refreshCounts(window._currentUID);
   }
  
   function setActiveBtn(id) {
-    ["btnTop","btnIsekai"].forEach(b => { const el = document.getElementById(b); if (el) el.classList.remove("active-filter"); });
-    const el = document.getElementById(id); if (el) el.classList.add("active-filter");
+    ["btnTop","btnIsekai"].forEach(b => {
+      const el = document.getElementById(b);
+      if (el) el.classList.remove("active-filter");
+    });
+    if (id) { const el = document.getElementById(id); if (el) el.classList.add("active-filter"); }
   }
  
   async function loadTop() {
@@ -1035,7 +1061,7 @@
       loader.style.display = "block"; resultsBar.style.display = "none";
       const res  = await fetch(API + "/top");
       const data = await res.json();
-      display(data.data.slice(0, 12));
+      display(data.data.slice(0,12));
     } catch { loader.style.display = "none"; showEmpty("⚠️ Failed to load data. Check your connection."); }
   }
  
@@ -1045,7 +1071,7 @@
       loader.style.display = "block"; resultsBar.style.display = "none";
       const res  = await fetch(API + "/isekai");
       const data = await res.json();
-      display(data.data.slice(0, 12));
+      display(data.data.slice(0,12));
     } catch { loader.style.display = "none"; showEmpty("⚠️ Failed to load data. Check your connection."); }
   }
  
@@ -1054,25 +1080,23 @@
     if (!query) return;
     setActiveBtn(null);
     trackSearch();
-    // FIXED: abort any in-flight search request before firing a new one
-    if (searchAbort) searchAbort.abort();
-    searchAbort = new AbortController();
     try {
       loader.style.display = "block"; resultsBar.style.display = "none";
-      const res  = await fetch(`${API}/search?q=${encodeURIComponent(query)}`, { signal: searchAbort.signal });
+      const res  = await fetch(`${API}/search?q=${encodeURIComponent(query)}`);
       const data = await res.json();
-      display(data.data.slice(0, 12));
-    } catch (e) {
-      if (e.name !== "AbortError") { loader.style.display = "none"; showEmpty("⚠️ Search failed. Check your connection."); }
-    }
+      display(data.data.slice(0,12));
+    } catch { loader.style.display = "none"; showEmpty("⚠️ Search failed. Check your connection."); }
   }
  
   function showEmpty(msg) {
     container.innerHTML = `<div class="empty-state"><div class="empty-icon">😢</div><div class="empty-title">${msg}</div><div class="empty-sub">Try refreshing or searching for something else</div></div>`;
+    loader.style.display = "none";
   }
  
-  // FIXED: correct proxy URL (was http://https://)
-  function proxyImg(url) { return url ? `https://anime-backend-73df.onrender.com/img?url=${encodeURIComponent(url)}` : ""; }
+  /* FIX: correct proxy URL — no double protocol */
+  function proxyImg(url) {
+    return url ? `${API}/img?url=${encodeURIComponent(url)}` : "";
+  }
  
   function display(list) {
     loader.style.display = "none";
@@ -1081,23 +1105,22 @@
     resultsBar.style.display = "flex";
     document.getElementById("resultCount").textContent = list.length;
     container.innerHTML = list.map((anime, i) => {
-      const img  = proxyImg(anime.images?.jpg?.large_image_url || anime.images?.jpg?.image_url || "");
-      // FIXED: hide score badge entirely when null — no "N/A" clutter
-      const scoreHTML = anime.score ? `<span class="card-score">⭐ ${anime.score}</span>` : "";
-      const type = anime.type || "";
-      const eps  = anime.episodes ? `${anime.episodes} eps` : "";
-      const year = anime.year || "";
-      return `<div class="card" onclick="openDetails(${anime.mal_id})" style="animation: fadeSlideCard 0.5s ease ${i * 0.04}s both; will-change: transform;">
+      const img   = proxyImg(anime.images?.jpg?.large_image_url || anime.images?.jpg?.image_url || "");
+      const score = anime.score ? `⭐ ${anime.score}` : "N/A";
+      const type  = anime.type || "";
+      const eps   = anime.episodes ? `${anime.episodes} eps` : "";
+      const year  = anime.year || "";
+      return `<div class="card" onclick="openDetails(${anime.mal_id})" style="animation: fadeSlideCard 0.5s ease ${i * 0.04}s both;">
         <div class="card-img-wrap">
           ${img ? `<img src="${img}" loading="lazy" onerror="this.style.display='none'" alt="${anime.title}">` : `<div style="width:100%;height:100%;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;font-size:48px;">🎌</div>`}
           ${type ? `<span class="card-type">${type}</span>` : ""}
-          ${scoreHTML}
+          <span class="card-score">${score}</span>
           <div class="card-view-overlay"><div class="view-pulse">👁️</div></div>
         </div>
         <div class="card-body">
           <div class="card-title">${anime.title}</div>
           <div class="card-meta">
-            ${eps  ? `<span class="card-meta-item">📺 ${eps}</span>`  : ""}
+            ${eps ? `<span class="card-meta-item">📺 ${eps}</span>` : ""}
             ${year ? `<span class="card-meta-item">📅 ${year}</span>` : ""}
           </div>
         </div>
@@ -1106,7 +1129,7 @@
   }
  
   /* ══════════════════════════════════════════
-     VERDICT SYSTEM — 15 handcrafted verdicts
+     VERDICT SYSTEM
   ══════════════════════════════════════════ */
   const VERDICTS = [
     { verdict: "A relentless, high-octane powerhouse that barely lets you breathe. Every episode delivers a dopamine surge wrapped in stunning animation and explosive choreography.", icon: "⚡", label: "Action Overload", watchIf: "You crave non-stop battles, overpowered protagonists, and adrenaline-fueled sequences that make your jaw drop.", skipIf: "You need slow-burn character development or deeply philosophical storytelling above all else.", vibe: "🔥 Binge-worthy" },
@@ -1115,38 +1138,49 @@
     { verdict: "Comedy and heart woven together with surgical precision. The gags hit perfectly, but there's genuine warmth and character depth underneath every perfectly timed punchline.", icon: "😂", label: "Comedy Gold", watchIf: "You want something that makes you laugh out loud while sneaking in real emotional moments that catch you off guard.", skipIf: "You prefer serious, dark, or action-heavy series with minimal comedy and constant high stakes.", vibe: "☀️ Feel Good" },
     { verdict: "A psychological labyrinth that keeps you second-guessing every single frame. The kind of anime you genuinely need to watch twice to fully appreciate every layer.", icon: "🧠", label: "Mind-Bender", watchIf: "You love unreliable narratives, intricate plot twists, and anime that treats you as an intelligent, attentive viewer.", skipIf: "You prefer clear, linear storytelling without deep philosophical undertones or ambiguous endings.", vibe: "🌀 Think Piece" },
     { verdict: "Shōnen at its purest and most elevated form. The power of friendship and perseverance told with breathtaking animation, iconic music, and unforgettable rivalries.", icon: "👊", label: "Shōnen Classic", watchIf: "You live for underdog stories, the thrill of epic rivalries, and the satisfaction of a protagonist who refuses to give up.", skipIf: "You're frustrated by slow pacing or long filler stretches between key story arcs.", vibe: "🏆 Iconic" },
-    { verdict: "Dark, atmospheric, and completely unafraid to go to brutal places. This is the anime for those who want real stakes, real consequences, and moral ambiguity at every turn.", icon: "🌑", label: "Dark Fantasy", watchIf: "You want moral ambiguity, visceral storytelling, and a world where no character — no matter how beloved — is truly safe.", skipIf: "You're sensitive to graphic content or prefer protagonists with clear, unwavering heroic motivations.", vibe: "⚔️ Intense" },
-    { verdict: "A slice-of-life gem that captures the quiet, overlooked beauty of everyday moments. Deceptively simple on the surface — profoundly resonant underneath.", icon: "🌸", label: "Slice of Life Perfection", watchIf: "You appreciate slow, thoughtful storytelling where the magic is hidden entirely in the mundane details of ordinary life.", skipIf: "You need action, high stakes, or dramatic plot twists to maintain engagement with a series.", vibe: "🍵 Cozy Watch" },
+    { verdict: "Dark, atmospheric, and completely unafraid to go to brutal places. This is the anime for those who want real stakes, real consequences, and moral ambiguity at every turn.", icon: "🌑", label: "Dark Fantasy", watchIf: "You want moral ambiguity, visceral storytelling, and a world where no character is truly safe.", skipIf: "You're sensitive to graphic content or prefer protagonists with clear heroic motivations.", vibe: "⚔️ Intense" },
+    { verdict: "A slice-of-life gem that captures the quiet, overlooked beauty of everyday moments. Deceptively simple on the surface — profoundly resonant underneath.", icon: "🌸", label: "Slice of Life Perfection", watchIf: "You appreciate slow, thoughtful storytelling where the magic is hidden in the mundane details of ordinary life.", skipIf: "You need action, high stakes, or dramatic plot twists to stay engaged.", vibe: "🍵 Cozy Watch" },
     { verdict: "A romance that actually understands human connection on a deep level. The chemistry between characters feels genuinely earned rather than artificially manufactured for drama.", icon: "💫", label: "Romance Excellence", watchIf: "You want believable chemistry, real emotional depth, and a love story that develops at a pace that feels authentic.", skipIf: "You're looking for action-heavy content or get frustrated by slow-building romantic tension.", vibe: "💕 Heart Warmer" },
-    { verdict: "Science fiction world-building at its finest and most ambitious. The concepts are bold, the execution is meticulous, and the existential questions it raises linger with you.", icon: "🚀", label: "Sci-Fi Brilliance", watchIf: "You love thought-provoking science fiction, complex societies, and anime that makes you seriously question the nature of reality.", skipIf: "You prefer fantasy or magic systems over technology-based mechanics and hard science fiction concepts.", vibe: "🔭 Thought-Provoking" },
-    { verdict: "Horror and suspense executed with absolute surgical precision. The dread accumulates slowly and methodically, and when it finally unleashes — it hits devastatingly hard.", icon: "👁️", label: "Psychological Horror", watchIf: "You enjoy creeping atmospheric dread, unreliable realities, and anime that genuinely, deeply unsettles you.", skipIf: "You're sensitive to psychological stress, body horror, or deeply disturbing and traumatic imagery.", vibe: "😱 Edge of Seat" },
-    { verdict: "A sports anime that completely transcends its genre. At its core it's really about passion, the agony of failure, and what it truly means to push yourself past your absolute limits.", icon: "🏅", label: "Sports Anime Peak", watchIf: "You love underdog arcs, the electric thrill of competition, and character growth that is forged through relentless effort.", skipIf: "You can't invest emotionally in sports narratives or need fantasy and action elements to stay engaged.", vibe: "🔥 Hype Machine" },
+    { verdict: "Science fiction world-building at its finest and most ambitious. The concepts are bold, the execution is meticulous, and the existential questions it raises linger with you.", icon: "🚀", label: "Sci-Fi Brilliance", watchIf: "You love thought-provoking science fiction, complex societies, and anime that makes you question the nature of reality.", skipIf: "You prefer fantasy or magic systems over technology-based mechanics and hard science fiction concepts.", vibe: "🔭 Thought-Provoking" },
+    { verdict: "Horror and suspense executed with absolute surgical precision. The dread accumulates slowly and methodically, and when it finally unleashes — it hits devastatingly hard.", icon: "👁️", label: "Psychological Horror", watchIf: "You enjoy creeping atmospheric dread, unreliable realities, and anime that genuinely unsettles you.", skipIf: "You're sensitive to psychological stress, body horror, or deeply disturbing imagery.", vibe: "😱 Edge of Seat" },
+    { verdict: "A sports anime that completely transcends its genre. At its core it's really about passion, the agony of failure, and what it truly means to push yourself past your absolute limits.", icon: "🏅", label: "Sports Anime Peak", watchIf: "You love underdog arcs, the electric thrill of competition, and character growth forged through relentless effort.", skipIf: "You can't invest emotionally in sports narratives or need fantasy elements to stay engaged.", vibe: "🔥 Hype Machine" },
     { verdict: "Adventure storytelling at its most expansive and most alive. The world breathes with purpose, every journey feels meaningful, and each new arc arrives as a genuine gift.", icon: "🗺️", label: "Epic Adventure", watchIf: "You want a long-form journey with rich lore, endlessly diverse characters, and a world that never stops expanding.", skipIf: "You prefer tightly paced, focused series over sprawling adventures with very high episode counts.", vibe: "🌟 Epic Saga" },
-    { verdict: "Mecha executed with real creative ambition and artistic vision. The robot battles are genuinely spectacular, but the human drama underneath is what makes this truly special.", icon: "🤖", label: "Mecha Standout", watchIf: "You love giant robot action paired with political intrigue, identity crises, and genuinely complex moral questions.", skipIf: "You find mecha aesthetics uninteresting or prefer character-driven dramas completely free of sci-fi elements.", vibe: "⚙️ Cult Classic" },
+    { verdict: "Mecha executed with real creative ambition and artistic vision. The robot battles are genuinely spectacular, but the human drama underneath is what makes this truly special.", icon: "🤖", label: "Mecha Standout", watchIf: "You love giant robot action paired with political intrigue, identity crises, and genuinely complex moral questions.", skipIf: "You find mecha aesthetics uninteresting or prefer character-driven dramas free of sci-fi elements.", vibe: "⚙️ Cult Classic" },
     { verdict: "A supernatural thriller with genuinely impeccable pacing and razor-sharp writing. The mystery deepens with every single episode and the payoff is immensely satisfying.", icon: "🔮", label: "Supernatural Thriller", watchIf: "You love mysteries that slowly unravel, supernatural powers used with creativity, and narratives that deliver satisfying conclusions.", skipIf: "You prefer slice-of-life or comedy and find slow-burn mystery building genuinely frustrating.", vibe: "🕵️ Page-Turner" }
   ];
  
   function getVerdict(malId) { return VERDICTS[malId % 15]; }
  
-  function buildFillerInsight(episodes) {
+  function buildFillerInsight(episodes, totalEpisodes) {
     if (!episodes || episodes.length === 0) {
       return { pct: 0, count: 0, label: "No Data", color: "#60a5fa", advice: "No filler data is available for this anime — all episode counts are estimates." };
     }
     const fillerEps = episodes.filter(e => e.type === "FILLER" || e.type === "MIXED CANON/FILLER");
-    const total = episodes.length;
-    const pct   = total > 0 ? Math.round((fillerEps.length / total) * 100) : 0;
+    const total     = episodes.length;
+    const pct       = total > 0 ? Math.round((fillerEps.length / total) * 100) : 0;
     let label, color, advice;
-    if (pct === 0)        { label = "Zero Filler";     color = "#4ade80"; advice = "This is a filler-free experience. Every single episode is 100% canon — you can watch with absolute confidence."; }
-    else if (pct <= 10)   { label = "Minimal Filler";  color = "#86efac"; advice = `Only ${fillerEps.length} filler episode${fillerEps.length !== 1 ? "s" : ""} out of ${total}. Barely noticeable — you can safely watch everything or skip the few filler entries.`; }
-    else if (pct <= 25)   { label = "Light Filler";    color = "#facc15"; advice = `${fillerEps.length} filler episodes (${pct}%). Noticeable but manageable — use the Filler filter above to skip them and save meaningful time.`; }
-    else if (pct <= 45)   { label = "Moderate Filler"; color = "#fb923c"; advice = `${fillerEps.length} filler episodes (${pct}%). Significant pacing impact — strongly recommended to use the Canon Only filter for the best experience.`; }
-    else                  { label = "Heavy Filler";    color = "#f87171"; advice = `${fillerEps.length} filler episodes — that's ${pct}% of the total runtime. Use Canon Only mode. The core story is worth it, but the filler is substantial.`; }
+    if (pct === 0) {
+      label = "Zero Filler"; color = "#4ade80";
+      advice = "This is a filler-free experience. Every single episode is 100% canon — watch with absolute confidence.";
+    } else if (pct <= 10) {
+      label = "Minimal Filler"; color = "#86efac";
+      advice = `Only ${fillerEps.length} filler episode${fillerEps.length !== 1 ? "s" : ""} out of ${total}. Barely noticeable — watch everything or skip the few filler entries.`;
+    } else if (pct <= 25) {
+      label = "Light Filler"; color = "#facc15";
+      advice = `${fillerEps.length} filler episodes (${pct}%). Use the Filler filter above to skip them and save meaningful time.`;
+    } else if (pct <= 45) {
+      label = "Moderate Filler"; color = "#fb923c";
+      advice = `${fillerEps.length} filler episodes (${pct}%). Strongly recommended to use the Canon Only filter for the best experience.`;
+    } else {
+      label = "Heavy Filler"; color = "#f87171";
+      advice = `${fillerEps.length} filler episodes — that's ${pct}% of the runtime. Use Canon Only mode. The core story is worth it.`;
+    }
     return { pct, count: fillerEps.length, label, color, advice };
   }
  
-  function renderVerdictHTML(malId, episodes) {
+  function renderVerdictHTML(malId, episodes, totalEpisodes) {
     const v    = getVerdict(malId);
-    const fi   = buildFillerInsight(episodes);
+    const fi   = buildFillerInsight(episodes, totalEpisodes);
     const barW = Math.min(fi.pct, 100);
     return `
     <div class="verdict-section">
@@ -1182,9 +1216,7 @@
             <span class="verdict-filler-pct" style="color:${fi.color};">${fi.label} · ${fi.pct}%</span>
           </div>
           <div class="verdict-filler-bar-wrap">
-            <!-- FIXED: bar fill starts at 0, JS animates it after render (barGrow CSS animation was broken) -->
-            <div class="verdict-filler-bar-fill" id="fillerBarFill"
-                 style="width:0%;background:linear-gradient(90deg,${fi.color},${fi.pct > 40 ? "#ef4444" : fi.color});"></div>
+            <div class="verdict-filler-bar-fill" style="width:${barW}%;background:linear-gradient(90deg,${fi.color},${fi.pct > 40 ? '#ef4444' : fi.color});"></div>
           </div>
           <div class="verdict-filler-advice">${fi.advice}</div>
         </div>
@@ -1194,166 +1226,127 @@
  
   let cachedEpisodes  = [];
   let currentAnimeObj = null;
-  let activeEpFilter  = "all"; // ADDED: track active episode filter
  
   async function openDetails(id) {
     const modal     = document.getElementById("animeModal");
     const modalData = document.getElementById("modalData");
     modal.style.display  = "block";
-    document.body.style.overflow = "hidden";
- 
-    // ADDED: click-outside-to-close
-    modal.onclick = e => { if (e.target === modal) closeModal(); };
- 
-    // ADDED: serve from cache if available — instant re-opens
-    if (animeCache[id]) {
-      renderModal(animeCache[id]);
-      return;
-    }
- 
     loader.style.display = "block";
     modalData.innerHTML  = "";
+    document.body.style.overflow = "hidden";
+    modal.scrollTop = 0;
  
     try {
       const res   = await fetch(`${API}/anime/${id}`);
       const data  = await res.json();
-      animeCache[id] = data.data; // cache it
-      renderModal(data.data);
+      const anime = data.data;
+      currentAnimeObj = anime;
+ 
+      const genres       = anime.genres?.map(g => g.name).join(", ")       || "N/A";
+      const studios      = anime.studios?.map(s => s.name).join(", ")      || "N/A";
+ 
+      cachedEpisodes = Array.isArray(anime?.filler?.episodes) ? anime.filler.episodes : [];
+ 
+      const inW = isInList("watchlist",  anime.mal_id);
+      const inF = isInList("favourites", anime.mal_id);
+      const verdictHTML = renderVerdictHTML(anime.mal_id, cachedEpisodes, anime.episodes);
+ 
+      modalData.innerHTML = `
+        <div style="text-align:center;margin-bottom:20px;">
+          <img src="${anime.images?.jpg?.image_url}" alt="${anime.title}"
+               style="width:clamp(120px,40vw,180px);height:auto;border-radius:14px;box-shadow:0 0 40px rgba(0,255,255,0.3);margin-bottom:16px;display:block;margin-left:auto;margin-right:auto;"
+               onerror="this.style.display='none'">
+          <h2 style="margin-bottom:4px;font-family:'Orbitron',sans-serif;font-size:clamp(16px,4vw,26px);background:linear-gradient(135deg,white,var(--cyan));-webkit-background-clip:text;color:transparent;line-height:1.2;">${anime.title}</h2>
+          <h4 style="color:rgba(0,255,255,0.6);margin-top:4px;font-weight:400;font-size:clamp(12px,2vw,14px);">${anime.title_japanese || ""}</h4>
+ 
+          <div style="display:flex;justify-content:center;gap:8px;margin:14px 0;flex-wrap:wrap;">
+            <button id="btnWatchlist" onclick="handleWatchlist()"
+              style="background:${inW ? "linear-gradient(45deg,#22c55e,#16a34a)" : "rgba(255,255,255,0.08)"};
+                     border:1px solid ${inW ? "#22c55e" : "rgba(255,255,255,0.2)"};
+                     padding:8px 16px;border-radius:50px;color:white;cursor:pointer;
+                     font-family:Poppins,sans-serif;font-size:clamp(11px,2vw,13px);transition:0.25s;font-weight:600;white-space:nowrap;">
+              ${inW ? "✅ In Watchlist" : "➕ Watchlist"}
+            </button>
+            <button id="btnFavourite" onclick="handleFavourite()"
+              style="background:${inF ? "linear-gradient(45deg,#f59e0b,#d97706)" : "rgba(255,255,255,0.08)"};
+                     border:1px solid ${inF ? "#f59e0b" : "rgba(255,255,255,0.2)"};
+                     padding:8px 16px;border-radius:50px;color:white;cursor:pointer;
+                     font-family:Poppins,sans-serif;font-size:clamp(11px,2vw,13px);transition:0.25s;font-weight:600;white-space:nowrap;">
+              ${inF ? "⭐ Favourited" : "☆ Favourites"}
+            </button>
+          </div>
+        </div>
+ 
+        <p style="line-height:1.75;opacity:0.8;font-size:clamp(13px,2vw,14px);margin-bottom:20px;">${anime.synopsis || "No description available."}</p>
+ 
+        <hr style="border:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,255,0.3),transparent);margin:18px 0;">
+ 
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:14px;">
+            <p style="margin:0 0 8px;font-size:clamp(11px,2vw,13px);"><b style="color:rgba(255,255,255,0.5);font-size:9px;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px;">TYPE</b>${anime.type || "N/A"}</p>
+            <p style="margin:0 0 8px;font-size:clamp(11px,2vw,13px);"><b style="color:rgba(255,255,255,0.5);font-size:9px;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px;">STATUS</b>${anime.status || "Unknown"}</p>
+            <p style="margin:0 0 8px;font-size:clamp(11px,2vw,13px);"><b style="color:rgba(255,255,255,0.5);font-size:9px;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px;">SCORE</b>⭐ ${anime.score || "N/A"}</p>
+            <p style="margin:0;font-size:clamp(11px,2vw,13px);"><b style="color:rgba(255,255,255,0.5);font-size:9px;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px;">EPISODES</b>${anime.episodes || "?"}</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:14px;">
+            <p style="margin:0 0 8px;font-size:clamp(11px,2vw,13px);"><b style="color:rgba(255,255,255,0.5);font-size:9px;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px;">DURATION</b>${anime.duration || "N/A"}</p>
+            <p style="margin:0 0 8px;font-size:clamp(11px,2vw,13px);"><b style="color:rgba(255,255,255,0.5);font-size:9px;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px;">AIRED</b>${anime.aired?.string || "N/A"}</p>
+            <p style="margin:0 0 8px;font-size:clamp(11px,2vw,13px);"><b style="color:rgba(255,255,255,0.5);font-size:9px;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px;">STUDIO</b>${studios}</p>
+            <p style="margin:0;font-size:clamp(11px,2vw,13px);"><b style="color:rgba(255,255,255,0.5);font-size:9px;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px;">GENRES</b><span class="genre">${genres}</span></p>
+          </div>
+        </div>
+ 
+        ${verdictHTML}
+ 
+        <hr style="border:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,255,0.3),transparent);margin:18px 0;">
+ 
+        <div style="text-align:center;margin-bottom:20px;">
+          <p style="margin-bottom:12px;font-weight:600;font-size:clamp(11px,2vw,14px);color:rgba(255,255,255,0.6);letter-spacing:1px;text-transform:uppercase;">External Links</p>
+          <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:6px;">
+            ${['MAL|'+anime.url,
+               'AniList|https://anilist.co/search/anime?search='+encodeURIComponent(anime.title),
+               'AniDB|https://anidb.net/anime/?adb.search='+encodeURIComponent(anime.title),
+               'Kitsu|https://kitsu.io/anime?text='+encodeURIComponent(anime.title),
+               'ANN|https://www.animenewsnetwork.com/encyclopedia/search/name?q='+encodeURIComponent(anime.title)]
+              .map(s => {
+                const [label, href] = s.split("|");
+                return `<a href="${href}" target="_blank" rel="noopener" style="text-decoration:none;">
+                  <div style="padding:6px 14px;border-radius:50px;background:rgba(0,255,255,0.08);border:1px solid rgba(0,255,255,0.25);color:rgba(255,255,255,0.8);transition:0.25s;font-size:clamp(10px,2vw,12px);font-weight:600;"
+                    onmouseover="this.style.background='rgba(0,255,255,0.15)';this.style.borderColor='var(--cyan)';this.style.color='var(--cyan)';"
+                    onmouseout="this.style.background='rgba(0,255,255,0.08)';this.style.borderColor='rgba(0,255,255,0.25)';this.style.color='rgba(255,255,255,0.8)';">
+                    ${label}
+                  </div>
+                </a>`;
+              }).join("")}
+          </div>
+        </div>
+ 
+        <hr style="border:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,255,0.3),transparent);margin:18px 0;">
+ 
+        <div style="text-align:center;">
+          <p style="font-weight:700;margin-bottom:12px;font-family:'Orbitron',sans-serif;font-size:clamp(12px,2vw,14px);background:linear-gradient(90deg,white,var(--cyan));-webkit-background-clip:text;color:transparent;">📺 Episode Guide</p>
+          <div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+            <button onclick="showEpisodes('all')"    style="background:linear-gradient(45deg,#6366f1,#8b5cf6);padding:8px 16px;border-radius:50px;border:none;color:white;cursor:pointer;font-family:Poppins,sans-serif;font-size:clamp(11px,2vw,12px);font-weight:600;transition:0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">All</button>
+            <button onclick="showEpisodes('filler')" style="background:linear-gradient(45deg,#ef4444,#dc2626);padding:8px 16px;border-radius:50px;border:none;color:white;cursor:pointer;font-family:Poppins,sans-serif;font-size:clamp(11px,2vw,12px);font-weight:600;transition:0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Filler Only</button>
+            <button onclick="showEpisodes('canon')"  style="background:linear-gradient(45deg,#10b981,#059669);padding:8px 16px;border-radius:50px;border:none;color:white;cursor:pointer;font-family:Poppins,sans-serif;font-size:clamp(11px,2vw,12px);font-weight:600;transition:0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Canon Only</button>
+          </div>
+          <div id="fillerData" class="filler-box" style="text-align:left;"></div>
+        </div>`;
+ 
+      const fillerBox = document.getElementById("fillerData");
+      if (fillerBox) {
+        fillerBox.innerHTML = cachedEpisodes.length
+          ? "<p style='text-align:center;opacity:0.5;font-size:13px;padding:12px 0;'>Choose a filter above to view episodes.</p>"
+          : "<p style='text-align:center;opacity:0.5;font-size:13px;padding:12px 0;'>No filler / episode data available for this anime.</p>";
+        if (cachedEpisodes.length) showEpisodes("all");
+      }
+ 
     } catch (err) {
       console.error(err);
       modalData.innerHTML = "<p style='color:#f87171;text-align:center;padding:40px;'>Failed to load anime details. Try again.</p>";
     } finally {
       loader.style.display = "none";
     }
-  }
- 
-  function renderModal(anime) {
-    const modalData = document.getElementById("modalData");
-    loader.style.display = "none";
-    currentAnimeObj = anime;
- 
-    const genres  = anime.genres?.map(g => g.name).join(", ")  || "N/A";
-    const studios = anime.studios?.map(s => s.name).join(", ") || "N/A";
- 
-    cachedEpisodes = Array.isArray(anime?.filler?.episodes) ? anime.filler.episodes : [];
-    activeEpFilter = "all";
- 
-    const inW = isInList("watchlist",  anime.mal_id);
-    const inF = isInList("favourites", anime.mal_id);
- 
-    const verdictHTML = renderVerdictHTML(anime.mal_id, cachedEpisodes);
- 
-    modalData.innerHTML = `
-      <div style="text-align:center;margin-bottom:24px;">
-        <!-- FIXED: modal thumbnail now goes through proxy -->
-        <img src="${proxyImg(anime.images?.jpg?.large_image_url || anime.images?.jpg?.image_url)}"
-             alt="${anime.title}"
-             style="width:180px;height:auto;border-radius:16px;box-shadow:0 0 40px rgba(0,255,255,0.3);margin-bottom:18px;display:block;margin-left:auto;margin-right:auto;"
-             onerror="this.style.display='none'">
-        <h2 style="margin-bottom:4px;font-family:'Orbitron',sans-serif;font-size:clamp(18px,3vw,28px);background:linear-gradient(135deg,white,var(--cyan));-webkit-background-clip:text;color:transparent;">${anime.title}</h2>
-        <h4 style="color:rgba(0,255,255,0.6);margin-top:0;font-weight:400;font-size:14px;">${anime.title_japanese || ""}</h4>
- 
-        <div style="display:flex;justify-content:center;gap:10px;margin:16px 0;flex-wrap:wrap;">
-          <button id="btnWatchlist" onclick="handleWatchlist()"
-            style="background:${inW ? "linear-gradient(45deg,#22c55e,#16a34a)" : "rgba(255,255,255,0.08)"};
-                   border:1px solid ${inW ? "#22c55e" : "rgba(255,255,255,0.2)"};
-                   padding:9px 20px;border-radius:50px;color:white;cursor:none;
-                   font-family:Poppins,sans-serif;font-size:13px;transition:0.25s;font-weight:600;">
-            ${inW ? "✅ In Watchlist" : "➕ Add to Watchlist"}
-          </button>
-          <button id="btnFavourite" onclick="handleFavourite()"
-            style="background:${inF ? "linear-gradient(45deg,#f59e0b,#d97706)" : "rgba(255,255,255,0.08)"};
-                   border:1px solid ${inF ? "#f59e0b" : "rgba(255,255,255,0.2)"};
-                   padding:9px 20px;border-radius:50px;color:white;cursor:none;
-                   font-family:Poppins,sans-serif;font-size:13px;transition:0.25s;font-weight:600;">
-            ${inF ? "⭐ Favourited" : "☆ Add to Favourites"}
-          </button>
-        </div>
-      </div>
- 
-      <p style="line-height:1.75;opacity:0.8;font-size:14px;margin-bottom:20px;">${anime.synopsis || "No description available."}</p>
- 
-      <hr style="border:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,255,0.3),transparent);margin:20px 0;">
- 
-      <!-- FIXED: single-column on small phones via inline media fallback style -->
-      <div id="animeInfoGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
-        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;">
-          <p style="margin:0 0 8px;font-size:13px;"><b style="color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:1px;text-transform:uppercase;">TYPE</b><br>${anime.type || "N/A"}</p>
-          <p style="margin:0 0 8px;font-size:13px;"><b style="color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:1px;text-transform:uppercase;">STATUS</b><br>${anime.status || "Unknown"}</p>
-          <p style="margin:0 0 8px;font-size:13px;"><b style="color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:1px;text-transform:uppercase;">SCORE</b><br>⭐ ${anime.score || "N/A"}</p>
-          <p style="margin:0;font-size:13px;"><b style="color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:1px;text-transform:uppercase;">EPISODES</b><br>${anime.episodes || "?"}</p>
-        </div>
-        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;">
-          <p style="margin:0 0 8px;font-size:13px;"><b style="color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:1px;text-transform:uppercase;">DURATION</b><br>${anime.duration || "N/A"}</p>
-          <p style="margin:0 0 8px;font-size:13px;"><b style="color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:1px;text-transform:uppercase;">AIRED</b><br>${anime.aired?.string || "N/A"}</p>
-          <p style="margin:0 0 8px;font-size:13px;"><b style="color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:1px;text-transform:uppercase;">STUDIO</b><br>${studios}</p>
-          <p style="margin:0;font-size:13px;"><b style="color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:1px;text-transform:uppercase;">GENRES</b><br><span class="genre">${genres}</span></p>
-        </div>
-      </div>
- 
-      ${verdictHTML}
- 
-      <hr style="border:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,255,0.3),transparent);margin:20px 0;">
- 
-      <div style="text-align:center;margin-bottom:20px;">
-        <p style="margin-bottom:12px;font-weight:600;font-size:14px;color:rgba(255,255,255,0.6);letter-spacing:1px;text-transform:uppercase;">External Links</p>
-        <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:8px;">
-          ${['MAL|'+anime.url,
-             'AniList|https://anilist.co/search/anime?search='+encodeURIComponent(anime.title),
-             'AniDB|https://anidb.net/anime/?adb.search='+encodeURIComponent(anime.title),
-             'Kitsu|https://kitsu.io/anime?text='+encodeURIComponent(anime.title),
-             'ANN|https://www.animenewsnetwork.com/encyclopedia/search/name?q='+encodeURIComponent(anime.title)]
-            .map(s => {
-              const [label, href] = s.split("|");
-              return `<a href="${href}" target="_blank" rel="noopener" style="text-decoration:none;">
-                <div style="padding:7px 16px;border-radius:50px;background:rgba(0,255,255,0.08);border:1px solid rgba(0,255,255,0.25);color:rgba(255,255,255,0.8);transition:0.25s;font-size:12px;font-weight:600;"
-                  onmouseover="this.style.background='rgba(0,255,255,0.15)';this.style.borderColor='var(--cyan)';this.style.color='var(--cyan)';"
-                  onmouseout="this.style.background='rgba(0,255,255,0.08)';this.style.borderColor='rgba(0,255,255,0.25)';this.style.color='rgba(255,255,255,0.8)';">
-                  ${label}
-                </div>
-              </a>`;
-            }).join("")}
-        </div>
-      </div>
- 
-      <hr style="border:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,255,0.3),transparent);margin:20px 0;">
- 
-      <div style="text-align:center;">
-        <p style="font-weight:700;margin-bottom:14px;font-family:'Orbitron',sans-serif;font-size:14px;background:linear-gradient(90deg,white,var(--cyan));-webkit-background-clip:text;color:transparent;">📺 Episode Guide</p>
-        <!-- FIXED: episode filter buttons now have active state tracking via id -->
-        <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
-          <button id="epBtnAll"    onclick="showEpisodes('all')"
-            style="background:linear-gradient(45deg,#6366f1,#8b5cf6);padding:9px 18px;border-radius:50px;border:2px solid transparent;color:white;cursor:none;font-family:Poppins,sans-serif;font-size:12px;font-weight:600;transition:0.2s;outline:2px solid rgba(99,102,241,0.6);outline-offset:2px;">All Episodes</button>
-          <button id="epBtnFiller" onclick="showEpisodes('filler')"
-            style="background:linear-gradient(45deg,#ef4444,#dc2626);padding:9px 18px;border-radius:50px;border:2px solid transparent;color:white;cursor:none;font-family:Poppins,sans-serif;font-size:12px;font-weight:600;transition:0.2s;opacity:0.65;">Filler Only</button>
-          <button id="epBtnCanon" onclick="showEpisodes('canon')"
-            style="background:linear-gradient(45deg,#10b981,#059669);padding:9px 18px;border-radius:50px;border:2px solid transparent;color:white;cursor:none;font-family:Poppins,sans-serif;font-size:12px;font-weight:600;transition:0.2s;opacity:0.65;">Canon Only</button>
-        </div>
-        <!-- FIXED: overflow-x:auto wrapper so table scrolls horizontally on mobile -->
-        <div style="overflow-x:auto;">
-          <div id="fillerData" class="filler-box" style="max-height:320px;text-align:left;min-width:320px;"></div>
-        </div>
-      </div>`;
- 
-    // Collapse info grid to single column on small screens
-    if (window.innerWidth < 420) {
-      const grid = document.getElementById("animeInfoGrid");
-      if (grid) grid.style.gridTemplateColumns = "1fr";
-    }
- 
-    const fillerBox = document.getElementById("fillerData");
-    if (fillerBox) {
-      fillerBox.innerHTML = cachedEpisodes.length
-        ? "<p style='text-align:center;opacity:0.5;font-size:13px;padding:12px 0;'>Choose a filter above to view episodes.</p>"
-        : "<p style='text-align:center;opacity:0.5;font-size:13px;padding:12px 0;'>No filler / episode data available for this anime.</p>";
-      if (cachedEpisodes.length) showEpisodes("all");
-    }
- 
-    // FIXED: filler bar animation — set width after a short delay so transition actually fires
-    setTimeout(() => {
-      const bar = document.getElementById("fillerBarFill");
-      if (bar) bar.style.width = Math.min(buildFillerInsight(cachedEpisodes).pct, 100) + "%";
-    }, 80);
   }
  
   function handleWatchlist() {
@@ -1373,23 +1366,14 @@
   }
  
   function showEpisodes(filter) {
-    activeEpFilter = filter;
     const box = document.getElementById("fillerData");
     if (!cachedEpisodes?.length) { box.innerHTML = "<p style='opacity:0.5;text-align:center;padding:12px;'>No data loaded yet.</p>"; return; }
- 
-    // FIXED: update episode filter button active state visually
-    ["all","filler","canon"].forEach(f => {
-      const btn = document.getElementById(`epBtn${f.charAt(0).toUpperCase() + f.slice(1)}`);
-      if (btn) btn.style.opacity = f === filter ? "1" : "0.65";
-    });
- 
     const typeColors = {
       "MANGA CANON":        { bg:"rgba(74,222,128,0.10)",  border:"#4ade80", badge:"#4ade80", text:"#020617" },
       "FILLER":             { bg:"rgba(248,113,113,0.10)", border:"#f87171", badge:"#f87171", text:"#020617" },
       "MIXED CANON/FILLER": { bg:"rgba(250,204,21,0.10)",  border:"#facc15", badge:"#facc15", text:"#020617" },
       "ANIME CANON":        { bg:"rgba(96,165,250,0.10)",  border:"#60a5fa", badge:"#60a5fa", text:"#020617" },
     };
- 
     let filtered = cachedEpisodes;
     if (filter === "filler") {
       filtered = cachedEpisodes.filter(e => e.type === "FILLER" || e.type === "MIXED CANON/FILLER");
@@ -1397,29 +1381,23 @@
     } else if (filter === "canon") {
       filtered = cachedEpisodes.filter(e => e.type !== "FILLER" && e.type !== "MIXED CANON/FILLER");
     }
- 
     if (!filtered.length) { box.innerHTML = "<p style='opacity:0.5;text-align:center;padding:12px;'>No episodes found.</p>"; return; }
- 
-    let html = `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+    let html = `<table style="width:100%;border-collapse:collapse;font-size:11px;">
       <thead><tr style="border-bottom:1px solid rgba(0,255,255,0.2);">
-        <th style="padding:8px 6px;text-align:left;width:44px;color:rgba(0,255,255,0.6);font-size:10px;text-transform:uppercase;letter-spacing:1px;">#</th>
-        <th style="padding:8px 6px;text-align:left;color:rgba(0,255,255,0.6);font-size:10px;text-transform:uppercase;letter-spacing:1px;">Title</th>
-        <th style="padding:8px 6px;text-align:center;width:130px;color:rgba(0,255,255,0.6);font-size:10px;text-transform:uppercase;letter-spacing:1px;">Type</th>
-        <th style="padding:8px 6px;text-align:right;width:90px;color:rgba(0,255,255,0.6);font-size:10px;text-transform:uppercase;letter-spacing:1px;">Aired</th>
+        <th style="padding:7px 5px;text-align:left;width:36px;color:rgba(0,255,255,0.6);font-size:9px;text-transform:uppercase;letter-spacing:1px;">#</th>
+        <th style="padding:7px 5px;text-align:left;color:rgba(0,255,255,0.6);font-size:9px;text-transform:uppercase;letter-spacing:1px;">Title</th>
+        <th style="padding:7px 5px;text-align:center;width:110px;color:rgba(0,255,255,0.6);font-size:9px;text-transform:uppercase;letter-spacing:1px;">Type</th>
+        <th style="padding:7px 5px;text-align:right;width:76px;color:rgba(0,255,255,0.6);font-size:9px;text-transform:uppercase;letter-spacing:1px;">Aired</th>
       </tr></thead><tbody>`;
- 
     filtered.forEach(ep => {
-      const c = typeColors[ep.type] || { bg:"rgba(255,255,255,0.04)", border:"#888", badge:"#888", text:"#020617" };
+      const c = typeColors[ep.type] || { bg:"rgba(255,255,255,0.04)", border:"#fff", badge:"#fff", text:"#020617" };
       html += `<tr style="background:${c.bg};border-left:3px solid ${c.border};border-bottom:1px solid rgba(255,255,255,0.03);">
-        <td style="padding:7px 6px;color:rgba(255,255,255,0.4);">${ep.num}</td>
-        <td style="padding:7px 6px;color:rgba(255,255,255,0.85);">${ep.title}</td>
-        <td style="padding:7px 6px;text-align:center;">
-          <span style="background:${c.badge};color:${c.text};padding:2px 8px;border-radius:10px;font-size:9px;font-weight:800;letter-spacing:0.5px;">${ep.type}</span>
-        </td>
-        <td style="padding:7px 6px;text-align:right;color:rgba(255,255,255,0.3);font-size:11px;">${ep.date}</td>
+        <td style="padding:6px 5px;color:rgba(255,255,255,0.4);">${ep.num}</td>
+        <td style="padding:6px 5px;color:rgba(255,255,255,0.85);">${ep.title}</td>
+        <td style="padding:6px 5px;text-align:center;"><span style="background:${c.badge};color:${c.text};padding:2px 7px;border-radius:10px;font-size:8px;font-weight:800;letter-spacing:0.5px;white-space:nowrap;">${ep.type}</span></td>
+        <td style="padding:6px 5px;text-align:right;color:rgba(255,255,255,0.3);font-size:10px;white-space:nowrap;">${ep.date}</td>
       </tr>`;
     });
- 
     box.innerHTML = html + "</tbody></table>";
   }
  
@@ -1429,10 +1407,10 @@
     if (!container.innerHTML.trim()) loadTop();
   }
  
+  /* ── Search suggestions ── */
   const searchInput   = document.getElementById("search");
   const suggestionBox = document.getElementById("suggestionsBox");
   let debounceTimer;
-  let suggAbort = null; // ADDED: abort for suggestions
  
   searchInput.addEventListener("input", () => {
     clearTimeout(debounceTimer);
@@ -1446,15 +1424,12 @@
   });
  
   async function fetchSuggestions(query) {
-    // ADDED: abort previous suggestion fetch
-    if (suggAbort) suggAbort.abort();
-    suggAbort = new AbortController();
     try {
-      const res  = await fetch(`${API}/search?q=${encodeURIComponent(query)}`, { signal: suggAbort.signal });
+      const res  = await fetch(`${API}/search?q=${encodeURIComponent(query)}`);
       const data = await res.json();
       suggestionBox.innerHTML = "";
       if (!data.data?.length) { suggestionBox.style.display = "none"; return; }
-      data.data.slice(0, 6).forEach(anime => {
+      data.data.slice(0,6).forEach(anime => {
         const div = document.createElement("div");
         div.className = "suggestion-item";
         div.innerText = anime.title;
@@ -1462,12 +1437,17 @@
         suggestionBox.appendChild(div);
       });
       suggestionBox.style.display = "block";
-    } catch (e) { if (e.name !== "AbortError") console.warn("Suggestion fetch failed:", e); }
+    } catch {}
   }
  
   document.addEventListener("click", e => { if (!e.target.closest(".search-wrapper")) suggestionBox.style.display = "none"; });
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape") { closeModal(); closeListPanel("watchlistOverlay"); closeListPanel("favouritesOverlay"); }
+    if (e.key === "Escape") {
+      closeModal();
+      closeListPanel("watchlistOverlay");
+      closeListPanel("favouritesOverlay");
+      suggestionBox.style.display = "none";
+    }
   });
  
   function acceptCookies() { localStorage.setItem("cookiesAccepted","true"); document.getElementById("cookieBox").style.display = "none"; }
@@ -1482,140 +1462,80 @@
   };
 </script>
  
-<!-- ═══════════════════════════════════════════════════════
-     GOD MODE INTERACTIVITY
-     Changes made:
-       • document.hidden check on both cursor RAF and particle RAF
-         (stops both loops burning CPU on inactive tabs)
-       • MutationObserver replaced with event delegation
-         (no more duplicate listeners piling up on card reloads)
-       • @media(pointer:coarse) CSS used — touch check kept as
-         JS fallback for older browsers
-       • Particle initial positions use window dimensions not
-         hardcoded 1920×1080 (works on all screen sizes)
-════════════════════════════════════════════════════════ -->
+<!-- GOD MODE INTERACTIVITY -->
 <script>
-  const _styleEl = document.createElement("style");
-  _styleEl.textContent = `
+  const style = document.createElement("style");
+  style.textContent = `
     @keyframes fadeSlideCard {
       from { opacity: 0; transform: translateY(24px) scale(0.97); }
       to   { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .card { will-change: transform; }
   `;
-  document.head.appendChild(_styleEl);
+  document.head.appendChild(style);
  
   const cursor     = document.getElementById("cursor");
   const cursorRing = document.getElementById("cursorRing");
   let mx = 0, my = 0, rx = 0, ry = 0;
-  let cursorRAF = null;
  
-  document.addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY; });
+  /* Only enable custom cursor on non-touch devices */
+  const isTouch = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
  
-  // FIXED: skip DOM writes when tab is hidden — saves CPU on inactive tabs
-  (function animateCursor() {
-    if (!document.hidden) {
+  if (!isTouch) {
+    document.addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY; });
+    (function animateCursor() {
       cursor.style.left = mx + "px"; cursor.style.top  = my + "px";
       rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
       cursorRing.style.left = rx + "px"; cursorRing.style.top = ry + "px";
-    }
-    cursorRAF = requestAnimationFrame(animateCursor);
-  })();
+      requestAnimationFrame(animateCursor);
+    })();
  
-  // FIXED: use event delegation on container — replaces MutationObserver
-  // No duplicate listeners, works for all dynamically loaded cards
-  function setCursorLarge() {
-    cursor.style.width = "8px"; cursor.style.height = "8px";
-    cursorRing.style.width = "50px"; cursorRing.style.height = "50px";
-    cursorRing.style.borderColor = "rgba(0,255,255,0.8)";
-  }
-  function setCursorNormal() {
-    cursor.style.width = "12px"; cursor.style.height = "12px";
-    cursorRing.style.width = "36px"; cursorRing.style.height = "36px";
-    cursorRing.style.borderColor = "rgba(0,255,255,0.5)";
-  }
- 
-  document.getElementById("animeContainer").addEventListener("mouseover", e => {
-    if (e.target.closest(".card")) setCursorLarge();
-  });
-  document.getElementById("animeContainer").addEventListener("mouseout", e => {
-    if (e.target.closest(".card")) setCursorNormal();
-  });
- 
-  // Keep static element hover effects
-  function addCursorHover(selector) {
-    document.querySelectorAll(selector).forEach(el => {
-      el.addEventListener("mouseenter", setCursorLarge);
-      el.addEventListener("mouseleave", setCursorNormal);
-    });
-  }
-  addCursorHover("button, a, .ctrl-btn, .view-btn, .udrop-link, .faq-card, .suggestion-item, .close, .list-close-btn, .list-remove-btn, .list-clear-btn, .udrop-guest-btn, .udrop-signout-btn");
- 
-  // Particle system
-  const canvas = document.getElementById("particles");
-  const ctx    = canvas.getContext("2d");
-  let W, H;
- 
-  function resizeCanvas() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  resizeCanvas();
-  window.addEventListener("resize", resizeCanvas, { passive: true });
- 
-  // FIXED: particles start within actual window bounds (not hardcoded 1920×1080)
-  const pts = Array.from({ length: 50 }, () => ({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    r: Math.random() * 1.4 + 0.2,
-    vx: (Math.random() - 0.5) * 0.25,
-    vy: (Math.random() - 0.5) * 0.25,
-    alpha: Math.random() * 0.3 + 0.06
-  }));
- 
-  // FIXED: skip canvas draw when tab is hidden — saves CPU
-  (function drawParticles() {
-    if (!document.hidden) {
-      ctx.clearRect(0, 0, W, H);
-      pts.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-        if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,255,255,${p.alpha})`; ctx.fill();
+    function addCursorHover(selector) {
+      document.querySelectorAll(selector).forEach(el => {
+        el.addEventListener("mouseenter", () => { cursor.style.width = "8px"; cursor.style.height = "8px"; cursorRing.style.width = "50px"; cursorRing.style.height = "50px"; cursorRing.style.borderColor = "rgba(0,255,255,0.8)"; });
+        el.addEventListener("mouseleave", () => { cursor.style.width = "12px"; cursor.style.height = "12px"; cursorRing.style.width = "36px"; cursorRing.style.height = "36px"; cursorRing.style.borderColor = "rgba(0,255,255,0.5)"; });
       });
     }
+    addCursorHover("button, a, .card, .ctrl-btn, .view-btn, .udrop-link, .faq-card, .suggestion-item, .close, .list-close-btn, .list-remove-btn, .list-clear-btn, .udrop-guest-btn, .udrop-signout-btn");
+    const cardObserver = new MutationObserver(() => { addCursorHover(".card"); });
+    cardObserver.observe(document.getElementById("animeContainer"), { childList: true });
+  } else {
+    cursor.style.display = "none";
+    cursorRing.style.display = "none";
+    document.body.style.cursor = "auto";
+  }
+ 
+  /* Particles */
+  const canvas = document.getElementById("particles");
+  const ctx = canvas.getContext("2d");
+  let W, H;
+  function resizeCanvas() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resizeCanvas(); window.addEventListener("resize", resizeCanvas, { passive: true });
+ 
+  const pts = Array.from({length: 50}, () => ({
+    x: Math.random()*1920, y: Math.random()*1080,
+    r: Math.random()*1.4 + 0.2, vx: (Math.random()-0.5)*0.25, vy: (Math.random()-0.5)*0.25,
+    alpha: Math.random()*0.3 + 0.06
+  }));
+ 
+  (function drawParticles() {
+    ctx.clearRect(0, 0, W, H);
+    pts.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,255,255,${p.alpha})`; ctx.fill();
+    });
     requestAnimationFrame(drawParticles);
   })();
  
+  /* Header scroll */
   const mainHeader = document.getElementById("mainHeader");
-  window.addEventListener("scroll", () => {
-    mainHeader.classList.toggle("scrolled", window.scrollY > 60);
-  }, { passive: true });
- 
-  // Keep JS touch fallback for older Android browsers (CSS @media pointer:coarse handles modern ones)
-  if ("ontouchstart" in window) {
-    cursor.style.display     = "none";
-    cursorRing.style.display = "none";
-    document.body.style.cursor = "auto";
-    if (cursorRAF) cancelAnimationFrame(cursorRAF);
-  }
+  window.addEventListener("scroll", () => { mainHeader.classList.toggle("scrolled", window.scrollY > 60); }, { passive: true });
 </script>
  
-<script async defer src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "AnimeIQ",
-  "url": "https://yourdomain.com",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://yourdomain.com/explore.html?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script>
+ 
 </body>
 </html>
  
