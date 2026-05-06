@@ -844,7 +844,7 @@
        • will-change:transform injected on cards for GPU promotion
 ════════════════════════════════════════════════════════ -->
 <script>
-  const API        = "https://anime-backend-73df.onrender.com:3000";
+  const API        = "https://anime-backend-73df.onrender.com";
   const container  = document.getElementById("animeContainer");
   const loader     = document.getElementById("loader");
   const resultsBar = document.getElementById("resultsBar");
@@ -928,7 +928,7 @@
       return;
     }
     // FIXED: correct proxy URL (was http://https://)
-    const proxyUrl = (url) => url ? `https://anime-backend-73df.onrender.com:3000/img?url=${encodeURIComponent(url)}` : "";
+    const proxyUrl = (url) => url ? `https://anime-backend-73df.onrender.com/img?url=${encodeURIComponent(url)}` : "";
     let html = `<button class="list-clear-btn" onclick="clearList('${type}','${bodyId}','${badgeId}')">🗑️ Clear All</button><div class="list-anime-grid">`;
     list.forEach(anime => {
       const img = proxyUrl(anime.image);
@@ -1072,7 +1072,7 @@
   }
  
   // FIXED: correct proxy URL (was http://https://)
-  function proxyImg(url) { return url ? `https://anime-backend-73df.onrender.com:3000/img?url=${encodeURIComponent(url)}` : ""; }
+  function proxyImg(url) { return url ? `https://anime-backend-73df.onrender.com/img?url=${encodeURIComponent(url)}` : ""; }
  
   function display(list) {
     loader.style.display = "none";
