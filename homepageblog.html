@@ -110,8 +110,9 @@ body::after {
 ══════════════════════════════════════════ */
 #particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
  
+ 
 /* ══════════════════════════════════════════
-   HEADER
+   HEADER — GOD MODE RESPONSIVE
 ══════════════════════════════════════════ */
 header {
   display: flex;
@@ -121,6 +122,7 @@ header {
   background: rgba(2,6,23,0.75);
   box-shadow: 0 0 30px rgba(0,255,255,0.15), 0 1px 0 rgba(0,255,255,0.1);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   position: sticky;
   top: 0;
   z-index: 500;
@@ -138,9 +140,11 @@ header h1 {
   margin: 0;
   cursor: none;
   transition: 0.3s;
+  flex-shrink: 0;
 }
 header h1:hover { text-shadow: 0 0 30px rgba(0,255,255,1), 0 0 60px rgba(0,255,255,0.5); }
  
+/* ── Desktop Nav (unchanged) ── */
 .nav { display: flex; align-items: center; }
  
 .container {
@@ -150,6 +154,7 @@ header h1:hover { text-shadow: 0 0 30px rgba(0,255,255,1), 0 0 60px rgba(0,255,2
   border-radius: 50px;
   background: rgba(255,255,255,0.04);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(0,255,255,0.1);
   box-shadow: 0 0 20px rgba(0,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
   align-items: center;
@@ -214,6 +219,254 @@ header h1:hover { text-shadow: 0 0 30px rgba(0,255,255,1), 0 0 60px rgba(0,255,2
   color: #ff6b6b; cursor: none; font-size: 12px; transition: 0.2s;
 }
 #authArea .logout-link:hover { color: red; }
+ 
+/* ══════════════════════════════════════════
+   HAMBURGER BUTTON — mobile only
+══════════════════════════════════════════ */
+#hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(0,255,255,0.15);
+  cursor: none;
+  transition: 0.3s;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 502;
+}
+#hamburger:hover {
+  background: rgba(0,255,255,0.08);
+  border-color: rgba(0,255,255,0.35);
+  box-shadow: 0 0 16px rgba(0,255,255,0.2);
+}
+#hamburger .bar {
+  width: 22px;
+  height: 1.5px;
+  background: var(--cyan);
+  border-radius: 2px;
+  transition: 0.35s cubic-bezier(.4,0,.2,1);
+  transform-origin: center;
+  box-shadow: 0 0 6px rgba(0,255,255,0.5);
+}
+/* X state */
+#hamburger.open .bar:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+#hamburger.open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+#hamburger.open .bar:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+ 
+/* ══════════════════════════════════════════
+   MOBILE MENU OVERLAY — glassmorphism
+══════════════════════════════════════════ */
+#mobileMenu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 501;
+  /* Two-layer bg: dark overlay + glass panel on right */
+  background: rgba(2,6,23,0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+#mobileMenu.open {
+  opacity: 1;
+  pointer-events: all;
+}
+ 
+/* The slide-in glass panel */
+#mobileMenuPanel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(320px, 85vw);
+  height: 100%;
+  background: rgba(4,10,28,0.97);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-left: 1px solid rgba(0,255,255,0.12);
+  box-shadow: -20px 0 80px rgba(0,0,0,0.7), -4px 0 20px rgba(0,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  transform: translateX(100%);
+  transition: transform 0.38s cubic-bezier(.4,0,.2,1);
+  overflow-y: auto;
+}
+#mobileMenu.open #mobileMenuPanel {
+  transform: translateX(0);
+}
+ 
+/* Top glow strip */
+#mobileMenuPanel::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 15%; right: 15%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+ 
+/* Panel header */
+.mmenu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid rgba(0,255,255,0.07);
+}
+.mmenu-brand {
+  font-family: "Orbitron", sans-serif;
+  color: var(--cyan);
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 16px rgba(0,255,255,0.5);
+}
+.mmenu-close {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.5);
+  font-size: 15px;
+  cursor: none;
+  transition: 0.2s;
+  background: transparent;
+  flex-shrink: 0;
+}
+.mmenu-close:hover {
+  color: white;
+  border-color: rgba(255,80,80,0.4);
+  background: rgba(255,80,80,0.1);
+}
+ 
+/* Nav links */
+.mmenu-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px;
+  gap: 4px;
+  flex: 1;
+}
+ 
+.mmenu-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  border-radius: 14px;
+  color: rgba(255,255,255,0.75);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: none;
+  transition: 0.25s;
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+  min-height: 44px; /* Touch target */
+}
+.mmenu-link .mmenu-icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.mmenu-link::before {
+  content: "";
+  position: absolute;
+  inset: 0; border-radius: 14px;
+  background: linear-gradient(90deg, rgba(0,255,255,0.06), rgba(124,58,237,0.04));
+  opacity: 0; transition: 0.25s;
+}
+.mmenu-link:hover {
+  color: white;
+  border-color: rgba(0,255,255,0.15);
+  transform: translateX(4px);
+}
+.mmenu-link:hover::before { opacity: 1; }
+ 
+/* Divider */
+.mmenu-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,255,0.1), transparent);
+  margin: 8px 16px;
+}
+ 
+/* Auth section at bottom */
+.mmenu-auth {
+  padding: 16px;
+  border-top: 1px solid rgba(0,255,255,0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+ 
+/* Auth in mobile: login btn */
+.mmenu-login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 50px;
+  background: linear-gradient(45deg, var(--cyan), var(--purple));
+  color: #020617;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  cursor: none;
+  font-family: "Poppins", sans-serif;
+  transition: 0.3s;
+  min-height: 44px;
+  letter-spacing: 0.3px;
+}
+.mmenu-login-btn:hover {
+  box-shadow: 0 0 30px rgba(0,255,255,0.4);
+  transform: translateY(-1px);
+}
+ 
+/* Mobile user info row */
+.mmenu-user-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(0,255,255,0.05);
+  border: 1px solid rgba(0,255,255,0.1);
+  min-height: 44px;
+}
+.mmenu-user-name {
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+}
+.mmenu-logout {
+  font-size: 12px;
+  color: #ff6b6b;
+  cursor: none;
+  transition: 0.2s;
+}
+.mmenu-logout:hover { color: red; }
+ 
+/* Version tag */
+.mmenu-footer {
+  padding: 12px 24px 20px;
+  text-align: center;
+}
+.mmenu-version {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
  
 /* ══════════════════════════════════════════
    HERO SLIDER — god mode
@@ -667,7 +920,6 @@ header h1:hover { text-shadow: 0 0 30px rgba(0,255,255,1), 0 0 60px rgba(0,255,2
   filter: brightness(0.8) saturate(1.1);
 }
  
-/* layered gradient overlays */
 .anime-card::before {
   content: "";
   position: absolute; inset: 0; z-index: 1;
@@ -683,7 +935,6 @@ header h1:hover { text-shadow: 0 0 30px rgba(0,255,255,1), 0 0 60px rgba(0,255,2
   opacity: 0; transition: 0.4s;
 }
  
-/* anime meta */
 .anime-meta {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -731,7 +982,6 @@ header h1:hover { text-shadow: 0 0 30px rgba(0,255,255,1), 0 0 60px rgba(0,255,2
   color: #f59e0b;
 }
  
-/* top right rank badge */
 .rank-badge {
   position: absolute;
   top: 14px; right: 14px;
@@ -748,7 +998,6 @@ header h1:hover { text-shadow: 0 0 30px rgba(0,255,255,1), 0 0 60px rgba(0,255,2
   transition: 0.3s;
 }
  
-/* glow border on hover */
 .anime-card:hover {
   border-color: rgba(0,255,255,0.4);
   box-shadow: 0 0 40px rgba(0,255,255,0.15), 0 20px 60px rgba(0,0,0,0.6);
@@ -761,7 +1010,6 @@ header h1:hover { text-shadow: 0 0 30px rgba(0,255,255,1), 0 0 60px rgba(0,255,2
 .anime-card:hover .anime-sub-meta { opacity: 1; transform: translateY(0); }
 .anime-card:hover .rank-badge { opacity: 1; transform: scale(1); }
  
-/* view overlay */
 .anime-view-overlay {
   position: absolute;
   inset: 0; z-index: 2;
@@ -953,7 +1201,7 @@ footer {
 }
  
 /* ══════════════════════════════════════════
-   POPUP OVERLAYS — god mode
+   POPUP OVERLAYS
 ══════════════════════════════════════════ */
 .popup-overlay {
   position: fixed; inset: 0;
@@ -985,7 +1233,6 @@ footer {
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
  
-/* card top glow strip */
 .login-card::before {
   content: "";
   position: absolute;
@@ -1171,10 +1418,22 @@ footer {
 ::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.3); border-radius: 6px; }
  
 /* ══════════════════════════════════════════
-   MOBILE
+   RESPONSIVE BREAKPOINTS
 ══════════════════════════════════════════ */
+ 
+/* ── 768px: Switch to hamburger ── */
 @media (max-width: 768px) {
-  header { padding: 14px 20px; }
+  header {
+    padding: 14px 20px;
+  }
+  header.scrolled {
+    padding: 10px 20px;
+  }
+  /* Hide desktop nav pill on mobile */
+  .nav { display: none; }
+  /* Show hamburger */
+  #hamburger { display: flex; }
+ 
   .slide-content { bottom: 110px; left: 24px; right: 24px; }
   .slide-counter { display: none; }
   .slide-dots { left: 24px; }
@@ -1186,8 +1445,6 @@ footer {
  
 @media (max-width: 480px) {
   .anime-grid { grid-template-columns: 1fr; }
-  .container { gap: 2px; padding: 6px 10px; }
-  .btn { padding: 6px 10px; font-size: 12px; }
 }
 </style>
 </head>
@@ -1203,10 +1460,68 @@ footer {
 <canvas id="particles"></canvas>
  
 <!-- ══════════════════════════════════════════
+     MOBILE MENU OVERLAY (outside header, fixed)
+══════════════════════════════════════════ -->
+<div id="mobileMenu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <div id="mobileMenuPanel">
+    <!-- Top glow handled by ::before pseudo -->
+ 
+    <!-- Panel header -->
+    <div class="mmenu-header">
+      <span class="mmenu-brand">🧠 AnimeIQ</span>
+      <button class="mmenu-close" onclick="closeMobileMenu()" aria-label="Close menu">✕</button>
+    </div>
+ 
+    <!-- Nav links -->
+    <nav class="mmenu-nav" aria-label="Mobile navigation">
+      <a href="homepageblog.html" class="mmenu-link">
+        <span class="mmenu-icon">🏠</span>
+        <span>Home</span>
+      </a>
+      <button type="button" class="mmenu-link" onclick="closeMobileMenu(); goToExplore();" style="background:none;border:none;text-align:left;width:100%;font-family:'Poppins',sans-serif;">
+        <span class="mmenu-icon">🔍</span>
+        <span>Explore</span>
+      </button>
+      <a href="contactus.html" class="mmenu-link">
+        <span class="mmenu-icon">✉️</span>
+        <span>Contact</span>
+      </a>
+      <a href="about.html" class="mmenu-link">
+        <span class="mmenu-icon">ℹ️</span>
+        <span>About</span>
+      </a>
+ 
+      <div class="mmenu-divider"></div>
+ 
+      <!-- Quick links -->
+      <button type="button" class="mmenu-link" onclick="closeMobileMenu(); goToShows();" style="background:none;border:none;text-align:left;width:100%;font-family:'Poppins',sans-serif;">
+        <span class="mmenu-icon">📺</span>
+        <span>Filler Guide</span>
+      </button>
+      <button type="button" class="mmenu-link" onclick="closeMobileMenu(); goToExplore();" style="background:none;border:none;text-align:left;width:100%;font-family:'Poppins',sans-serif;">
+        <span class="mmenu-icon">⚡</span>
+        <span>Binge Calculator</span>
+      </button>
+    </nav>
+ 
+    <!-- Auth area — updated dynamically -->
+    <div class="mmenu-auth" id="mobileAuthArea">
+      <!-- Filled by JS -->
+    </div>
+ 
+    <div class="mmenu-footer">
+      <span class="mmenu-version">AnimeIQ · v2.0</span>
+    </div>
+  </div>
+</div>
+ 
+<!-- ══════════════════════════════════════════
      HEADER
 ══════════════════════════════════════════ -->
 <header id="mainHeader">
   <h1>🧠 AnimeIQ</h1>
+ 
+  <!-- Desktop nav (hidden on mobile via CSS) -->
   <div class="nav">
     <div class="container">
       <div class="btn"><a href="homepageblog.html"><span>Home</span></a></div>
@@ -1216,6 +1531,13 @@ footer {
       <div class="btn" id="authArea"><span>Login</span></div>
     </div>
   </div>
+ 
+  <!-- Hamburger (shown on mobile via CSS) -->
+  <button id="hamburger" onclick="toggleMobileMenu()" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
 </header>
  
 <!-- ══════════════════════════════════════════
@@ -1581,7 +1903,6 @@ const dotsEl      = document.getElementById("slideDots");
 const progEl      = document.getElementById("slideProgress");
 const numEl       = document.getElementById("slideNum");
  
-// Build dots
 slides.forEach((_, i) => {
   const d = document.createElement("button");
   d.className  = "dot" + (i === 0 ? " active" : "");
@@ -1636,7 +1957,6 @@ function resetProgress() {
   }, 80);
 }
  
-/* INP FIX: Pause animations when tab is hidden to save CPU/GPU */
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     clearInterval(slideTimer);
@@ -1650,7 +1970,6 @@ document.addEventListener("visibilitychange", () => {
 slideTimer = setInterval(nextSlide, SLIDE_DUR);
 resetProgress();
  
-/* Touch swipe */
 let touchStartX = 0;
 const sliderEl  = document.getElementById("sliderEl");
 sliderEl.addEventListener("touchstart", e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
@@ -1694,16 +2013,6 @@ function closeSignup() { document.getElementById("signupPopup").style.display = 
 function switchToSignup() { closeLogin(); openSignup(); }
 function switchToLogin()  { closeSignup(); openLogin(); }
  
-/* ══════════════════════════════════════════
-   NAVIGATION — BUTTON FIX
-   
-   goToShows()   → shows.html     (A-Z full list)
-   goToExplore() → explore.html (search/explore)
-   openAnime()   → explore.html?id=X with search
-   
-   These are the ORIGINAL intended destinations
-   from the document 4 source code. Restored.
-══════════════════════════════════════════ */
 function goToShows() {
   if (!auth.currentUser) {
     pendingRedirect = "shows.html";
@@ -1733,46 +2042,36 @@ function loginUser() {
   const emailInput = document.getElementById("loginUsername");
   const passwordInput = document.getElementById("loginPassword");
   const hint = document.getElementById("loginHint");
-
+ 
   const email = emailInput.value.trim();
   const password = passwordInput.value;
-
-  // Reset UI
+ 
   hint.style.display = "none";
   emailInput.style.borderColor = "";
   passwordInput.style.borderColor = "";
-
+ 
   if (!email || !password) {
     showToast("⚠️ Please fill all fields");
-
     hint.textContent = "⚠️ Fill email and password to continue.";
     hint.style.display = "block";
-
     if (!email) emailInput.style.borderColor = "red";
     if (!password) passwordInput.style.borderColor = "red";
-
     return;
   }
-
+ 
   signInWithEmailAndPassword(auth, email, password)
     .then(() => {
       closeLogin();
       showToast("✅ Logged in successfully!");
-
       setTimeout(() => {
         window.location.href = pendingRedirect || "explore.html";
       }, 900);
     })
     .catch(err => {
       const msg = friendlyError(err.code);
-
-      // 🔥 Show both toast + persistent message
       showToast("❌ " + msg);
-
       hint.textContent = "❌ " + msg;
       hint.style.display = "block";
-
-      // 🎯 Highlight fields smartly
       if (err.code === "auth/user-not-found") {
         emailInput.style.borderColor = "red";
       } else if (err.code === "auth/wrong-password") {
@@ -1783,12 +2082,11 @@ function loginUser() {
       }
     });
 }
-
+ 
 ["loginUsername", "loginPassword"].forEach(id => {
   document.getElementById(id).addEventListener("input", () => {
     const hint = document.getElementById("loginHint");
     hint.style.display = "none";
-
     document.getElementById("loginUsername").style.borderColor = "";
     document.getElementById("loginPassword").style.borderColor = "";
   });
@@ -1832,56 +2130,48 @@ function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 let lastResetTime = 0;
 async function resetPassword() {
   const emailInput = document.getElementById("loginUsername");
-  const hint = document.getElementById("loginHint"); // 👈 add this
+  const hint = document.getElementById("loginHint");
   const email = emailInput.value.trim();
-
+ 
   if (!email) {
     showToast("⚠️ Please enter your email address first");
-
-    // 👇 GOD MODE UI FEEDBACK
     hint.textContent = "⚠️ Enter your email above, then click Forgot Password.";
     hint.style.display = "block";
-
-    emailInput.focus(); // 👈 focus input
-    emailInput.style.borderColor = "red"; // 👈 visual highlight
-
+    emailInput.focus();
+    emailInput.style.borderColor = "red";
     return;
   }
-
+ 
   if (!isValidEmail(email)) {
     showToast("❌ Please enter a valid email address");
-
     hint.textContent = "❌ Invalid email format. Try again.";
     hint.style.display = "block";
-
     return;
   }
-
+ 
   const now = Date.now();
   if (now - lastResetTime < 30000) {
     showToast("⏳ Please wait before requesting again");
     return;
   }
-
+ 
   lastResetTime = now;
-
+ 
   try {
     emailInput.disabled = true;
     showToast("⏳ Sending reset link...");
-
+ 
     await sendPasswordResetEmail(auth, email, {
       url: window.location.origin + "/homepageblog.html",
       handleCodeInApp: false
     });
-
+ 
     showToast("📧 Reset link sent! Check your email");
-
     hint.textContent = "✅ Reset link sent. Check inbox/spam.";
     hint.style.display = "block";
-
     emailInput.value = "";
-    emailInput.style.borderColor = ""; // reset
-
+    emailInput.style.borderColor = "";
+ 
   } catch (err) {
     showToast("❌ " + friendlyError(err.code));
   } finally {
@@ -1904,8 +2194,35 @@ function friendlyError(code) {
   return map[code] || "Something went wrong. Try again.";
 }
  
+/* ── Helper: render mobile auth area ── */
+function renderMobileAuth(user) {
+  const mobileAuth = document.getElementById("mobileAuthArea");
+  if (!mobileAuth) return;
+ 
+  if (user) {
+    const display = user.displayName || (user.email.length > 22 ? user.email.substring(0,19) + "..." : user.email);
+    mobileAuth.innerHTML = `
+      <div class="mmenu-user-row">
+        <span class="mmenu-user-name">👤 ${display}</span>
+        <span class="mmenu-logout" id="mobileLogoutBtn">Logout</span>
+      </div>
+    `;
+    document.getElementById("mobileLogoutBtn").onclick = () => {
+      window.closeMobileMenu && window.closeMobileMenu();
+      logoutUser();
+    };
+  } else {
+    mobileAuth.innerHTML = `
+      <button class="mmenu-login-btn" onclick="window.closeMobileMenu(); window.openLogin();">
+        🔑 Login / Sign Up
+      </button>
+    `;
+  }
+}
+ 
 /* ── AUTH STATE ── */
 onAuthStateChanged(auth, (user) => {
+  /* Desktop auth area */
   const authArea = document.getElementById("authArea");
   if (user) {
     const display = user.displayName || (user.email.length > 18 ? user.email.substring(0,15) + "..." : user.email);
@@ -1930,9 +2247,12 @@ onAuthStateChanged(auth, (user) => {
     authArea.appendChild(sp);
     authArea.onclick = () => openLogin();
   }
+ 
+  /* Mobile auth area */
+  renderMobileAuth(user);
 });
  
-/* ── SCROLL REVEAL — unobserve after show to save memory ── */
+/* ── SCROLL REVEAL ── */
 window.addEventListener("load", () => {
   window.scrollTo(0, 0);
   const observer = new IntersectionObserver((entries) => {
@@ -1977,22 +2297,67 @@ window.openAnime       = openAnime;
 </script>
  
 <!-- ══════════════════════════════════════════
-     INTERACTIVITY — non-blocking, non-module
+     INTERACTIVITY — non-blocking
 ══════════════════════════════════════════ -->
 <script>
 /* ══════════════════════════════════════════
-   CURSOR — GOD MODE FIX
-   
-   PROBLEM: Previous version hid cursor with CSS display:none
-   and only showed it via @media (hover:hover). This made it
-   invisible over plain text and most of the page.
-   
-   FIX:
-   1. cursor is always display:block in CSS
-   2. Move via translate3d() — GPU compositor only, zero layout cost
-      (old left/top caused layout recalc on every mousemove = INP killer)
-   3. Mobile: set display:none via JS on touch detection
-   4. Hover enlargement done via opacity + ring scale — no layout props
+   MOBILE MENU — HAMBURGER LOGIC
+══════════════════════════════════════════ */
+let mobileMenuOpen = false;
+ 
+function toggleMobileMenu() {
+  mobileMenuOpen ? closeMobileMenu() : openMobileMenu();
+}
+ 
+function openMobileMenu() {
+  mobileMenuOpen = true;
+  const overlay = document.getElementById("mobileMenu");
+  const hamburger = document.getElementById("hamburger");
+ 
+  overlay.style.display = "block";
+  /* Force reflow so transition fires */
+  overlay.offsetHeight;
+  overlay.classList.add("open");
+  hamburger.classList.add("open");
+  hamburger.setAttribute("aria-expanded", "true");
+ 
+  /* Prevent body scroll while menu open */
+  document.body.style.overflow = "hidden";
+}
+ 
+function closeMobileMenu() {
+  mobileMenuOpen = false;
+  const overlay = document.getElementById("mobileMenu");
+  const hamburger = document.getElementById("hamburger");
+ 
+  overlay.classList.remove("open");
+  hamburger.classList.remove("open");
+  hamburger.setAttribute("aria-expanded", "false");
+  document.body.style.overflow = "";
+ 
+  /* Hide after transition completes */
+  setTimeout(() => {
+    if (!mobileMenuOpen) overlay.style.display = "none";
+  }, 380);
+}
+ 
+/* Close on backdrop click (not panel) */
+document.getElementById("mobileMenu").addEventListener("click", function(e) {
+  if (e.target === this) closeMobileMenu();
+});
+ 
+/* Close on Escape key */
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && mobileMenuOpen) closeMobileMenu();
+});
+ 
+/* Expose for inline onclick calls */
+window.toggleMobileMenu = toggleMobileMenu;
+window.openMobileMenu   = openMobileMenu;
+window.closeMobileMenu  = closeMobileMenu;
+ 
+/* ══════════════════════════════════════════
+   CURSOR — GOD MODE
 ══════════════════════════════════════════ */
 const cursor      = document.getElementById("cursor");
 const cursorRing  = document.getElementById("cursorRing");
@@ -2001,46 +2366,31 @@ const cursorTrail = document.getElementById("cursorTrail");
 const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
  
 if (isTouchDevice) {
-  /* Mobile: hide cursor elements and restore native cursor */
   cursor.style.display      = "none";
   cursorRing.style.display  = "none";
   cursorTrail.style.display = "none";
   document.body.style.cursor = "auto";
-  /* Also restore cursor on all elements */
   document.querySelectorAll("*").forEach(el => {
     if (getComputedStyle(el).cursor === "none") el.style.cursor = "auto";
   });
 } else {
-  /* Desktop: full custom cursor experience */
   let mx=0, my=0, rx=0, ry=0, tx=0, ty=0;
  
-  /* INP FIX: passive listener — never blocks scroll or other events */
   document.addEventListener("mousemove", e => {
     mx = e.clientX; my = e.clientY;
   }, { passive: true });
  
-  /* Single RAF loop for all three cursor elements
-     INP FIX: translate3d = compositor-only, no layout, no paint */
   (function animCursor() {
-    /* Dot: instant */
     cursor.style.transform = `translate3d(${mx}px,${my}px,0) translate(-50%,-50%)`;
- 
-    /* Ring: smooth lag */
     rx += (mx - rx) * 0.14;
     ry += (my - ry) * 0.14;
     cursorRing.style.transform = `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%)`;
- 
-    /* Trail: slower lag */
     tx += (mx - tx) * 0.07;
     ty += (my - ty) * 0.07;
     cursorTrail.style.transform = `translate3d(${tx}px,${ty}px,0) translate(-50%,-50%)`;
- 
     requestAnimationFrame(animCursor);
   })();
  
-  /* Cursor expand on interactive elements
-     INP FIX: only animate opacity (compositor) + ring scale (compositor)
-     Never animate width/height/left/top — those cause layout */
   function bindHover(selector) {
     document.querySelectorAll(selector).forEach(el => {
       el.addEventListener("mouseenter", () => {
@@ -2055,13 +2405,11 @@ if (isTouchDevice) {
     });
   }
  
-  bindHover("button, a, .btn, .anime-card, .arrow, .dot, .social-btn, .close-btn, .forgot-box span, #logoutBtn, .info-card, .feature-pill, [role='button']");
+  bindHover("button, a, .btn, .anime-card, .arrow, .dot, .social-btn, .close-btn, .forgot-box span, #logoutBtn, .info-card, .feature-pill, [role='button'], .mmenu-link, #hamburger");
 }
  
 /* ══════════════════════════════════════════
-   PARTICLES — desktop only, visibility-aware
-   INP FIX: reduced count (55 vs original 60),
-   paused when tab hidden
+   PARTICLES
 ══════════════════════════════════════════ */
 const canvas = document.getElementById("particles");
 const ctx    = canvas.getContext("2d");
@@ -2100,7 +2448,6 @@ if (!isTouchDevice) drawParticles();
  
 /* ══════════════════════════════════════════
    HEADER SHRINK
-   INP FIX: rAF throttle — fires max once per frame
 ══════════════════════════════════════════ */
 const mainHeader = document.getElementById("mainHeader");
 let _scrollPending = false;
@@ -2115,8 +2462,6 @@ window.addEventListener("scroll", () => {
  
 /* ══════════════════════════════════════════
    COUNT-UP ANIMATION
-   CLS FIX: stats start at 0, animate on viewport entry
-   INP FIX: rAF-based easing, not setInterval
 ══════════════════════════════════════════ */
 function formatNum(n, target) {
   return target >= 10000 ? Math.floor(n / 1000) + "K+" : Math.floor(n) + "+";
@@ -2133,7 +2478,7 @@ const counterObs = new IntersectionObserver((entries) => {
     function step(ts) {
       if (!start) start = ts;
       const progress = Math.min((ts - start) / dur, 1);
-      const eased    = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      const eased    = 1 - Math.pow(1 - progress, 3);
       el.textContent = formatNum(eased * target, target);
       if (progress < 1) requestAnimationFrame(step);
       else el.textContent = formatNum(target, target);
@@ -2147,10 +2492,10 @@ document.querySelectorAll(".hero-stat-num[data-target]").forEach(el => counterOb
  
 /* ══════════════════════════════════════════
    MOUSE PARALLAX ON SLIDER
-   INP FIX: RAF-throttled, passive listener
 ══════════════════════════════════════════ */
 let parallaxPending = false;
 let lastMX = 0, lastMY = 0;
+const sliderElRef = document.getElementById("sliderEl");
  
 if (!isTouchDevice) {
   document.addEventListener("mousemove", e => {
@@ -2158,11 +2503,11 @@ if (!isTouchDevice) {
     if (!parallaxPending) {
       parallaxPending = true;
       requestAnimationFrame(() => {
-        const rect = sliderEl.getBoundingClientRect();
+        const rect = sliderElRef.getBoundingClientRect();
         if (lastMY <= rect.bottom) {
           const xR = (lastMX / window.innerWidth  - 0.5) * 12;
           const yR = (lastMY / window.innerHeight - 0.5) * 8;
-          const img = sliderEl.querySelector(".slide.active img");
+          const img = sliderElRef.querySelector(".slide.active img");
           if (img) img.style.transform = `scale(1.04) translate(${xR * 0.4}px, ${yR * 0.4}px)`;
         }
         parallaxPending = false;
@@ -2187,7 +2532,6 @@ document.addEventListener("keydown", e => {
   }
 });
  
-/* Keyboard Enter on anime cards */
 document.querySelectorAll(".anime-card[role='button']").forEach(card => {
   card.addEventListener("keydown", e => { if (e.key === "Enter") card.click(); });
 });
